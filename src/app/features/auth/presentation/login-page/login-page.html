@@ -1,0 +1,91 @@
+<main class="grid min-h-dvh bg-background lg:grid-cols-[minmax(0,1.2fr)_minmax(25rem,0.8fr)]">
+  <section
+    aria-labelledby="brand-title"
+    class="flex min-h-80 flex-col justify-center bg-secondary px-6 py-14 sm:px-12 lg:px-[clamp(3rem,8vw,9rem)]"
+  >
+    <div aria-hidden="true" class="relative mb-10 flex h-16 w-16 items-center justify-center">
+      <span class="absolute h-8 w-8 -translate-y-3 rounded-full bg-primary/80"></span>
+      <span class="absolute h-8 w-8 translate-x-3 rounded-full bg-primary/70"></span>
+      <span class="absolute h-8 w-8 translate-y-3 rounded-full bg-primary/60"></span>
+      <span class="absolute h-8 w-8 -translate-x-3 rounded-full bg-primary"></span>
+      <span class="absolute h-5 w-5 rounded-full bg-[#f0b64d]"></span>
+    </div>
+    <p class="mb-3 text-xs font-bold tracking-[0.16em] text-muted-foreground uppercase">
+      Flower Details
+    </p>
+    <h1
+      id="brand-title"
+      class="max-w-[10ch] font-serif text-5xl leading-none text-foreground sm:text-6xl lg:text-7xl"
+    >
+      Detalles que florecen contigo.
+    </h1>
+    <p class="mt-7 max-w-md text-base leading-7 text-muted-foreground sm:text-lg">
+      Gestiona cada arreglo, pedido y momento especial desde un solo lugar.
+    </p>
+  </section>
+
+  <section
+    aria-labelledby="login-title"
+    class="mx-auto flex w-full max-w-xl flex-col justify-center px-6 py-12 sm:px-12 lg:px-16"
+  >
+    <a
+      class="mb-14 w-fit text-sm font-medium text-muted-foreground transition-colors hover:text-primary focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none"
+      routerLink="/home"
+    >
+      Volver al inicio
+    </a>
+    <div>
+      <p class="mb-3 text-xs font-bold tracking-[0.16em] text-muted-foreground uppercase">
+        Acceso al sistema
+      </p>
+      <h2 id="login-title" class="font-serif text-4xl text-foreground">Inicia sesión</h2>
+      <p class="mt-3 text-muted-foreground">Ingresa con tu cuenta para continuar.</p>
+    </div>
+
+    @if (errorMessage(); as message) {
+      <p
+        class="mt-7 border-s-4 border-destructive bg-destructive/10 px-4 py-3 text-sm text-destructive"
+        role="alert"
+      >
+        {{ message }}
+      </p>
+    }
+
+    <form (ngSubmit)="submit()" [formGroup]="loginForm" class="mt-8 grid gap-2" novalidate>
+      <label hlmLabel for="email" class="mt-3">Correo electrónico</label>
+      <input
+        [attr.aria-invalid]="hasError('email')"
+        hlmInput
+        formControlName="email"
+        autocomplete="email"
+        inputmode="email"
+        placeholder="nombre@correo.com"
+        name="email"
+        type="email"
+        id="email"
+      />
+      @if (hasError('email')) {
+        <p class="text-sm text-destructive">Ingresa un correo electrónico válido.</p>
+      }
+
+      <label hlmLabel for="password" class="mt-4">Contraseña</label>
+      <input
+        [attr.aria-invalid]="hasError('password')"
+        hlmInput
+        formControlName="password"
+        autocomplete="current-password"
+        placeholder="Tu contraseña"
+        name="password"
+        type="password"
+        id="password"
+      />
+      @if (hasError('password')) {
+        <p class="text-sm text-destructive">La contraseña es obligatoria.</p>
+      }
+
+      <button [disabled]="isSubmitting()" class="mt-7 h-11 w-full text-base" hlmBtn type="submit">
+        {{ isSubmitting() ? 'Ingresando...' : 'Iniciar sesión' }}
+      </button>
+    </form>
+  </section>
+</main>
