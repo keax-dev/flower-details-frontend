@@ -1,6 +1,5 @@
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { NavigationEnd, Router, RouterLink, RouterLinkActive } from '@angular/router';
-import { HlmButtonImports } from '@spartan-ng/helm/button';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import { lucideLogOut, lucideMenu, lucideX } from '@ng-icons/lucide';
 import { Component, DestroyRef, computed, inject, signal } from '@angular/core';
@@ -26,7 +25,7 @@ const NAVIGATION_BY_ROLE: Readonly<Record<UserRole, readonly NavigationItem[]>> 
 
 @Component({
   selector: 'app-application-navigation',
-  imports: [HlmButtonImports, NgIcon, RouterLink, RouterLinkActive],
+  imports: [NgIcon, RouterLink, RouterLinkActive],
   providers: [provideIcons({ lucideLogOut, lucideMenu, lucideX })],
   templateUrl: './application-navigation.html',
 })
@@ -71,7 +70,10 @@ export class ApplicationNavigation {
       )
       .subscribe({
         next: () => void this.router.navigate(['/home']),
-        error: () => this.logoutError.set('No se pudo cerrar la sesión. Inténtalo nuevamente.'),
+        error: () => {
+          this.logoutError.set('No se pudo confirmar el cierre de sesión con el servidor.');
+          void this.router.navigate(['/home']);
+        },
       });
   }
 }

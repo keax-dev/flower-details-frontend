@@ -1,9 +1,12 @@
-import { API_BASE_URL } from '../../../core/http/api.config';
+import { API_BASE_URL } from '../../../../core/http/config/api.config';
+import { PageResponse } from '../../../../shared/domain/pagination/page-response.model';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Service } from '@angular/core';
-import { Observable } from 'rxjs';
+import { EMPTY, expand, Observable, reduce } from 'rxjs';
 
-import { Category, CategoryPayload, PageResponse } from '../domain/model/category.model';
+import { Category, CategoryPayload } from '../../domain/model/category.model';
+
+const MAX_PAGE_SIZE = 100;
 
 @Service()
 export class CategoryApiService {
@@ -13,6 +16,17 @@ export class CategoryApiService {
   list(page: number, size: number): Observable<PageResponse<Category>> {
     const params = new HttpParams().set('page', page).set('size', size);
     return this.httpClient.get<PageResponse<Category>>(`${this.apiBaseUrl}/categories`, { params });
+  }
+
+  listAll(): Observable<Category[]> {
+    return this.list(0, MAX_PAGE_SIZE).pipe(
+      expand((response) =>
+        response.page + 1 < response.totalPages
+          ? this.list(response.page + 1, MAX_PAGE_SIZE)
+          : EMPTY,
+      ),
+      reduce((categories: Category[], response) => [...categories, ...response.items], []),
+    );
   }
 
   create(payload: CategoryPayload): Observable<Category> {

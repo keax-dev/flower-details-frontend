@@ -1,10 +1,10 @@
-import { API_BASE_URL } from '../../../core/http/api.config';
+import { API_BASE_URL } from '../../../core/http/config/api.config';
 import { LoginRequest, LoginResponse } from '../domain/model/login.model';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { inject, Service } from '@angular/core';
 import { AuthUser } from '../domain/model/auth-user.model';
 import { catchError, map, Observable, of, tap, throwError } from 'rxjs';
-import { HttpErrorResponse } from '@angular/common/http';
+import { finalize } from 'rxjs';
 
 import { AuthSessionStore } from './auth-session.store';
 
@@ -41,6 +41,6 @@ export class AuthService {
   logout(): Observable<void> {
     return this.httpClient
       .post<void>(`${this.apiBaseUrl}/auth/logout`, {})
-      .pipe(tap(() => this.sessionStore.clear()));
+      .pipe(finalize(() => this.sessionStore.clear()));
   }
 }

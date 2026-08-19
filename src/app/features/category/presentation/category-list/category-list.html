@@ -1,0 +1,115 @@
+<section aria-labelledby="categories-title">
+  <div class="flex items-end justify-between gap-4">
+    <div>
+      <h2 id="categories-title" class="font-serif text-2xl">Todas las categorías</h2>
+      @if (pageResponse(); as response) {
+        <p class="mt-1 text-sm text-muted-foreground">
+          {{ response.totalElements }} categorías registradas
+        </p>
+      }
+    </div>
+  </div>
+
+  <div class="mt-5 overflow-x-auto border-y border-border">
+    <table class="w-full min-w-165 text-left text-sm">
+      <caption class="sr-only">
+        Listado de categorías
+      </caption>
+      <thead
+        class="border-b border-border bg-muted/60 text-xs tracking-[0.12em] text-muted-foreground uppercase"
+      >
+        <tr>
+          <th class="px-4 py-4 font-semibold" scope="col">Categoría</th>
+          <th class="px-4 py-4 font-semibold" scope="col">Descripción</th>
+          <th class="px-4 py-4 font-semibold" scope="col">Estado</th>
+          <th class="px-4 py-4 text-right font-semibold" scope="col">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        @if (isLoading()) {
+          <tr>
+            <td class="px-4 py-10 text-center text-muted-foreground" colspan="4">
+              Cargando categorías...
+            </td>
+          </tr>
+        } @else {
+          @for (category of categories(); track category.id) {
+            <tr class="border-b border-border last:border-0">
+              <td class="px-4 py-4 font-medium">{{ category.title }}</td>
+              <td class="max-w-md px-4 py-4 text-muted-foreground">{{ category.description }}</td>
+              <td class="px-4 py-4">
+                <span
+                  [class.bg-primary/10]="category.active"
+                  [class.text-primary]="category.active"
+                  [class.bg-muted]="!category.active"
+                  [class.text-muted-foreground]="!category.active"
+                  class="inline-flex rounded-full px-2.5 py-1 text-xs font-semibold"
+                >
+                  {{ category.active ? 'Activa' : 'Inactiva' }}
+                </span>
+              </td>
+              <td class="px-4 py-4">
+                <div class="flex justify-end gap-2">
+                  <button
+                    (click)="edit.emit(category)"
+                    hlmBtn
+                    size="sm"
+                    type="button"
+                    variant="outline"
+                  >
+                    Editar
+                  </button>
+                  <button
+                    (click)="remove.emit(category)"
+                    hlmBtn
+                    size="sm"
+                    type="button"
+                    variant="destructive"
+                  >
+                    Eliminar
+                  </button>
+                </div>
+              </td>
+            </tr>
+          } @empty {
+            <tr>
+              <td class="px-4 py-10 text-center text-muted-foreground" colspan="4">
+                Todavía no hay categorías registradas.
+              </td>
+            </tr>
+          }
+        }
+      </tbody>
+    </table>
+  </div>
+
+  @if (pageResponse(); as response) {
+    <nav aria-label="Paginación de categorías" class="mt-5 flex items-center justify-between gap-4">
+      <p class="text-sm text-muted-foreground">
+        Página {{ response.page + 1 }} de {{ response.totalPages || 1 }}
+      </p>
+      <div class="flex gap-2">
+        <button
+          (click)="previousPage()"
+          [disabled]="!hasPreviousPage() || isLoading()"
+          hlmBtn
+          size="sm"
+          type="button"
+          variant="outline"
+        >
+          Anterior
+        </button>
+        <button
+          (click)="nextPage()"
+          [disabled]="!hasNextPage() || isLoading()"
+          hlmBtn
+          size="sm"
+          type="button"
+          variant="outline"
+        >
+          Siguiente
+        </button>
+      </div>
+    </nav>
+  }
+</section>

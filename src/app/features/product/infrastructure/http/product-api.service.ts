@@ -1,9 +1,10 @@
-import { API_BASE_URL } from '../../../core/http/api.config';
+import { API_BASE_URL } from '../../../../core/http/config/api.config';
+import { PageResponse } from '../../../../shared/domain/pagination/page-response.model';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Service } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { PageResponse, Product, ProductPayload } from '../domain/model/product.model';
+import { Product, ProductPayload } from '../../domain/model/product.model';
 
 @Service()
 export class ProductApiService {

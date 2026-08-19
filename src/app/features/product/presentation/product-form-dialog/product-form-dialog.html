@@ -1,0 +1,129 @@
+<brn-dialog
+  (closed)="closed.emit()"
+  [state]="isOpen() ? 'open' : 'closed'"
+  closeOnOutsidePointerEvents
+>
+  <brn-dialog-overlay class="bg-black/40 backdrop-blur-[1px]" />
+  <ng-template brnDialogContent class="w-auto max-w-none p-0"
+    ><section
+      class="w-[calc(100vw-2rem)] max-w-3xl overflow-y-auto rounded-md border border-border bg-card p-5 shadow-2xl sm:p-6"
+      style="max-height: calc(100dvh - 2rem)"
+    >
+      <div class="flex items-start justify-between gap-4">
+        <div>
+          <p class="text-xs font-bold tracking-[0.16em] text-primary uppercase">
+            {{ product() ? 'Edición' : 'Nuevo producto' }}
+          </p>
+          <h2 brnDialogTitle class="mt-2 font-serif text-2xl">
+            {{ product() ? 'Actualizar producto' : 'Crear producto' }}
+          </h2>
+        </div>
+        <button
+          [disabled]="isSaving()"
+          aria-label="Cerrar formulario"
+          brnDialogClose
+          hlmBtn
+          size="icon"
+          type="button"
+          variant="ghost"
+        >
+          ×
+        </button>
+      </div>
+      <form (ngSubmit)="submit()" [formGroup]="productForm" class="mt-6 grid gap-3" novalidate>
+        <label hlmLabel for="product-category">Categoría</label
+        ><hlm-select
+          (valueChange)="setCategory($event)"
+          [value]="productForm.controls.categoryId.value"
+          id="product-category"
+          ><hlm-select-trigger class="w-full"
+            ><hlm-select-value placeholder="Selecciona una categoría" /></hlm-select-trigger
+          ><hlm-select-content>
+            @for (category of categories(); track category.id) {
+              <hlm-select-item [value]="category.id">{{ category.title }}</hlm-select-item>
+            }
+          </hlm-select-content></hlm-select
+        >
+        @if (hasError('categoryId')) {
+          <p class="text-sm text-destructive">Selecciona una categoría.</p>
+        }
+        <label hlmLabel for="product-title" class="mt-3">Título</label
+        ><input
+          [attr.aria-invalid]="hasError('title')"
+          hlmInput
+          formControlName="title"
+          id="product-title"
+          maxlength="160"
+          placeholder="Ej. Ramo de rosas rojas"
+          type="text"
+        />
+        @if (hasError('title')) {
+          <p class="text-sm text-destructive">
+            El título es obligatorio y no puede superar 160 caracteres.
+          </p>
+        }
+        <label hlmLabel for="product-description" class="mt-3">Descripción</label
+        ><textarea
+          [attr.aria-invalid]="hasError('description')"
+          hlmTextarea
+          class="min-h-28"
+          formControlName="description"
+          id="product-description"
+          maxlength="1000"
+          placeholder="Describe el arreglo, flores y detalles incluidos."
+        ></textarea>
+        @if (hasError('description')) {
+          <p class="text-sm text-destructive">
+            La descripción es obligatoria y no puede superar 1000 caracteres.
+          </p>
+        }
+        <label hlmLabel for="product-price" class="mt-3">Precio</label
+        ><input
+          [attr.aria-invalid]="hasError('price')"
+          hlmInput
+          formControlName="price"
+          id="product-price"
+          min="0.01"
+          placeholder="0.00"
+          step="0.01"
+          type="number"
+        />
+        @if (hasError('price')) {
+          <p class="text-sm text-destructive">Ingresa un precio mayor a cero.</p>
+        }
+        <label hlmLabel for="product-images" class="mt-3">Imágenes</label
+        ><input
+          (change)="selectFiles($event)"
+          accept="image/jpeg,image/png,image/webp"
+          class="block w-full text-sm text-muted-foreground file:mr-4 file:border-0 file:bg-primary/10 file:px-3 file:py-2 file:font-medium file:text-primary"
+          id="product-images"
+          multiple
+          type="file"
+        />
+        @if (selectedFiles().length > 0) {
+          <p class="text-xs text-muted-foreground">
+            {{ selectedFiles().length }} imagen(es) lista(s) para cargar.
+          </p>
+        }
+        <label
+          class="mt-3 flex cursor-pointer items-center gap-3 text-sm font-medium"
+          for="product-active"
+          ><hlm-checkbox formControlName="active" id="product-active" />Producto activo</label
+        >
+        <div class="mt-5 grid gap-3 sm:flex sm:flex-wrap">
+          <button [disabled]="isSaving()" hlmBtn type="submit">
+            {{ isSaving() ? 'Guardando...' : 'Guardar producto' }}</button
+          ><button
+            (click)="closed.emit()"
+            [disabled]="isSaving()"
+            hlmBtn
+            type="button"
+            variant="outline"
+          >
+            Cancelar
+          </button>
+        </div>
+      </form>
+    </section></ng-template
+  >
+</brn-dialog>

@@ -1,0 +1,92 @@
+<brn-dialog
+  (closed)="closed.emit()"
+  [state]="isOpen() ? 'open' : 'closed'"
+  closeOnOutsidePointerEvents
+>
+  <brn-dialog-overlay class="bg-black/40 backdrop-blur-[1px]" />
+  <ng-template brnDialogContent class="w-auto max-w-none p-0">
+    <section
+      class="w-[calc(100vw-2rem)] max-w-2xl overflow-y-auto rounded-md border border-border bg-card p-5 shadow-2xl sm:p-6"
+      style="max-height: calc(100dvh - 2rem)"
+    >
+      <div class="flex items-start justify-between gap-4">
+        <div>
+          <p class="text-xs font-bold tracking-[0.16em] text-primary uppercase">
+            {{ category() ? 'Edición' : 'Nueva categoría' }}
+          </p>
+          <h2 brnDialogTitle class="mt-2 font-serif text-2xl">
+            {{ category() ? 'Actualizar categoría' : 'Crear categoría' }}
+          </h2>
+        </div>
+        <button
+          [disabled]="isSaving()"
+          aria-label="Cerrar formulario"
+          brnDialogClose
+          hlmBtn
+          size="icon"
+          type="button"
+          variant="ghost"
+        >
+          ×
+        </button>
+      </div>
+
+      <form (ngSubmit)="submit()" [formGroup]="categoryForm" class="mt-6 grid gap-3" novalidate>
+        <label hlmLabel for="category-title">Título</label>
+        <input
+          [attr.aria-invalid]="hasError('title')"
+          hlmInput
+          formControlName="title"
+          id="category-title"
+          maxlength="120"
+          placeholder="Ej. Cumpleaños"
+          type="text"
+        />
+        @if (hasError('title')) {
+          <p class="text-sm text-destructive">
+            El título es obligatorio y no puede superar 120 caracteres.
+          </p>
+        }
+
+        <label hlmLabel for="category-description" class="mt-3">Descripción</label>
+        <textarea
+          [attr.aria-invalid]="hasError('description')"
+          hlmTextarea
+          class="min-h-28"
+          formControlName="description"
+          id="category-description"
+          maxlength="500"
+          placeholder="Describe los detalles incluidos en esta categoría."
+        ></textarea>
+        @if (hasError('description')) {
+          <p class="text-sm text-destructive">
+            La descripción es obligatoria y no puede superar 500 caracteres.
+          </p>
+        }
+
+        <label
+          class="mt-3 flex cursor-pointer items-center gap-3 text-sm font-medium"
+          for="category-active"
+        >
+          <hlm-checkbox formControlName="active" id="category-active" />
+          Categoría activa
+        </label>
+
+        <div class="mt-5 grid gap-3 sm:flex sm:flex-wrap">
+          <button [disabled]="isSaving()" hlmBtn type="submit">
+            {{ isSaving() ? 'Guardando...' : 'Guardar categoría' }}
+          </button>
+          <button
+            (click)="closed.emit()"
+            [disabled]="isSaving()"
+            hlmBtn
+            type="button"
+            variant="outline"
+          >
+            Cancelar
+          </button>
+        </div>
+      </form>
+    </section>
+  </ng-template>
+</brn-dialog>

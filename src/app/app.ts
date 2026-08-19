@@ -1,7 +1,7 @@
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RouterOutlet } from '@angular/router';
 
-import { CsrfService } from './core/http/csrf.service';
+import { CsrfService } from './core/http/security/csrf.service';
 import { AuthService } from './features/auth/application/auth.service';
 import { ApplicationNavigation } from './layout/application-navigation/application-navigation';
 import { Component, DestroyRef, inject } from '@angular/core';

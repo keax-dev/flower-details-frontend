@@ -1,40 +1,24 @@
-import { HttpErrorResponse } from '@angular/common/http';
-import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { BrnDialogImports } from '@spartan-ng/brain/dialog';
-import { HlmCheckboxImports } from '@spartan-ng/helm/checkbox';
 import { HlmButtonImports } from '@spartan-ng/helm/button';
 import { Component, DestroyRef, computed, inject, signal } from '@angular/core';
-import { HlmInputImports } from '@spartan-ng/helm/input';
-import { HlmLabelImports } from '@spartan-ng/helm/label';
-import { HlmTextareaImports } from '@spartan-ng/helm/textarea';
 import { finalize } from 'rxjs';
 
-import { CategoryApiService } from '../../application/category-api.service';
-import { Category, PageResponse } from '../../domain/model/category.model';
-
-interface ApiErrorResponse {
-  message?: string;
-}
+import { resolveApiErrorMessage } from '../../../../core/http/utils/api-error';
+import { PageResponse } from '../../../../shared/domain/pagination/page-response.model';
+import { CategoryApiService } from '../../infrastructure/http/category-api.service';
+import { Category, CategoryPayload } from '../../domain/model/category.model';
+import { CategoryFormDialog } from '../category-form-dialog/category-form-dialog';
+import { CategoryList } from '../category-list/category-list';
 
 const PAGE_SIZE = 10;
 
 @Component({
   selector: 'app-category-page',
-  imports: [
-    HlmButtonImports,
-    HlmCheckboxImports,
-    HlmInputImports,
-    HlmLabelImports,
-    HlmTextareaImports,
-    BrnDialogImports,
-    ReactiveFormsModule,
-  ],
+  imports: [HlmButtonImports, CategoryFormDialog, CategoryList],
   templateUrl: './category-page.html',
 })
 export class CategoryPage {
   private readonly categoryApiService = inject(CategoryApiService);
-  private readonly formBuilder = inject(NonNullableFormBuilder);
   private readonly destroyRef = inject(DestroyRef);
 
   protected readonly categories = signal<Category[]>([]);
@@ -48,54 +32,30 @@ export class CategoryPage {
   protected readonly errorMessage = signal<string | null>(null);
   protected readonly successMessage = signal<string | null>(null);
   protected readonly currentPage = computed(() => this.pageResponse()?.page ?? 0);
-  protected readonly hasPreviousPage = computed(() => this.currentPage() > 0);
-  protected readonly hasNextPage = computed(() => {
-    const page = this.pageResponse();
-    return page !== null && page.page + 1 < page.totalPages;
-  });
-  protected readonly categoryForm = this.formBuilder.group({
-    title: ['', [Validators.required, Validators.maxLength(120)]],
-    description: ['', [Validators.required, Validators.maxLength(500)]],
-    active: [true],
-  });
-
   constructor() {
     this.loadCategories();
   }
 
   protected openCreateForm(): void {
     this.editingCategory.set(null);
-    this.resetForm();
     this.isFormVisible.set(true);
   }
 
   protected openEditForm(category: Category): void {
     this.editingCategory.set(category);
-    this.categoryForm.setValue({
-      title: category.title,
-      description: category.description,
-      active: category.active,
-    });
     this.isFormVisible.set(true);
   }
 
   protected closeForm(): void {
     this.isFormVisible.set(false);
     this.editingCategory.set(null);
-    this.resetForm();
   }
 
-  protected submitForm(): void {
-    if (this.categoryForm.invalid) {
-      this.categoryForm.markAllAsTouched();
-      return;
-    }
-
+  protected submitForm(payload: CategoryPayload): void {
     this.errorMessage.set(null);
     this.successMessage.set(null);
     this.isSaving.set(true);
 
-    const payload = this.categoryForm.getRawValue();
     const category = this.editingCategory();
     const request$ =
       category === null
@@ -117,7 +77,10 @@ export class CategoryPage {
           this.closeForm();
           this.loadCategories(category === null ? 0 : this.currentPage());
         },
-        error: (error: unknown) => this.errorMessage.set(this.resolveErrorMessage(error)),
+        error: (error: unknown) =>
+          this.errorMessage.set(
+            resolveApiErrorMessage(error, 'No fue posible completar la operación.'),
+          ),
       });
   }
 
@@ -155,28 +118,14 @@ export class CategoryPage {
               : this.currentPage(),
           );
         },
-        error: (error: unknown) => this.errorMessage.set(this.resolveErrorMessage(error)),
+        error: (error: unknown) =>
+          this.errorMessage.set(
+            resolveApiErrorMessage(error, 'No fue posible completar la operación.'),
+          ),
       });
   }
 
-  protected previousPage(): void {
-    if (this.hasPreviousPage()) {
-      this.loadCategories(this.currentPage() - 1);
-    }
-  }
-
-  protected nextPage(): void {
-    if (this.hasNextPage()) {
-      this.loadCategories(this.currentPage() + 1);
-    }
-  }
-
-  protected hasError(controlName: 'title' | 'description'): boolean {
-    const control = this.categoryForm.controls[controlName];
-    return control.invalid && control.touched;
-  }
-
-  private loadCategories(page = 0): void {
+  protected loadCategories(page = 0): void {
     this.isLoading.set(true);
     this.categoryApiService
       .list(page, PAGE_SIZE)
@@ -189,23 +138,10 @@ export class CategoryPage {
           this.categories.set(response.items);
           this.pageResponse.set(response);
         },
-        error: (error: unknown) => this.errorMessage.set(this.resolveErrorMessage(error)),
+        error: (error: unknown) =>
+          this.errorMessage.set(
+            resolveApiErrorMessage(error, 'No fue posible conectar con el servidor.'),
+          ),
       });
-  }
-
-  private resetForm(): void {
-    this.categoryForm.reset({ title: '', description: '', active: true });
-  }
-
-  private resolveErrorMessage(error: unknown): string {
-    if (error instanceof HttpErrorResponse && this.isApiErrorResponse(error.error)) {
-      return error.error.message ?? 'No fue posible completar la operación.';
-    }
-
-    return 'No fue posible conectar con el servidor. Inténtalo nuevamente.';
-  }
-
-  private isApiErrorResponse(error: unknown): error is ApiErrorResponse {
-    return typeof error === 'object' && error !== null && 'message' in error;
   }
 }

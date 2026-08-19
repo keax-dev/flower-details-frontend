@@ -1,6 +1,6 @@
 import { catchError, map, Observable, of, shareReplay, tap, throwError } from 'rxjs';
 
-import { API_BASE_URL } from './api.config';
+import { API_BASE_URL } from '../config/api.config';
 import { HttpClient } from '@angular/common/http';
 import { inject, Service } from '@angular/core';
 

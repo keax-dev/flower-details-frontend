@@ -1,7 +1,7 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
+import { resolveApiErrorMessage } from '../../../../core/http/utils/api-error';
 import { AuthService } from '../../application/auth.service';
 import { HlmButtonImports } from '@spartan-ng/helm/button';
 import { Component, DestroyRef, inject, signal } from '@angular/core';
@@ -11,10 +11,6 @@ import { HlmLabelImports } from '@spartan-ng/helm/label';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 
 import { maxUtf8Bytes } from '../validation/max-utf8-bytes.validator';
-
-interface ApiErrorResponse {
-  message?: string;
-}
 
 @Component({
   selector: 'app-login-page',
@@ -52,25 +48,16 @@ export class LoginPage {
       )
       .subscribe({
         next: () => this.navigateAfterLogin(),
-        error: (error: unknown) => this.errorMessage.set(this.resolveErrorMessage(error)),
+        error: (error: unknown) =>
+          this.errorMessage.set(
+            resolveApiErrorMessage(error, 'No fue posible iniciar sesión. Inténtalo nuevamente.'),
+          ),
       });
   }
 
   protected hasError(controlName: 'email' | 'password'): boolean {
     const control = this.loginForm.controls[controlName];
     return control.invalid && control.touched;
-  }
-
-  private resolveErrorMessage(error: unknown): string {
-    if (error instanceof HttpErrorResponse && this.isApiErrorResponse(error.error)) {
-      return error.error.message ?? 'No fue posible iniciar sesión. Inténtalo nuevamente.';
-    }
-
-    return 'No fue posible conectar con el servidor. Inténtalo nuevamente.';
-  }
-
-  private isApiErrorResponse(error: unknown): error is ApiErrorResponse {
-    return typeof error === 'object' && error !== null && 'message' in error;
   }
 
   private navigateAfterLogin(): void {

@@ -31,11 +31,3 @@ export interface ProductPayload {
   price: number;
   active: boolean;
 }
-
-export interface PageResponse<T> {
-  items: T[];
-  page: number;
-  size: number;
-  totalElements: number;
-  totalPages: number;
-}
