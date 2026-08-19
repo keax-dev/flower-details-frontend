@@ -6,6 +6,8 @@ import { HlmCheckboxImports } from '@spartan-ng/helm/checkbox';
 import { HlmInputImports } from '@spartan-ng/helm/input';
 import { HlmLabelImports } from '@spartan-ng/helm/label';
 import { HlmTextareaImports } from '@spartan-ng/helm/textarea';
+import { faFloppyDisk, faXmark } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { Component, DestroyRef, effect, inject, input, output, signal } from '@angular/core';
 import { finalize } from 'rxjs';
 
@@ -24,6 +26,7 @@ import { resolveApiErrorMessage } from '@core/http/utils/api-error';
     HlmInputImports,
     HlmLabelImports,
     HlmTextareaImports,
+    FontAwesomeModule,
     ReactiveFormsModule,
   ],
   templateUrl: './category-form-dialog.html',
@@ -41,6 +44,8 @@ export class CategoryFormDialog {
   readonly saved = output<void>();
 
   protected readonly isSaving = signal(false);
+  protected readonly faFloppyDisk = faFloppyDisk;
+  protected readonly faXmark = faXmark;
   protected readonly categoryForm = this.formBuilder.group({
     title: ['', [Validators.required, Validators.maxLength(120)]],
     description: ['', [Validators.required, Validators.maxLength(500)]],

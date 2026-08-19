@@ -24,6 +24,7 @@
           type="button"
           variant="destructive"
         >
+          <fa-icon [icon]="faTrash" aria-hidden="true" />
           {{ isDeleting() ? 'Eliminando...' : 'Eliminar categoría' }}
         </button>
         <button
@@ -33,6 +34,7 @@
           type="button"
           variant="outline"
         >
+          <fa-icon [icon]="faXmark" aria-hidden="true" />
           Cancelar
         </button>
       </div>
@@ -86,6 +88,7 @@
                     type="button"
                     variant="outline"
                   >
+                    <fa-icon [icon]="faPen" aria-hidden="true" />
                     Editar
                   </button>
                   <button
@@ -95,6 +98,7 @@
                     type="button"
                     variant="destructive"
                   >
+                    <fa-icon [icon]="faTrash" aria-hidden="true" />
                     Eliminar
                   </button>
                 </div>
@@ -126,6 +130,7 @@
           type="button"
           variant="outline"
         >
+          <fa-icon [icon]="faArrowLeft" aria-hidden="true" />
           Anterior
         </button>
         <button
@@ -137,6 +142,7 @@
           variant="outline"
         >
           Siguiente
+          <fa-icon [icon]="faArrowRight" aria-hidden="true" />
         </button>
       </div>
     </nav>

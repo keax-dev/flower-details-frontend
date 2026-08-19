@@ -1,6 +1,14 @@
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { HlmButtonImports } from '@spartan-ng/helm/button';
 import {
+  faArrowLeft,
+  faArrowRight,
+  faPen,
+  faTrash,
+  faXmark,
+} from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import {
   Component,
   DestroyRef,
   computed,
@@ -22,7 +30,7 @@ const PAGE_SIZE = 10;
 
 @Component({
   selector: 'app-category-list',
-  imports: [HlmButtonImports],
+  imports: [HlmButtonImports, FontAwesomeModule],
   templateUrl: './category-list.html',
 })
 export class CategoryList {
@@ -34,6 +42,11 @@ export class CategoryList {
   readonly edit = output<Category>();
 
   protected readonly categories = signal<Category[]>([]);
+  protected readonly faArrowLeft = faArrowLeft;
+  protected readonly faArrowRight = faArrowRight;
+  protected readonly faTrash = faTrash;
+  protected readonly faXmark = faXmark;
+  protected readonly faPen = faPen;
   protected readonly pageResponse = signal<PageResponse<Category> | null>(null);
   protected readonly pendingDeletion = signal<Category | null>(null);
   protected readonly isLoading = signal(false);
