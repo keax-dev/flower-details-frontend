@@ -1,0 +1,78 @@
+@if (isVisible()) {
+  <nav
+    aria-label="Navegación principal"
+    class="border-b border-primary/80 bg-primary text-primary-foreground"
+  >
+    <div
+      class="mx-auto flex min-h-16 max-w-[90rem] items-center justify-between gap-5 px-6 sm:px-12 lg:px-[clamp(3rem,7vw,8rem)]"
+    >
+      <a
+        (click)="closeMenu()"
+        class="shrink-0 font-serif text-xl font-semibold text-primary-foreground no-underline"
+        routerLink="/home"
+      >
+        Flower Details
+      </a>
+
+      <button
+        (click)="toggleMenu()"
+        [attr.aria-expanded]="isMenuOpen()"
+        [attr.aria-label]="isMenuOpen() ? 'Cerrar menú de navegación' : 'Abrir menú de navegación'"
+        class="inline-flex size-10 items-center justify-center rounded-sm text-primary-foreground hover:bg-primary-foreground/15 focus-visible:ring-3 focus-visible:ring-primary-foreground/60 focus-visible:outline-none md:hidden"
+        type="button"
+      >
+        <ng-icon
+          [name]="isMenuOpen() ? 'lucideX' : 'lucideMenu'"
+          aria-hidden="true"
+          size="1.25rem"
+        />
+      </button>
+
+      <div
+        [class.flex]="isMenuOpen()"
+        [class.hidden]="!isMenuOpen()"
+        class="absolute top-16 right-0 left-0 z-20 flex-col border-b border-primary-foreground/20 bg-primary px-6 py-5 md:static md:flex md:flex-row md:items-center md:gap-2 md:border-0 md:bg-transparent md:p-0"
+      >
+        <div class="flex flex-col gap-1 md:flex-row md:items-center">
+          @for (item of navigationItems(); track item.route) {
+            <a
+              (click)="closeMenu()"
+              [routerLink]="item.route"
+              class="rounded-sm px-3 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-foreground/15 focus-visible:ring-3 focus-visible:ring-primary-foreground/60 focus-visible:outline-none"
+              routerLinkActive="bg-primary-foreground/20"
+            >
+              {{ item.label }}
+            </a>
+          }
+        </div>
+
+        <div
+          class="mt-4 flex items-center gap-3 border-t border-primary-foreground/20 pt-4 md:mt-0 md:ml-3 md:border-t-0 md:border-l md:pt-0 md:pl-3"
+        >
+          @if (user(); as activeUser) {
+            <span class="min-w-0 truncate text-sm text-primary-foreground/85">
+              {{ activeUser.names }}
+            </span>
+            <button
+              (click)="logout()"
+              [disabled]="isLoggingOut()"
+              [attr.aria-label]="isLoggingOut() ? 'Cerrando sesión' : 'Cerrar sesión'"
+              class="inline-flex size-9 shrink-0 items-center justify-center rounded-sm text-primary-foreground hover:bg-primary-foreground/15 focus-visible:ring-3 focus-visible:ring-primary-foreground/60 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-60"
+              type="button"
+            >
+              <ng-icon aria-hidden="true" name="lucideLogOut" size="1.1rem" />
+            </button>
+          } @else {
+            <a
+              (click)="closeMenu()"
+              class="rounded-sm border border-primary-foreground/45 px-3 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary-foreground hover:text-primary focus-visible:ring-3 focus-visible:ring-primary-foreground/60 focus-visible:outline-none"
+              routerLink="/auth/login"
+            >
+              Iniciar sesión
+            </a>
+          }
+        </div>
+      </div>
+    </div>
+  </nav>
+}

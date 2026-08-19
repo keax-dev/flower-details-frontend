@@ -3,13 +3,14 @@ import { RouterOutlet } from '@angular/router';
 
 import { CsrfService } from './core/http/csrf.service';
 import { AuthService } from './features/auth/application/auth.service';
+import { ApplicationNavigation } from './layout/application-navigation/application-navigation';
 import { Component, DestroyRef, inject } from '@angular/core';
 import { switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
-  template: '<router-outlet />',
+  imports: [ApplicationNavigation, RouterOutlet],
+  template: '<app-application-navigation /><router-outlet />',
 })
 export class App {
   private readonly csrfService = inject(CsrfService);
