@@ -5,7 +5,7 @@ import {
   ActivatedRouteSnapshot,
 } from '@angular/router';
 import { inject } from '@angular/core';
-import { map } from 'rxjs';
+import { catchError, map, of } from 'rxjs';
 
 import { AuthService } from '../../application/auth.service';
 import { UserRole } from '../../domain/model/auth-user.model';
@@ -23,15 +23,14 @@ export const roleGuard: CanActivateFn = (
     return hasAllowedRole(user.role, allowedRoles) ? true : router.createUrlTree(['/home']);
   }
 
-  return authService
-    .restoreSession()
-    .pipe(
-      map((restoredUser) =>
-        restoredUser !== null && hasAllowedRole(restoredUser.role, allowedRoles)
-          ? true
-          : router.createUrlTree(['/auth/login'], { queryParams: { returnUrl: state.url } }),
-      ),
-    );
+  return authService.restoreSession().pipe(
+    map((restoredUser) =>
+      restoredUser !== null && hasAllowedRole(restoredUser.role, allowedRoles)
+        ? true
+        : router.createUrlTree(['/auth/login'], { queryParams: { returnUrl: state.url } }),
+    ),
+    catchError(() => of(router.createUrlTree(['/home']))),
+  );
 };
 
 function rolesFrom(value: unknown): readonly UserRole[] {

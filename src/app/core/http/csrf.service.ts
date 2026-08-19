@@ -1,10 +1,10 @@
-import { catchError, map, Observable, of, shareReplay } from 'rxjs';
+import { catchError, map, Observable, of, shareReplay, tap, throwError } from 'rxjs';
 
 import { API_BASE_URL } from './api.config';
 import { HttpClient } from '@angular/common/http';
 import { inject, Service } from '@angular/core';
 
-interface CsrfTokenResponse {
+export interface CsrfTokenResponse {
   headerName: string;
   token: string;
 }
@@ -14,17 +14,41 @@ export class CsrfService {
   private readonly apiBaseUrl = inject(API_BASE_URL);
   private readonly httpClient = inject(HttpClient);
 
-  private initialization$?: Observable<void>;
+  private tokenRequest$?: Observable<CsrfTokenResponse>;
 
   initialize(): Observable<void> {
-    this.initialization$ ??= this.httpClient
+    return this.token().pipe(
+      map(() => undefined),
+      catchError(() => of(undefined)),
+    );
+  }
+
+  token(): Observable<CsrfTokenResponse> {
+    this.tokenRequest$ ??= this.httpClient
       .get<CsrfTokenResponse>(`${this.apiBaseUrl}/auth/csrf`)
       .pipe(
-        map(() => undefined),
-        catchError(() => of(undefined)),
+        catchError((error: unknown) => {
+          this.tokenRequest$ = undefined;
+          return throwError(() => error);
+        }),
+        tap(({ token }) => storeCsrfCookie(token)),
         shareReplay({ bufferSize: 1, refCount: false }),
       );
 
-    return this.initialization$;
+    return this.tokenRequest$;
   }
+
+  refreshToken(): Observable<CsrfTokenResponse> {
+    this.tokenRequest$ = undefined;
+    return this.token();
+  }
+}
+
+function storeCsrfCookie(token: string): void {
+  if (typeof document === 'undefined') {
+    return;
+  }
+
+  const secure = globalThis.location?.protocol === 'https:' ? '; Secure' : '';
+  document.cookie = `XSRF-TOKEN=${encodeURIComponent(token)}; Path=/; SameSite=Lax${secure}`;
 }

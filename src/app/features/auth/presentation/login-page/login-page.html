@@ -80,7 +80,13 @@
         id="password"
       />
       @if (hasError('password')) {
-        <p class="text-sm text-destructive">La contraseña es obligatoria.</p>
+        <p class="text-sm text-destructive">
+          @if (loginForm.controls.password.hasError('required')) {
+            La contraseña es obligatoria.
+          } @else {
+            La contraseña no puede superar 72 bytes.
+          }
+        </p>
       }
 
       <button [disabled]="isSubmitting()" class="mt-7 h-11 w-full text-base" hlmBtn type="submit">

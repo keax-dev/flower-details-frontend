@@ -74,5 +74,8 @@
         </div>
       </div>
     </div>
+    @if (logoutError(); as message) {
+      <p class="px-6 pb-3 text-sm text-primary-foreground" role="alert">{{ message }}</p>
+    }
   </nav>
 }

@@ -5,7 +5,7 @@ import { CsrfService } from './core/http/csrf.service';
 import { AuthService } from './features/auth/application/auth.service';
 import { ApplicationNavigation } from './layout/application-navigation/application-navigation';
 import { Component, DestroyRef, inject } from '@angular/core';
-import { switchMap } from 'rxjs';
+import { catchError, EMPTY, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -22,6 +22,7 @@ export class App {
       .initialize()
       .pipe(
         switchMap(() => this.authService.restoreSession()),
+        catchError(() => EMPTY),
         takeUntilDestroyed(this.destroyRef),
       )
       .subscribe();

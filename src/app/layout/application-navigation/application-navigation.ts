@@ -44,6 +44,7 @@ export class ApplicationNavigation {
 
   protected readonly isMenuOpen = signal(false);
   protected readonly isLoggingOut = signal(false);
+  protected readonly logoutError = signal<string | null>(null);
   protected readonly user = this.authService.user;
   protected readonly navigationItems = computed(() => {
     const user = this.user();
@@ -60,6 +61,7 @@ export class ApplicationNavigation {
   }
 
   protected logout(): void {
+    this.logoutError.set(null);
     this.isLoggingOut.set(true);
     this.authService
       .logout()
@@ -67,6 +69,9 @@ export class ApplicationNavigation {
         finalize(() => this.isLoggingOut.set(false)),
         takeUntilDestroyed(this.destroyRef),
       )
-      .subscribe({ next: () => void this.router.navigate(['/home']) });
+      .subscribe({
+        next: () => void this.router.navigate(['/home']),
+        error: () => this.logoutError.set('No se pudo cerrar la sesión. Inténtalo nuevamente.'),
+      });
   }
 }

@@ -10,6 +10,8 @@ import { HlmInputImports } from '@spartan-ng/helm/input';
 import { HlmLabelImports } from '@spartan-ng/helm/label';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 
+import { maxUtf8Bytes } from '../validation/max-utf8-bytes.validator';
+
 interface ApiErrorResponse {
   message?: string;
 }
@@ -30,7 +32,7 @@ export class LoginPage {
   protected readonly errorMessage = signal<string | null>(null);
   protected readonly loginForm = this.formBuilder.group({
     email: ['', [Validators.required, Validators.email]],
-    password: ['', [Validators.required, Validators.maxLength(72)]],
+    password: ['', [Validators.required, maxUtf8Bytes(72)]],
   });
 
   protected submit(): void {
@@ -73,6 +75,10 @@ export class LoginPage {
 
   private navigateAfterLogin(): void {
     const returnUrl = this.activatedRoute.snapshot.queryParamMap.get('returnUrl');
-    void this.router.navigateByUrl(returnUrl?.startsWith('/') ? returnUrl : '/home');
+    const redirectUrl =
+      returnUrl !== null && returnUrl.startsWith('/') && !returnUrl.startsWith('//')
+        ? returnUrl
+        : '/home';
+    void this.router.navigateByUrl(redirectUrl);
   }
 }
