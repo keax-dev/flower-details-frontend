@@ -9,69 +9,14 @@
     <button (click)="openCreateForm()" hlmBtn type="button">Nueva categoría</button>
   </header>
 
-  @if (errorMessage()) {
-    <p
-      class="mt-6 border-s-4 border-destructive bg-destructive/10 px-4 py-3 text-sm text-destructive"
-      role="alert"
-    >
-      {{ errorMessage() }}
-    </p>
-  }
-
-  @if (successMessage()) {
-    <p
-      class="mt-6 border-s-4 border-primary bg-primary/10 px-4 py-3 text-sm text-foreground"
-      role="status"
-    >
-      {{ successMessage() }}
-    </p>
-  }
-
-  @if (pendingDeletion(); as category) {
-    <section aria-labelledby="delete-title" class="mt-6 border border-destructive/30 bg-card p-5">
-      <h2 id="delete-title" class="font-serif text-xl">Eliminar “{{ category.title }}”</h2>
-      <p class="mt-2 text-sm text-muted-foreground">
-        Esta acción realiza un borrado lógico y ya no se mostrará en el catálogo.
-      </p>
-      <div class="mt-5 flex flex-wrap gap-3">
-        <button
-          (click)="deleteCategory()"
-          [disabled]="isDeleting()"
-          hlmBtn
-          type="button"
-          variant="destructive"
-        >
-          {{ isDeleting() ? 'Eliminando...' : 'Eliminar categoría' }}
-        </button>
-        <button
-          (click)="cancelDeletion()"
-          [disabled]="isDeleting()"
-          hlmBtn
-          type="button"
-          variant="outline"
-        >
-          Cancelar
-        </button>
-      </div>
-    </section>
-  }
-
   <div class="mt-8">
-    <app-category-list
-      [categories]="categories()"
-      [isLoading]="isLoading()"
-      [pageResponse]="pageResponse()"
-      (edit)="openEditForm($event)"
-      (pageChange)="loadCategories($event)"
-      (remove)="requestDeletion($event)"
-    />
+    <app-category-list [refreshVersion]="listRefreshVersion()" (edit)="openEditForm($event)" />
   </div>
 
   <app-category-form-dialog
+    (closed)="closeForm()"
+    (saved)="refreshList()"
     [category]="editingCategory()"
     [isOpen]="isFormVisible()"
-    [isSaving]="isSaving()"
-    (closed)="closeForm()"
-    (save)="submitForm($event)"
   />
 </main>

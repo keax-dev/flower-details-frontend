@@ -20,11 +20,11 @@
         <button
           [disabled]="isSaving()"
           aria-label="Cerrar formulario"
-          variant="ghost"
-          size="icon"
-          type="button"
           brnDialogClose
           hlmBtn
+          size="icon"
+          type="button"
+          variant="ghost"
         >
           ×
         </button>
@@ -34,12 +34,12 @@
         <label hlmLabel for="category-title">Título</label>
         <input
           [attr.aria-invalid]="hasError('title')"
+          hlmInput
           formControlName="title"
           id="category-title"
-          placeholder="Ej. Cumpleaños"
           maxlength="120"
+          placeholder="Ej. Cumpleaños"
           type="text"
-          hlmInput
         />
         @if (hasError('title')) {
           <p class="text-sm text-destructive">
@@ -50,12 +50,12 @@
         <label hlmLabel for="category-description" class="mt-3">Descripción</label>
         <textarea
           [attr.aria-invalid]="hasError('description')"
+          hlmTextarea
           class="min-h-28"
           formControlName="description"
-          placeholder="Describe los detalles incluidos en esta categoría."
-          maxlength="500"
           id="category-description"
-          hlmTextarea
+          maxlength="500"
+          placeholder="Describe los detalles incluidos en esta categoría."
         ></textarea>
         @if (hasError('description')) {
           <p class="text-sm text-destructive">
@@ -78,9 +78,9 @@
           <button
             (click)="closed.emit()"
             [disabled]="isSaving()"
+            hlmBtn
             type="button"
             variant="outline"
-            hlmBtn
           >
             Cancelar
           </button>

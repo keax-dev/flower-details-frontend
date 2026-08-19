@@ -10,8 +10,37 @@
     </div>
   </div>
 
+  @if (pendingDeletion(); as category) {
+    <section aria-labelledby="delete-title" class="mt-5 border border-destructive/30 bg-card p-5">
+      <h3 id="delete-title" class="font-serif text-xl">Eliminar “{{ category.title }}”</h3>
+      <p class="mt-2 text-sm text-muted-foreground">
+        Esta acción realiza un borrado lógico y ya no se mostrará en el catálogo.
+      </p>
+      <div class="mt-5 flex flex-wrap gap-3">
+        <button
+          (click)="deleteCategory()"
+          [disabled]="isDeleting()"
+          hlmBtn
+          type="button"
+          variant="destructive"
+        >
+          {{ isDeleting() ? 'Eliminando...' : 'Eliminar categoría' }}
+        </button>
+        <button
+          (click)="cancelDeletion()"
+          [disabled]="isDeleting()"
+          hlmBtn
+          type="button"
+          variant="outline"
+        >
+          Cancelar
+        </button>
+      </div>
+    </section>
+  }
+
   <div class="mt-5 overflow-x-auto border-y border-border">
-    <table class="w-full min-w-165 text-left text-sm">
+    <table class="w-full min-w-[41.25rem] text-left text-sm">
       <caption class="sr-only">
         Listado de categorías
       </caption>
@@ -39,10 +68,10 @@
               <td class="max-w-md px-4 py-4 text-muted-foreground">{{ category.description }}</td>
               <td class="px-4 py-4">
                 <span
-                  [class.text-muted-foreground]="!category.active"
                   [class.bg-primary/10]="category.active"
                   [class.text-primary]="category.active"
                   [class.bg-muted]="!category.active"
+                  [class.text-muted-foreground]="!category.active"
                   class="inline-flex rounded-full px-2.5 py-1 text-xs font-semibold"
                 >
                   {{ category.active ? 'Activa' : 'Inactiva' }}
@@ -52,19 +81,19 @@
                 <div class="flex justify-end gap-2">
                   <button
                     (click)="edit.emit(category)"
-                    variant="outline"
+                    hlmBtn
                     size="sm"
                     type="button"
-                    hlmBtn
+                    variant="outline"
                   >
                     Editar
                   </button>
                   <button
-                    (click)="remove.emit(category)"
-                    variant="destructive"
+                    (click)="requestDeletion(category)"
+                    hlmBtn
                     size="sm"
                     type="button"
-                    hlmBtn
+                    variant="destructive"
                   >
                     Eliminar
                   </button>
@@ -92,20 +121,20 @@
         <button
           (click)="previousPage()"
           [disabled]="!hasPreviousPage() || isLoading()"
-          variant="outline"
+          hlmBtn
           size="sm"
           type="button"
-          hlmBtn
+          variant="outline"
         >
           Anterior
         </button>
         <button
           (click)="nextPage()"
           [disabled]="!hasNextPage() || isLoading()"
-          variant="outline"
+          hlmBtn
           size="sm"
           type="button"
-          hlmBtn
+          variant="outline"
         >
           Siguiente
         </button>
