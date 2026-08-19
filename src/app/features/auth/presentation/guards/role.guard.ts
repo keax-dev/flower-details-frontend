@@ -7,8 +7,8 @@ import {
 import { inject } from '@angular/core';
 import { catchError, map, of } from 'rxjs';
 
-import { AuthService } from '../../application/auth.service';
-import { UserRole } from '../../domain/model/auth-user.model';
+import { AuthService } from '@features/auth/application/auth.service';
+import { UserRole } from '@features/auth/domain/model/auth-user.model';
 
 export const roleGuard: CanActivateFn = (
   route: ActivatedRouteSnapshot,

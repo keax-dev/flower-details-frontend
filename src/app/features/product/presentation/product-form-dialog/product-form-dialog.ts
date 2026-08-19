@@ -8,8 +8,8 @@ import { HlmSelectImports } from '@spartan-ng/helm/select';
 import { HlmTextareaImports } from '@spartan-ng/helm/textarea';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 
-import { Category } from '../../../category/domain/model/category.model';
-import { Product, ProductPayload } from '../../domain/model/product.model';
+import { Category } from '@features/category/domain/model/category.model';
+import { Product, ProductPayload } from '@features/product/domain/model/product.model';
 
 export interface ProductFormSubmission {
   payload: ProductPayload;

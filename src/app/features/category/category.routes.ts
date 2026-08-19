@@ -4,6 +4,8 @@ export const CATEGORY_ROUTES: Routes = [
   {
     path: '',
     loadComponent: () =>
-      import('./presentation/category-page/category-page').then((module) => module.CategoryPage),
+      import('@features/category/presentation/category-page/category-page').then(
+        (module) => module.CategoryPage,
+      ),
   },
 ];

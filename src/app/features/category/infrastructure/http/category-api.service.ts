@@ -1,10 +1,10 @@
-import { API_BASE_URL } from '../../../../core/http/config/api.config';
-import { PageResponse } from '../../../../shared/domain/pagination/page-response.model';
+import { PageResponse } from '@shared/domain/pagination/page-response.model';
+import { API_BASE_URL } from '@core/http/config/api.config';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Service } from '@angular/core';
 import { EMPTY, expand, Observable, reduce } from 'rxjs';
 
-import { Category, CategoryPayload } from '../../domain/model/category.model';
+import { Category, CategoryPayload } from '@features/category/domain/model/category.model';
 
 const MAX_PAGE_SIZE = 100;
 

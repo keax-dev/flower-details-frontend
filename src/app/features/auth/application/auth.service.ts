@@ -1,8 +1,8 @@
-import { API_BASE_URL } from '../../../core/http/config/api.config';
-import { LoginRequest, LoginResponse } from '../domain/model/login.model';
+import { LoginRequest, LoginResponse } from '@features/auth/domain/model/login.model';
+import { API_BASE_URL } from '@core/http/config/api.config';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { inject, Service } from '@angular/core';
-import { AuthUser } from '../domain/model/auth-user.model';
+import { AuthUser } from '@features/auth/domain/model/auth-user.model';
 import { catchError, map, Observable, of, tap, throwError } from 'rxjs';
 import { finalize } from 'rxjs';
 

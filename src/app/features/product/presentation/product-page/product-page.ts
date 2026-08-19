@@ -3,17 +3,17 @@ import { HlmButtonImports } from '@spartan-ng/helm/button';
 import { Component, DestroyRef, computed, inject, signal } from '@angular/core';
 import { finalize } from 'rxjs';
 
-import { resolveApiErrorMessage } from '../../../../core/http/utils/api-error';
-import { PageResponse } from '../../../../shared/domain/pagination/page-response.model';
-import { CategoryApiService } from '../../../category/infrastructure/http/category-api.service';
-import { Category } from '../../../category/domain/model/category.model';
-import { ProductApiService } from '../../infrastructure/http/product-api.service';
-import { Product } from '../../domain/model/product.model';
+import { CategoryApiService } from '@features/category/infrastructure/http/category-api.service';
+import { Category } from '@features/category/domain/model/category.model';
+import { ProductApiService } from '@features/product/infrastructure/http/product-api.service';
+import { Product } from '@features/product/domain/model/product.model';
+import { PageResponse } from '@shared/domain/pagination/page-response.model';
+import { resolveApiErrorMessage } from '@core/http/utils/api-error';
 import {
   ProductFormDialog,
   ProductFormSubmission,
-} from '../product-form-dialog/product-form-dialog';
-import { ProductList } from '../product-list/product-list';
+} from '@features/product/presentation/product-form-dialog/product-form-dialog';
+import { ProductList } from '@features/product/presentation/product-list/product-list';
 
 const PAGE_SIZE = 10;
 

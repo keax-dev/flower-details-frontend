@@ -5,8 +5,8 @@ import { lucideLogOut, lucideMenu, lucideX } from '@ng-icons/lucide';
 import { Component, DestroyRef, computed, inject, signal } from '@angular/core';
 import { filter, finalize, map } from 'rxjs';
 
-import { AuthService } from '../../features/auth/application/auth.service';
-import { UserRole } from '../../features/auth/domain/model/auth-user.model';
+import { AuthService } from '@features/auth/application/auth.service';
+import { UserRole } from '@features/auth/domain/model/auth-user.model';
 
 interface NavigationItem {
   label: string;

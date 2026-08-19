@@ -1,6 +1,6 @@
 import { computed, Service, signal } from '@angular/core';
 
-import { AuthUser } from '../domain/model/auth-user.model';
+import { AuthUser } from '@features/auth/domain/model/auth-user.model';
 
 @Service()
 export class AuthSessionStore {

@@ -1,8 +1,8 @@
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
-import { resolveApiErrorMessage } from '../../../../core/http/utils/api-error';
-import { AuthService } from '../../application/auth.service';
+import { AuthService } from '@features/auth/application/auth.service';
+import { resolveApiErrorMessage } from '@core/http/utils/api-error';
 import { HlmButtonImports } from '@spartan-ng/helm/button';
 import { Component, DestroyRef, inject, signal } from '@angular/core';
 import { finalize } from 'rxjs';

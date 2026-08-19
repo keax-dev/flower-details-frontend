@@ -4,6 +4,8 @@ export const PRODUCT_ROUTES: Routes = [
   {
     path: '',
     loadComponent: () =>
-      import('./presentation/product-page/product-page').then((module) => module.ProductPage),
+      import('@features/product/presentation/product-page/product-page').then(
+        (module) => module.ProductPage,
+      ),
   },
 ];

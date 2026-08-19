@@ -3,12 +3,12 @@ import { HlmButtonImports } from '@spartan-ng/helm/button';
 import { Component, DestroyRef, computed, inject, signal } from '@angular/core';
 import { finalize } from 'rxjs';
 
-import { resolveApiErrorMessage } from '../../../../core/http/utils/api-error';
-import { PageResponse } from '../../../../shared/domain/pagination/page-response.model';
-import { CategoryApiService } from '../../infrastructure/http/category-api.service';
-import { Category, CategoryPayload } from '../../domain/model/category.model';
-import { CategoryFormDialog } from '../category-form-dialog/category-form-dialog';
-import { CategoryList } from '../category-list/category-list';
+import { CategoryApiService } from '@features/category/infrastructure/http/category-api.service';
+import { Category, CategoryPayload } from '@features/category/domain/model/category.model';
+import { PageResponse } from '@shared/domain/pagination/page-response.model';
+import { resolveApiErrorMessage } from '@core/http/utils/api-error';
+import { CategoryFormDialog } from '@features/category/presentation/category-form-dialog/category-form-dialog';
+import { CategoryList } from '@features/category/presentation/category-list/category-list';
 
 const PAGE_SIZE = 10;
 

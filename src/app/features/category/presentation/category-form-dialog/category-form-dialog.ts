@@ -7,7 +7,7 @@ import { HlmLabelImports } from '@spartan-ng/helm/label';
 import { HlmTextareaImports } from '@spartan-ng/helm/textarea';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 
-import { Category, CategoryPayload } from '../../domain/model/category.model';
+import { Category, CategoryPayload } from '@features/category/domain/model/category.model';
 
 @Component({
   selector: 'app-category-form-dialog',

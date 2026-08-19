@@ -1,8 +1,8 @@
 import { Component, computed, input, output } from '@angular/core';
 import { HlmButtonImports } from '@spartan-ng/helm/button';
 
-import { PageResponse } from '../../../../shared/domain/pagination/page-response.model';
-import { Product } from '../../domain/model/product.model';
+import { Product } from '@features/product/domain/model/product.model';
+import { PageResponse } from '@shared/domain/pagination/page-response.model';
 
 @Component({
   selector: 'app-product-list',
