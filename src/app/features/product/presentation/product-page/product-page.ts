@@ -1,7 +1,7 @@
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
-import { RouterLink } from '@angular/router';
+import { BrnDialogImports } from '@spartan-ng/brain/dialog';
 import { HlmCheckboxImports } from '@spartan-ng/helm/checkbox';
 import { HlmTextareaImports } from '@spartan-ng/helm/textarea';
 import { HlmSelectImports } from '@spartan-ng/helm/select';
@@ -32,7 +32,7 @@ const PAGE_SIZE = 10;
     HlmButtonImports,
     HlmLabelImports,
     HlmInputImports,
-    RouterLink,
+    BrnDialogImports,
   ],
   templateUrl: './product-page.html',
 })

@@ -1,7 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { RouterLink } from '@angular/router';
+import { BrnDialogImports } from '@spartan-ng/brain/dialog';
 import { HlmCheckboxImports } from '@spartan-ng/helm/checkbox';
 import { HlmButtonImports } from '@spartan-ng/helm/button';
 import { Component, DestroyRef, computed, inject, signal } from '@angular/core';
@@ -27,8 +27,8 @@ const PAGE_SIZE = 10;
     HlmInputImports,
     HlmLabelImports,
     HlmTextareaImports,
+    BrnDialogImports,
     ReactiveFormsModule,
-    RouterLink,
   ],
   templateUrl: './category-page.html',
 })
