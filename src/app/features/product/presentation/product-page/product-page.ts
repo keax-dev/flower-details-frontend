@@ -1,12 +1,12 @@
 import { Component, DestroyRef, OnInit, computed, inject, signal } from '@angular/core';
 import { resolveApiErrorMessage } from '@core/http/utils/api-error';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { CategoryApiService } from '@features/category/infrastructure/http/category-api.service';
+import { CategoryApiService } from '@app/features/category/services/category-api.service';
 import { ProductApiService } from '@features/product/infrastructure/http/product-api.service';
 import { HlmButtonImports } from '@spartan-ng/helm/button';
 import { PageResponse } from '@shared/domain/pagination/page-response.model';
 import { ProductList } from '@features/product/presentation/product-list/product-list';
-import { Category } from '@features/category/domain/model/category.model';
+import { Category } from '@app/features/category/models/category.model';
 import { finalize } from 'rxjs';
 import { Product } from '@features/product/domain/model/product.model';
 import {

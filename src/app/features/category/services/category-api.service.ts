@@ -1,5 +1,7 @@
 import { EMPTY, expand, Observable, reduce } from 'rxjs';
-import { Category, CategoryPayload } from '@features/category/domain/model/category.model';
+
+import { Category } from '@app/features/category/models/category.model';
+import { CategoryPayload } from '@app/features/category/models/category-payload.model';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Service } from '@angular/core';
 import { API_BASE_URL } from '@core/http/config/api.config';

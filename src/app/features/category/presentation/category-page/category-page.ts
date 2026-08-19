@@ -1,8 +1,9 @@
 import { Component, DestroyRef, OnInit, computed, inject, signal } from '@angular/core';
-import { Category, CategoryPayload } from '@features/category/domain/model/category.model';
+import { Category } from '@app/features/category/models/category.model';
+import { CategoryPayload } from '@app/features/category/models/category-payload.model';
 import { resolveApiErrorMessage } from '@core/http/utils/api-error';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { CategoryApiService } from '@features/category/infrastructure/http/category-api.service';
+import { CategoryApiService } from '@app/features/category/services/category-api.service';
 import { CategoryFormDialog } from '@features/category/presentation/category-form-dialog/category-form-dialog';
 import { HlmButtonImports } from '@spartan-ng/helm/button';
 import { PageResponse } from '@shared/domain/pagination/page-response.model';

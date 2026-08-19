@@ -8,7 +8,7 @@ import { HlmSelectImports } from '@spartan-ng/helm/select';
 import { BrnDialogImports } from '@spartan-ng/brain/dialog';
 import { HlmInputImports } from '@spartan-ng/helm/input';
 import { HlmLabelImports } from '@spartan-ng/helm/label';
-import { Category } from '@features/category/domain/model/category.model';
+import { Category } from '@app/features/category/models/category.model';
 
 export interface ProductFormSubmission {
   payload: ProductPayload;

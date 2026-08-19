@@ -6,9 +6,3 @@ export interface Category {
   createdAt: string;
   updatedAt: string;
 }
-
-export interface CategoryPayload {
-  title: string;
-  description: string;
-  active: boolean;
-}

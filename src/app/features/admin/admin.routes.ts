@@ -10,7 +10,7 @@ export const ADMIN_ROUTES: Routes = [
       {
         path: 'categories',
         loadChildren: () =>
-          import('@app/features/category/route/category.routes').then(
+          import('@app/features/category/routes/category.routes').then(
             (module) => module.CATEGORY_ROUTES,
           ),
       },

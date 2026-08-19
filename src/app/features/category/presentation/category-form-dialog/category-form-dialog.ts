@@ -1,6 +1,7 @@
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Component, effect, inject, input, output } from '@angular/core';
-import { Category, CategoryPayload } from '@features/category/domain/model/category.model';
+import { Category } from '@app/features/category/models/category.model';
+import { CategoryPayload } from '@app/features/category/models/category-payload.model';
 import { HlmCheckboxImports } from '@spartan-ng/helm/checkbox';
 import { HlmTextareaImports } from '@spartan-ng/helm/textarea';
 import { BrnDialogImports } from '@spartan-ng/brain/dialog';
