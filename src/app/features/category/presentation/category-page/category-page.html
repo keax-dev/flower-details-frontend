@@ -1,0 +1,271 @@
+<main
+  class="min-h-dvh bg-background px-6 py-6 text-foreground sm:px-12 lg:px-[clamp(3rem,7vw,8rem)] lg:py-8"
+>
+  <header class="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-5">
+    <div>
+      <p class="text-xs font-bold tracking-[0.16em] text-primary uppercase">Administración</p>
+      <h1 class="mt-2 font-serif text-3xl sm:text-4xl">Categorías</h1>
+    </div>
+    <div class="flex items-center gap-3">
+      <a hlmBtn routerLink="/admin/products" variant="outline">Productos</a>
+      <button (click)="openCreateForm()" hlmBtn type="button">Nueva categoría</button>
+    </div>
+  </header>
+
+  @if (errorMessage(); as message) {
+    <p
+      class="mt-6 border-s-4 border-destructive bg-destructive/10 px-4 py-3 text-sm text-destructive"
+      role="alert"
+    >
+      {{ message }}
+    </p>
+  }
+
+  @if (successMessage(); as message) {
+    <p
+      class="mt-6 border-s-4 border-primary bg-primary/10 px-4 py-3 text-sm text-foreground"
+      role="status"
+    >
+      {{ message }}
+    </p>
+  }
+
+  @if (pendingDeletion(); as category) {
+    <section aria-labelledby="delete-title" class="mt-6 border border-destructive/30 bg-card p-5">
+      <h2 id="delete-title" class="font-serif text-xl">Eliminar “{{ category.title }}”</h2>
+      <p class="mt-2 text-sm text-muted-foreground">
+        Esta acción realiza un borrado lógico y ya no se mostrará en el catálogo.
+      </p>
+      <div class="mt-5 flex flex-wrap gap-3">
+        <button
+          (click)="deleteCategory()"
+          [disabled]="isDeleting()"
+          hlmBtn
+          type="button"
+          variant="destructive"
+        >
+          {{ isDeleting() ? 'Eliminando...' : 'Eliminar categoría' }}
+        </button>
+        <button
+          (click)="cancelDeletion()"
+          [disabled]="isDeleting()"
+          hlmBtn
+          type="button"
+          variant="outline"
+        >
+          Cancelar
+        </button>
+      </div>
+    </section>
+  }
+
+  <div class="mt-8 grid gap-8 xl:grid-cols-[minmax(0,1fr)_23rem]">
+    <section aria-labelledby="categories-title">
+      <div class="flex items-end justify-between gap-4">
+        <div>
+          <h2 id="categories-title" class="font-serif text-2xl">Todas las categorías</h2>
+          @if (pageResponse(); as response) {
+            <p class="mt-1 text-sm text-muted-foreground">
+              {{ response.totalElements }} categorías registradas
+            </p>
+          }
+        </div>
+      </div>
+
+      <div class="mt-5 overflow-x-auto border-y border-border">
+        <table class="w-full min-w-165 text-left text-sm">
+          <caption class="sr-only">
+            Listado de categorías
+          </caption>
+          <thead
+            class="border-b border-border bg-muted/60 text-xs tracking-[0.12em] text-muted-foreground uppercase"
+          >
+            <tr>
+              <th class="px-4 py-4 font-semibold" scope="col">Categoría</th>
+              <th class="px-4 py-4 font-semibold" scope="col">Descripción</th>
+              <th class="px-4 py-4 font-semibold" scope="col">Estado</th>
+              <th class="px-4 py-4 text-right font-semibold" scope="col">Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            @if (isLoading()) {
+              <tr>
+                <td class="px-4 py-10 text-center text-muted-foreground" colspan="4">
+                  Cargando categorías...
+                </td>
+              </tr>
+            } @else {
+              @for (category of categories(); track category.id) {
+                <tr class="border-b border-border last:border-0">
+                  <td class="px-4 py-4 font-medium">{{ category.title }}</td>
+                  <td class="max-w-md px-4 py-4 text-muted-foreground">
+                    {{ category.description }}
+                  </td>
+                  <td class="px-4 py-4">
+                    <span
+                      [class.bg-primary/10]="category.active"
+                      [class.text-primary]="category.active"
+                      [class.bg-muted]="!category.active"
+                      [class.text-muted-foreground]="!category.active"
+                      class="inline-flex rounded-full px-2.5 py-1 text-xs font-semibold"
+                    >
+                      {{ category.active ? 'Activa' : 'Inactiva' }}
+                    </span>
+                  </td>
+                  <td class="px-4 py-4">
+                    <div class="flex justify-end gap-2">
+                      <button
+                        (click)="openEditForm(category)"
+                        hlmBtn
+                        size="sm"
+                        type="button"
+                        variant="outline"
+                      >
+                        Editar
+                      </button>
+                      <button
+                        (click)="requestDeletion(category)"
+                        hlmBtn
+                        size="sm"
+                        type="button"
+                        variant="destructive"
+                      >
+                        Eliminar
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              } @empty {
+                <tr>
+                  <td class="px-4 py-10 text-center text-muted-foreground" colspan="4">
+                    Todavía no hay categorías registradas.
+                  </td>
+                </tr>
+              }
+            }
+          </tbody>
+        </table>
+      </div>
+
+      @if (pageResponse(); as response) {
+        <nav
+          aria-label="Paginación de categorías"
+          class="mt-5 flex items-center justify-between gap-4"
+        >
+          <p class="text-sm text-muted-foreground">
+            Página {{ response.page + 1 }} de {{ response.totalPages || 1 }}
+          </p>
+          <div class="flex gap-2">
+            <button
+              (click)="previousPage()"
+              [disabled]="!hasPreviousPage() || isLoading()"
+              hlmBtn
+              size="sm"
+              type="button"
+              variant="outline"
+            >
+              Anterior
+            </button>
+            <button
+              (click)="nextPage()"
+              [disabled]="!hasNextPage() || isLoading()"
+              hlmBtn
+              size="sm"
+              type="button"
+              variant="outline"
+            >
+              Siguiente
+            </button>
+          </div>
+        </nav>
+      }
+    </section>
+
+    @if (isFormVisible()) {
+      <aside aria-labelledby="form-title" class="h-fit border border-border bg-card p-5 sm:p-6">
+        <div class="flex items-start justify-between gap-4">
+          <div>
+            <p class="text-xs font-bold tracking-[0.16em] text-primary uppercase">
+              {{ editingCategory() ? 'Edición' : 'Nueva categoría' }}
+            </p>
+            <h2 id="form-title" class="mt-2 font-serif text-2xl">
+              {{ editingCategory() ? 'Actualizar categoría' : 'Crear categoría' }}
+            </h2>
+          </div>
+          <button
+            (click)="closeForm()"
+            hlmBtn
+            size="icon"
+            type="button"
+            variant="ghost"
+            aria-label="Cerrar formulario"
+          >
+            ×
+          </button>
+        </div>
+
+        <form
+          (ngSubmit)="submitForm()"
+          [formGroup]="categoryForm"
+          class="mt-6 grid gap-3"
+          novalidate
+        >
+          <label hlmLabel for="title">Título</label>
+          <input
+            [attr.aria-invalid]="hasError('title')"
+            hlmInput
+            formControlName="title"
+            id="title"
+            maxlength="120"
+            placeholder="Ej. Cumpleaños"
+            type="text"
+          />
+          @if (hasError('title')) {
+            <p class="text-sm text-destructive">
+              El título es obligatorio y no puede superar 120 caracteres.
+            </p>
+          }
+
+          <label hlmLabel for="description" class="mt-3">Descripción</label>
+          <textarea
+            [attr.aria-invalid]="hasError('description')"
+            hlmTextarea
+            class="min-h-28"
+            formControlName="description"
+            id="description"
+            maxlength="500"
+            placeholder="Describe los detalles incluidos en esta categoría."
+          ></textarea>
+          @if (hasError('description')) {
+            <p class="text-sm text-destructive">
+              La descripción es obligatoria y no puede superar 500 caracteres.
+            </p>
+          }
+
+          <label
+            class="mt-3 flex cursor-pointer items-center gap-3 text-sm font-medium"
+            for="active"
+          >
+            <hlm-checkbox formControlName="active" id="active" />
+            Categoría activa
+          </label>
+
+          <div class="mt-5 flex flex-wrap gap-3">
+            <button [disabled]="isSaving()" hlmBtn type="submit">
+              {{ isSaving() ? 'Guardando...' : 'Guardar categoría' }}
+            </button>
+            <button
+              (click)="closeForm()"
+              [disabled]="isSaving()"
+              hlmBtn
+              type="button"
+              variant="outline"
+            >
+              Cancelar
+            </button>
+          </div>
+        </form>
+      </aside>
+    }
+  </div>
+</main>

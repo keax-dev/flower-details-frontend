@@ -8,7 +8,7 @@ import { Component, DestroyRef, inject, signal } from '@angular/core';
 import { finalize } from 'rxjs';
 import { HlmInputImports } from '@spartan-ng/helm/input';
 import { HlmLabelImports } from '@spartan-ng/helm/label';
-import { Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 
 interface ApiErrorResponse {
   message?: string;
@@ -22,6 +22,7 @@ interface ApiErrorResponse {
 export class LoginPage {
   private readonly formBuilder = inject(NonNullableFormBuilder);
   private readonly authService = inject(AuthService);
+  private readonly activatedRoute = inject(ActivatedRoute);
   private readonly destroyRef = inject(DestroyRef);
   private readonly router = inject(Router);
 
@@ -48,7 +49,7 @@ export class LoginPage {
         takeUntilDestroyed(this.destroyRef),
       )
       .subscribe({
-        next: () => this.router.navigateByUrl('/home'),
+        next: () => this.navigateAfterLogin(),
         error: (error: unknown) => this.errorMessage.set(this.resolveErrorMessage(error)),
       });
   }
@@ -68,5 +69,10 @@ export class LoginPage {
 
   private isApiErrorResponse(error: unknown): error is ApiErrorResponse {
     return typeof error === 'object' && error !== null && 'message' in error;
+  }
+
+  private navigateAfterLogin(): void {
+    const returnUrl = this.activatedRoute.snapshot.queryParamMap.get('returnUrl');
+    void this.router.navigateByUrl(returnUrl?.startsWith('/') ? returnUrl : '/home');
   }
 }

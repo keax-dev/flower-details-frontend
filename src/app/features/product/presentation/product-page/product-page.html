@@ -1,0 +1,343 @@
+<main
+  class="min-h-dvh bg-background px-6 py-6 text-foreground sm:px-12 lg:px-[clamp(3rem,7vw,8rem)] lg:py-8"
+>
+  <header class="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-5">
+    <div>
+      <p class="text-xs font-bold tracking-[0.16em] text-primary uppercase">Administración</p>
+      <h1 class="mt-2 font-serif text-3xl sm:text-4xl">Productos</h1>
+    </div>
+    <div class="flex items-center gap-3">
+      <a hlmBtn routerLink="/admin/categories" variant="outline">Categorías</a>
+      <button (click)="openCreateForm()" hlmBtn type="button">Nuevo producto</button>
+    </div>
+  </header>
+
+  @if (errorMessage(); as message) {
+    <p
+      class="mt-6 border-s-4 border-destructive bg-destructive/10 px-4 py-3 text-sm text-destructive"
+      role="alert"
+    >
+      {{ message }}
+    </p>
+  }
+
+  @if (successMessage(); as message) {
+    <p
+      class="mt-6 border-s-4 border-primary bg-primary/10 px-4 py-3 text-sm text-foreground"
+      role="status"
+    >
+      {{ message }}
+    </p>
+  }
+
+  @if (pendingDeletion(); as product) {
+    <section aria-labelledby="delete-title" class="mt-6 border border-destructive/30 bg-card p-5">
+      <h2 id="delete-title" class="font-serif text-xl">Eliminar “{{ product.title }}”</h2>
+      <p class="mt-2 text-sm text-muted-foreground">
+        Esta acción realiza un borrado lógico y el producto dejará de estar disponible.
+      </p>
+      <div class="mt-5 flex flex-wrap gap-3">
+        <button
+          (click)="deleteProduct()"
+          [disabled]="isDeleting()"
+          hlmBtn
+          type="button"
+          variant="destructive"
+        >
+          {{ isDeleting() ? 'Eliminando...' : 'Eliminar producto' }}
+        </button>
+        <button
+          (click)="cancelDeletion()"
+          [disabled]="isDeleting()"
+          hlmBtn
+          type="button"
+          variant="outline"
+        >
+          Cancelar
+        </button>
+      </div>
+    </section>
+  }
+
+  <div class="mt-8 grid gap-8 xl:grid-cols-[minmax(0,1fr)_26rem]">
+    <section aria-labelledby="products-title">
+      <div>
+        <h2 id="products-title" class="font-serif text-2xl">Todos los productos</h2>
+        @if (pageResponse(); as response) {
+          <p class="mt-1 text-sm text-muted-foreground">
+            {{ response.totalElements }} productos registrados
+          </p>
+        }
+      </div>
+
+      <div class="mt-5 overflow-x-auto border-y border-border">
+        <table class="w-full min-w-[55rem] text-left text-sm">
+          <caption class="sr-only">
+            Listado de productos
+          </caption>
+          <thead
+            class="border-b border-border bg-muted/60 text-xs tracking-[0.12em] text-muted-foreground uppercase"
+          >
+            <tr>
+              <th class="px-4 py-4 font-semibold" scope="col">Producto</th>
+              <th class="px-4 py-4 font-semibold" scope="col">Categoría</th>
+              <th class="px-4 py-4 font-semibold" scope="col">Precio</th>
+              <th class="px-4 py-4 font-semibold" scope="col">Imágenes</th>
+              <th class="px-4 py-4 font-semibold" scope="col">Estado</th>
+              <th class="px-4 py-4 text-right font-semibold" scope="col">Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            @if (isLoading()) {
+              <tr>
+                <td class="px-4 py-10 text-center text-muted-foreground" colspan="6">
+                  Cargando productos...
+                </td>
+              </tr>
+            } @else {
+              @for (product of products(); track product.id) {
+                <tr class="border-b border-border last:border-0">
+                  <td class="px-4 py-4">
+                    <div class="flex min-w-48 items-center gap-3">
+                      @if (product.images[0]; as image) {
+                        <img
+                          [alt]="product.title"
+                          [src]="image.url"
+                          class="size-12 shrink-0 object-cover"
+                        />
+                      } @else {
+                        <div
+                          aria-hidden="true"
+                          class="flex size-12 shrink-0 items-center justify-center bg-muted text-xs text-muted-foreground"
+                        >
+                          Sin foto
+                        </div>
+                      }
+                      <div>
+                        <p class="font-medium">{{ product.title }}</p>
+                        <p class="mt-1 max-w-64 truncate text-xs text-muted-foreground">
+                          {{ product.description }}
+                        </p>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="px-4 py-4 text-muted-foreground">{{ product.category.title }}</td>
+                  <td class="px-4 py-4 font-medium">{{ formatPrice(product.price) }}</td>
+                  <td class="px-4 py-4 text-muted-foreground">{{ product.images.length }}</td>
+                  <td class="px-4 py-4">
+                    <span
+                      [class.bg-primary/10]="product.active"
+                      [class.text-primary]="product.active"
+                      [class.bg-muted]="!product.active"
+                      [class.text-muted-foreground]="!product.active"
+                      class="inline-flex rounded-full px-2.5 py-1 text-xs font-semibold"
+                    >
+                      {{ product.active ? 'Activo' : 'Inactivo' }}
+                    </span>
+                  </td>
+                  <td class="px-4 py-4">
+                    <div class="flex justify-end gap-2">
+                      <button
+                        (click)="openEditForm(product)"
+                        hlmBtn
+                        size="sm"
+                        type="button"
+                        variant="outline"
+                      >
+                        Editar
+                      </button>
+                      <button
+                        (click)="requestDeletion(product)"
+                        hlmBtn
+                        size="sm"
+                        type="button"
+                        variant="destructive"
+                      >
+                        Eliminar
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              } @empty {
+                <tr>
+                  <td class="px-4 py-10 text-center text-muted-foreground" colspan="6">
+                    Todavía no hay productos registrados.
+                  </td>
+                </tr>
+              }
+            }
+          </tbody>
+        </table>
+      </div>
+
+      @if (pageResponse(); as response) {
+        <nav
+          aria-label="Paginación de productos"
+          class="mt-5 flex items-center justify-between gap-4"
+        >
+          <p class="text-sm text-muted-foreground">
+            Página {{ response.page + 1 }} de {{ response.totalPages || 1 }}
+          </p>
+          <div class="flex gap-2">
+            <button
+              (click)="previousPage()"
+              [disabled]="!hasPreviousPage() || isLoading()"
+              hlmBtn
+              size="sm"
+              type="button"
+              variant="outline"
+            >
+              Anterior
+            </button>
+            <button
+              (click)="nextPage()"
+              [disabled]="!hasNextPage() || isLoading()"
+              hlmBtn
+              size="sm"
+              type="button"
+              variant="outline"
+            >
+              Siguiente
+            </button>
+          </div>
+        </nav>
+      }
+    </section>
+
+    @if (isFormVisible()) {
+      <aside aria-labelledby="form-title" class="h-fit border border-border bg-card p-5 sm:p-6">
+        <div class="flex items-start justify-between gap-4">
+          <div>
+            <p class="text-xs font-bold tracking-[0.16em] text-primary uppercase">
+              {{ editingProduct() ? 'Edición' : 'Nuevo producto' }}
+            </p>
+            <h2 id="form-title" class="mt-2 font-serif text-2xl">
+              {{ editingProduct() ? 'Actualizar producto' : 'Crear producto' }}
+            </h2>
+          </div>
+          <button
+            (click)="closeForm()"
+            aria-label="Cerrar formulario"
+            hlmBtn
+            size="icon"
+            type="button"
+            variant="ghost"
+          >
+            ×
+          </button>
+        </div>
+
+        <form
+          (ngSubmit)="submitForm()"
+          [formGroup]="productForm"
+          class="mt-6 grid gap-3"
+          novalidate
+        >
+          <label hlmLabel for="category">Categoría</label>
+          <hlm-select
+            (valueChange)="setCategory($event)"
+            [value]="productForm.controls.categoryId.value"
+            id="category"
+          >
+            <hlm-select-trigger class="w-full">
+              <hlm-select-value placeholder="Selecciona una categoría" />
+            </hlm-select-trigger>
+            <hlm-select-content>
+              @for (category of categories(); track category.id) {
+                <hlm-select-item [value]="category.id">{{ category.title }}</hlm-select-item>
+              }
+            </hlm-select-content>
+          </hlm-select>
+          @if (hasError('categoryId')) {
+            <p class="text-sm text-destructive">Selecciona una categoría.</p>
+          }
+
+          <label hlmLabel for="title" class="mt-3">Título</label>
+          <input
+            [attr.aria-invalid]="hasError('title')"
+            hlmInput
+            formControlName="title"
+            id="title"
+            maxlength="160"
+            placeholder="Ej. Ramo de rosas rojas"
+            type="text"
+          />
+          @if (hasError('title')) {
+            <p class="text-sm text-destructive">
+              El título es obligatorio y no puede superar 160 caracteres.
+            </p>
+          }
+
+          <label hlmLabel for="description" class="mt-3">Descripción</label>
+          <textarea
+            [attr.aria-invalid]="hasError('description')"
+            hlmTextarea
+            class="min-h-28"
+            formControlName="description"
+            id="description"
+            maxlength="1000"
+            placeholder="Describe el arreglo, flores y detalles incluidos."
+          ></textarea>
+          @if (hasError('description')) {
+            <p class="text-sm text-destructive">
+              La descripción es obligatoria y no puede superar 1000 caracteres.
+            </p>
+          }
+
+          <label hlmLabel for="price" class="mt-3">Precio</label>
+          <input
+            [attr.aria-invalid]="hasError('price')"
+            hlmInput
+            formControlName="price"
+            id="price"
+            min="0.01"
+            placeholder="0.00"
+            step="0.01"
+            type="number"
+          />
+          @if (hasError('price')) {
+            <p class="text-sm text-destructive">Ingresa un precio mayor a cero.</p>
+          }
+
+          <label hlmLabel for="images" class="mt-3">Imágenes</label>
+          <input
+            (change)="selectFiles($event)"
+            accept="image/jpeg,image/png,image/webp"
+            class="block w-full text-sm text-muted-foreground file:mr-4 file:border-0 file:bg-primary/10 file:px-3 file:py-2 file:font-medium file:text-primary"
+            id="images"
+            multiple
+            type="file"
+          />
+          @if (selectedFiles().length > 0) {
+            <p class="text-xs text-muted-foreground">
+              {{ selectedFiles().length }} imagen(es) lista(s) para cargar.
+            </p>
+          }
+
+          <label
+            class="mt-3 flex cursor-pointer items-center gap-3 text-sm font-medium"
+            for="active"
+          >
+            <hlm-checkbox formControlName="active" id="active" />
+            Producto activo
+          </label>
+
+          <div class="mt-5 flex flex-wrap gap-3">
+            <button [disabled]="isSaving()" hlmBtn type="submit">
+              {{ isSaving() ? 'Guardando...' : 'Guardar producto' }}
+            </button>
+            <button
+              (click)="closeForm()"
+              [disabled]="isSaving()"
+              hlmBtn
+              type="button"
+              variant="outline"
+            >
+              Cancelar
+            </button>
+          </div>
+        </form>
+      </aside>
+    }
+  </div>
+</main>

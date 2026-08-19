@@ -42,6 +42,7 @@ module.exports = defineConfig([
   {
     files: ['src/app/shared/ui/**/*.ts'],
     rules: {
+      '@angular-eslint/component-selector': 'off',
       '@angular-eslint/directive-selector': [
         'error',
         {
@@ -50,6 +51,7 @@ module.exports = defineConfig([
           style: 'camelCase',
         },
       ],
+      '@angular-eslint/no-input-rename': 'off',
     },
   },
   eslintConfigPrettier,

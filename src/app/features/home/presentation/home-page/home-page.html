@@ -3,8 +3,13 @@
 >
   <header class="flex items-center justify-between border-b border-border pb-5">
     <a class="font-serif text-xl text-foreground no-underline" routerLink="/home">Flower Details</a>
-    @if (user()) {
-      <span class="text-sm text-muted-foreground">Hola, {{ greeting() }}</span>
+    @if (user(); as activeUser) {
+      <div class="flex items-center gap-3">
+        <span class="text-sm text-muted-foreground">Hola, {{ greeting() }}</span>
+        @if (activeUser.role === 'ADMIN') {
+          <a hlmBtn routerLink="/admin/categories" size="sm" variant="outline">Administrar</a>
+        }
+      </div>
     } @else {
       <a hlmBtn routerLink="/auth/login" size="sm" variant="outline">Iniciar sesión</a>
     }

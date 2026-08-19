@@ -1,0 +1,226 @@
+
+> flower-details-frontend@0.0.0 start
+> ng serve
+
+> Building...
+√ Building...
+Initial chunk files | Names         |  Raw size
+styles.css          | styles        |  38.82 kB | 
+chunk-436D3H7X.js   | -             |   8.83 kB | 
+main.js             | main          |   4.59 kB | 
+chunk-SG2LYVAH.js   | -             | 943 bytes | 
+
+                    | Initial total |  53.18 kB
+
+Lazy chunk files    | Names         |  Raw size
+chunk-XHZD3DFR.js   | login-page    |  18.59 kB | 
+chunk-OLKW2A73.js   | home-page     |   8.99 kB | 
+chunk-YOHGSDLR.js   | -             |   6.04 kB | 
+chunk-HECSRGTK.js   | auth-routes   | 329 bytes | 
+chunk-SU5R6IJI.js   | home-routes   | 323 bytes | 
+
+Application bundle generation complete. [3.150 seconds] - 2026-08-18T20:42:07.841Z
+
+Watch mode enabled. Watching for file changes...
+NOTE: Raw file sizes do not reflect development server per-request transformations.
+[2m3:42:08 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m Re-optimizing dependencies because vite config has changed
+  [32m➜[39m  [1mLocal[22m:   [36mhttp://localhost:[1m4200[22m/[39m
+[2m[32m  ➜[39m[22m[2m  press [22m[1mh + enter[22m[2m to show help[22m
+[2m3:42:09 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [optimizer] bundling dependencies...
+> Changes detected. Rebuilding...
+√ Changes detected. Rebuilding...
+
+No output file changes.
+
+Application bundle generation complete. [0.423 seconds] - 2026-08-18T20:43:30.155Z
+
+> Changes detected. Rebuilding...
+√ Changes detected. Rebuilding...
+Initial chunk files | Names         |  Raw size
+styles.css          | styles        |  38.82 kB | 
+chunk-436D3H7X.js   | -             |   8.83 kB | 
+main.js             | main          |   4.59 kB | 
+chunk-SG2LYVAH.js   | -             | 943 bytes | 
+
+                    | Initial total |  53.18 kB
+
+Lazy chunk files    | Names         |  Raw size
+chunk-XHZD3DFR.js   | login-page    |  18.59 kB | 
+chunk-OLKW2A73.js   | home-page     |   8.99 kB | 
+chunk-YOHGSDLR.js   | -             |   6.04 kB | 
+chunk-HECSRGTK.js   | auth-routes   | 329 bytes | 
+chunk-SU5R6IJI.js   | home-routes   | 323 bytes | 
+
+Application bundle generation complete. [0.209 seconds] - 2026-08-18T20:47:39.061Z
+
+> Changes detected. Rebuilding...
+√ Changes detected. Rebuilding...
+Initial chunk files | Names         |  Raw size
+styles.css          | styles        |  38.82 kB | 
+chunk-436D3H7X.js   | -             |   8.83 kB | 
+main.js             | main          |   4.59 kB | 
+chunk-SG2LYVAH.js   | -             | 943 bytes | 
+
+                    | Initial total |  53.18 kB
+
+Lazy chunk files    | Names         |  Raw size
+chunk-XHZD3DFR.js   | login-page    |  18.59 kB | 
+chunk-OLKW2A73.js   | home-page     |   8.99 kB | 
+chunk-YOHGSDLR.js   | -             |   6.04 kB | 
+chunk-HECSRGTK.js   | auth-routes   | 329 bytes | 
+chunk-SU5R6IJI.js   | home-routes   | 323 bytes | 
+
+Application bundle generation complete. [0.169 seconds] - 2026-08-18T20:47:42.166Z
+
+> Changes detected. Rebuilding...
+√ Changes detected. Rebuilding...
+Initial chunk files | Names         |  Raw size
+styles.css          | styles        |  38.82 kB | 
+chunk-436D3H7X.js   | -             |   8.83 kB | 
+main.js             | main          |   4.59 kB | 
+chunk-SG2LYVAH.js   | -             | 943 bytes | 
+
+                    | Initial total |  53.18 kB
+
+Lazy chunk files    | Names         |  Raw size
+chunk-XHZD3DFR.js   | login-page    |  18.59 kB | 
+chunk-OLKW2A73.js   | home-page     |   8.99 kB | 
+chunk-YOHGSDLR.js   | -             |   6.04 kB | 
+chunk-HECSRGTK.js   | auth-routes   | 329 bytes | 
+chunk-SU5R6IJI.js   | home-routes   | 323 bytes | 
+
+Application bundle generation complete. [0.154 seconds] - 2026-08-18T20:47:57.101Z
+
+> Changes detected. Rebuilding...
+√ Changes detected. Rebuilding...
+Initial chunk files | Names         |  Raw size
+styles.css          | styles        |  38.82 kB | 
+chunk-436D3H7X.js   | -             |   8.83 kB | 
+main.js             | main          |   4.59 kB | 
+chunk-SG2LYVAH.js   | -             | 943 bytes | 
+
+                    | Initial total |  53.18 kB
+
+Lazy chunk files    | Names         |  Raw size
+chunk-XHZD3DFR.js   | login-page    |  18.59 kB | 
+chunk-OLKW2A73.js   | home-page     |   8.99 kB | 
+chunk-YOHGSDLR.js   | -             |   6.04 kB | 
+chunk-HECSRGTK.js   | auth-routes   | 329 bytes | 
+chunk-SU5R6IJI.js   | home-routes   | 323 bytes | 
+
+Application bundle generation complete. [0.169 seconds] - 2026-08-18T20:49:07.511Z
+
+> Changes detected. Rebuilding...
+√ Changes detected. Rebuilding...
+Initial chunk files | Names         |  Raw size
+styles.css          | styles        |  38.82 kB | 
+chunk-436D3H7X.js   | -             |   8.83 kB | 
+main.js             | main          |   4.59 kB | 
+chunk-SG2LYVAH.js   | -             | 943 bytes | 
+
+                    | Initial total |  53.18 kB
+
+Lazy chunk files    | Names         |  Raw size
+chunk-XHZD3DFR.js   | login-page    |  18.59 kB | 
+chunk-OLKW2A73.js   | home-page     |   8.99 kB | 
+chunk-YOHGSDLR.js   | -             |   6.04 kB | 
+chunk-HECSRGTK.js   | auth-routes   | 329 bytes | 
+chunk-SU5R6IJI.js   | home-routes   | 323 bytes | 
+
+Application bundle generation complete. [0.209 seconds] - 2026-08-18T20:49:32.123Z
+
+> Changes detected. Rebuilding...
+√ Changes detected. Rebuilding...
+Initial chunk files | Names         |  Raw size
+styles.css          | styles        |  38.82 kB | 
+chunk-436D3H7X.js   | -             |   8.83 kB | 
+main.js             | main          |   4.59 kB | 
+chunk-SG2LYVAH.js   | -             | 943 bytes | 
+
+                    | Initial total |  53.18 kB
+
+Lazy chunk files    | Names         |  Raw size
+chunk-XHZD3DFR.js   | login-page    |  18.59 kB | 
+chunk-OLKW2A73.js   | home-page     |   8.99 kB | 
+chunk-YOHGSDLR.js   | -             |   6.04 kB | 
+chunk-HECSRGTK.js   | auth-routes   | 329 bytes | 
+chunk-SU5R6IJI.js   | home-routes   | 323 bytes | 
+
+Application bundle generation complete. [0.153 seconds] - 2026-08-18T20:50:32.045Z
+
+> Changes detected. Rebuilding...
+√ Changes detected. Rebuilding...
+Initial chunk files | Names         |  Raw size
+styles.css          | styles        |  38.82 kB | 
+chunk-436D3H7X.js   | -             |   8.83 kB | 
+main.js             | main          |   4.59 kB | 
+chunk-SG2LYVAH.js   | -             | 943 bytes | 
+
+                    | Initial total |  53.18 kB
+
+Lazy chunk files    | Names         |  Raw size
+chunk-XHZD3DFR.js   | login-page    |  18.59 kB | 
+chunk-OLKW2A73.js   | home-page     |   8.99 kB | 
+chunk-YOHGSDLR.js   | -             |   6.04 kB | 
+chunk-HECSRGTK.js   | auth-routes   | 329 bytes | 
+chunk-SU5R6IJI.js   | home-routes   | 323 bytes | 
+
+Application bundle generation complete. [0.165 seconds] - 2026-08-18T20:50:38.848Z
+
+> Changes detected. Rebuilding...
+√ Changes detected. Rebuilding...
+Initial chunk files | Names         |  Raw size
+styles.css          | styles        |  38.82 kB | 
+chunk-436D3H7X.js   | -             |   8.83 kB | 
+main.js             | main          |   4.59 kB | 
+chunk-SG2LYVAH.js   | -             | 943 bytes | 
+
+                    | Initial total |  53.18 kB
+
+Lazy chunk files    | Names         |  Raw size
+chunk-XHZD3DFR.js   | login-page    |  18.59 kB | 
+chunk-OLKW2A73.js   | home-page     |   8.99 kB | 
+chunk-YOHGSDLR.js   | -             |   6.04 kB | 
+chunk-HECSRGTK.js   | auth-routes   | 329 bytes | 
+chunk-SU5R6IJI.js   | home-routes   | 323 bytes | 
+
+Application bundle generation complete. [0.113 seconds] - 2026-08-18T20:51:27.284Z
+
+> Changes detected. Rebuilding...
+√ Changes detected. Rebuilding...
+Initial chunk files | Names         |  Raw size
+styles.css          | styles        |  38.82 kB | 
+chunk-436D3H7X.js   | -             |   8.83 kB | 
+main.js             | main          |   4.59 kB | 
+chunk-SG2LYVAH.js   | -             | 943 bytes | 
+
+                    | Initial total |  53.18 kB
+
+Lazy chunk files    | Names         |  Raw size
+chunk-XHZD3DFR.js   | login-page    |  18.59 kB | 
+chunk-OLKW2A73.js   | home-page     |   8.99 kB | 
+chunk-YOHGSDLR.js   | -             |   6.04 kB | 
+chunk-HECSRGTK.js   | auth-routes   | 329 bytes | 
+chunk-SU5R6IJI.js   | home-routes   | 323 bytes | 
+
+Application bundle generation complete. [0.279 seconds] - 2026-08-18T20:51:41.393Z
+
+> Changes detected. Rebuilding...
+√ Changes detected. Rebuilding...
+Initial chunk files | Names         |  Raw size
+styles.css          | styles        |  38.82 kB | 
+chunk-436D3H7X.js   | -             |   8.83 kB | 
+main.js             | main          |   4.59 kB | 
+chunk-SG2LYVAH.js   | -             | 943 bytes | 
+
+                    | Initial total |  53.18 kB
+
+Lazy chunk files    | Names         |  Raw size
+chunk-XHZD3DFR.js   | login-page    |  18.59 kB | 
+chunk-OLKW2A73.js   | home-page     |   8.99 kB | 
+chunk-YOHGSDLR.js   | -             |   6.04 kB | 
+chunk-HECSRGTK.js   | auth-routes   | 329 bytes | 
+chunk-SU5R6IJI.js   | home-routes   | 323 bytes | 
+
+Application bundle generation complete. [0.137 seconds] - 2026-08-18T21:00:39.760Z
+
