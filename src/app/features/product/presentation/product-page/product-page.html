@@ -34,17 +34,17 @@
         <button
           (click)="deleteProduct()"
           [disabled]="isDeleting()"
-          hlmBtn
-          type="button"
           variant="destructive"
+          type="button"
+          hlmBtn
         >
           {{ isDeleting() ? 'Eliminando...' : 'Eliminar producto' }}</button
         ><button
           (click)="cancelDeletion()"
           [disabled]="isDeleting()"
-          hlmBtn
-          type="button"
           variant="outline"
+          type="button"
+          hlmBtn
         >
           Cancelar
         </button>
@@ -53,20 +53,20 @@
   }
   <div class="mt-8">
     <app-product-list
-      [isLoading]="isLoading()"
       [pageResponse]="pageResponse()"
+      [isLoading]="isLoading()"
       [products]="products()"
-      (edit)="openEditForm($event)"
       (pageChange)="loadProducts($event)"
       (remove)="requestDeletion($event)"
+      (edit)="openEditForm($event)"
     />
   </div>
   <app-product-form-dialog
-    [categories]="categories()"
-    [isOpen]="isFormVisible()"
-    [isSaving]="isSaving()"
-    [product]="editingProduct()"
     (closed)="closeForm()"
     (save)="submitForm($event)"
+    [categories]="categories()"
+    [isSaving]="isSaving()"
+    [product]="editingProduct()"
+    [isOpen]="isFormVisible()"
   />
 </main>

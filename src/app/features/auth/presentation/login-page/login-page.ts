@@ -1,16 +1,14 @@
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-
-import { AuthService } from '@features/auth/application/auth.service';
-import { resolveApiErrorMessage } from '@core/http/utils/api-error';
-import { HlmButtonImports } from '@spartan-ng/helm/button';
 import { Component, DestroyRef, inject, signal } from '@angular/core';
-import { finalize } from 'rxjs';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { resolveApiErrorMessage } from '@core/http/utils/api-error';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { HlmButtonImports } from '@spartan-ng/helm/button';
 import { HlmInputImports } from '@spartan-ng/helm/input';
 import { HlmLabelImports } from '@spartan-ng/helm/label';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-
 import { maxUtf8Bytes } from '../validation/max-utf8-bytes.validator';
+import { AuthService } from '@features/auth/application/auth.service';
+import { finalize } from 'rxjs';
 
 @Component({
   selector: 'app-login-page',
@@ -18,14 +16,15 @@ import { maxUtf8Bytes } from '../validation/max-utf8-bytes.validator';
   templateUrl: './login-page.html',
 })
 export class LoginPage {
-  private readonly formBuilder = inject(NonNullableFormBuilder);
-  private readonly authService = inject(AuthService);
   private readonly activatedRoute = inject(ActivatedRoute);
+  private readonly authService = inject(AuthService);
+  private readonly formBuilder = inject(NonNullableFormBuilder);
   private readonly destroyRef = inject(DestroyRef);
   private readonly router = inject(Router);
 
-  protected readonly isSubmitting = signal(false);
   protected readonly errorMessage = signal<string | null>(null);
+  protected readonly isSubmitting = signal(false);
+
   protected readonly loginForm = this.formBuilder.group({
     email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required, maxUtf8Bytes(72)]],
@@ -66,6 +65,7 @@ export class LoginPage {
       returnUrl !== null && returnUrl.startsWith('/') && !returnUrl.startsWith('//')
         ? returnUrl
         : '/home';
-    void this.router.navigateByUrl(redirectUrl);
+
+    this.router.navigateByUrl(redirectUrl);
   }
 }

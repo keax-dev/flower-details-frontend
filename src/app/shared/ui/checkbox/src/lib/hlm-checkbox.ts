@@ -1,24 +1,24 @@
-import type { BooleanInput } from '@angular/cdk/coercion';
-import {
-  booleanAttribute,
-  ChangeDetectionStrategy,
-  Component,
-  computed,
-  forwardRef,
-  input,
-  linkedSignal,
-  model,
-  output,
-  viewChild,
-} from '@angular/core';
 import { type ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { NgIcon, provideIcons } from '@ng-icons/core';
-import { lucideCheck } from '@ng-icons/lucide';
-import { BrnCheckbox } from '@spartan-ng/brain/checkbox';
 import { BrnFieldControlDescribedBy } from '@spartan-ng/brain/field';
 import type { ChangeFn, TouchFn } from '@spartan-ng/brain/forms';
-import { hlm } from '@spartan-ng/helm/utils';
+import { NgIcon, provideIcons } from '@ng-icons/core';
+import type { BooleanInput } from '@angular/cdk/coercion';
 import type { ClassValue } from 'clsx';
+import { lucideCheck } from '@ng-icons/lucide';
+import { BrnCheckbox } from '@spartan-ng/brain/checkbox';
+import { hlm } from '@spartan-ng/helm/utils';
+import {
+  ChangeDetectionStrategy,
+  booleanAttribute,
+  linkedSignal,
+  forwardRef,
+  Component,
+  viewChild,
+  computed,
+  output,
+  input,
+  model,
+} from '@angular/core';
 
 export const HLM_CHECKBOX_VALUE_ACCESSOR = {
   provide: NG_VALUE_ACCESSOR,
@@ -42,19 +42,19 @@ export const HLM_CHECKBOX_VALUE_ACCESSOR = {
   },
   template: `
     <brn-checkbox
-      [id]="inputId()"
-      [name]="name()"
-      [class]="_computedClass()"
-      [checked]="checked()"
-      [(indeterminate)]="indeterminate"
-      [disabled]="_disabled()"
-      [required]="required()"
-      [aria-label]="ariaLabel()"
-      [aria-labelledby]="ariaLabelledby()"
-      [aria-describedby]="ariaDescribedby()"
-      [forceInvalid]="forceInvalid()"
       (checkedChange)="_handleChange($event)"
       (touched)="_onTouched?.()"
+      [(indeterminate)]="indeterminate"
+      [aria-describedby]="ariaDescribedby()"
+      [aria-labelledby]="ariaLabelledby()"
+      [forceInvalid]="forceInvalid()"
+      [aria-label]="ariaLabel()"
+      [disabled]="_disabled()"
+      [required]="required()"
+      [checked]="checked()"
+      [class]="_computedClass()"
+      [name]="name()"
+      [id]="inputId()"
     >
       @if (checked() || indeterminate()) {
         <span

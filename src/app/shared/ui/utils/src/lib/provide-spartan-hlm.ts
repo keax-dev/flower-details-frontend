@@ -1,5 +1,5 @@
-import { OVERLAY_DEFAULT_CONFIG } from '@angular/cdk/overlay';
 import { type EnvironmentProviders, makeEnvironmentProviders } from '@angular/core';
+import { OVERLAY_DEFAULT_CONFIG } from '@angular/cdk/overlay';
 
 /**
  * Provides default configuration for Spartan Helm components.

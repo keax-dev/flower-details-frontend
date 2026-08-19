@@ -1,24 +1,23 @@
-import { BrnDialogImports } from '@spartan-ng/brain/dialog';
+import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Component, effect, inject, input, output } from '@angular/core';
-import { HlmButtonImports } from '@spartan-ng/helm/button';
+import { Category, CategoryPayload } from '@features/category/domain/model/category.model';
 import { HlmCheckboxImports } from '@spartan-ng/helm/checkbox';
+import { HlmTextareaImports } from '@spartan-ng/helm/textarea';
+import { BrnDialogImports } from '@spartan-ng/brain/dialog';
+import { HlmButtonImports } from '@spartan-ng/helm/button';
 import { HlmInputImports } from '@spartan-ng/helm/input';
 import { HlmLabelImports } from '@spartan-ng/helm/label';
-import { HlmTextareaImports } from '@spartan-ng/helm/textarea';
-import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-
-import { Category, CategoryPayload } from '@features/category/domain/model/category.model';
 
 @Component({
   selector: 'app-category-form-dialog',
   imports: [
+    ReactiveFormsModule,
+    HlmCheckboxImports,
+    HlmTextareaImports,
     BrnDialogImports,
     HlmButtonImports,
-    HlmCheckboxImports,
     HlmInputImports,
     HlmLabelImports,
-    HlmTextareaImports,
-    ReactiveFormsModule,
   ],
   templateUrl: './category-form-dialog.html',
 })
@@ -26,11 +25,11 @@ export class CategoryFormDialog {
   private readonly formBuilder = inject(NonNullableFormBuilder);
 
   readonly category = input<Category | null>(null);
-  readonly isOpen = input(false);
   readonly isSaving = input(false);
+  readonly isOpen = input(false);
 
-  readonly save = output<CategoryPayload>();
   readonly closed = output<void>();
+  readonly save = output<CategoryPayload>();
 
   protected readonly categoryForm = this.formBuilder.group({
     title: ['', [Validators.required, Validators.maxLength(120)]],

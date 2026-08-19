@@ -1,14 +1,13 @@
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { HlmButtonImports } from '@spartan-ng/helm/button';
-import { Component, DestroyRef, computed, inject, signal } from '@angular/core';
-import { finalize } from 'rxjs';
-
-import { CategoryApiService } from '@features/category/infrastructure/http/category-api.service';
+import { Component, DestroyRef, OnInit, computed, inject, signal } from '@angular/core';
 import { Category, CategoryPayload } from '@features/category/domain/model/category.model';
-import { PageResponse } from '@shared/domain/pagination/page-response.model';
 import { resolveApiErrorMessage } from '@core/http/utils/api-error';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { CategoryApiService } from '@features/category/infrastructure/http/category-api.service';
 import { CategoryFormDialog } from '@features/category/presentation/category-form-dialog/category-form-dialog';
+import { HlmButtonImports } from '@spartan-ng/helm/button';
+import { PageResponse } from '@shared/domain/pagination/page-response.model';
 import { CategoryList } from '@features/category/presentation/category-list/category-list';
+import { finalize } from 'rxjs';
 
 const PAGE_SIZE = 10;
 
@@ -17,22 +16,24 @@ const PAGE_SIZE = 10;
   imports: [HlmButtonImports, CategoryFormDialog, CategoryList],
   templateUrl: './category-page.html',
 })
-export class CategoryPage {
+export class CategoryPage implements OnInit {
   private readonly categoryApiService = inject(CategoryApiService);
   private readonly destroyRef = inject(DestroyRef);
 
-  protected readonly categories = signal<Category[]>([]);
-  protected readonly pageResponse = signal<PageResponse<Category> | null>(null);
   protected readonly editingCategory = signal<Category | null>(null);
   protected readonly pendingDeletion = signal<Category | null>(null);
+  protected readonly successMessage = signal<string | null>(null);
   protected readonly isFormVisible = signal(false);
+  protected readonly pageResponse = signal<PageResponse<Category> | null>(null);
+  protected readonly errorMessage = signal<string | null>(null);
+  protected readonly categories = signal<Category[]>([]);
+  protected readonly isDeleting = signal(false);
   protected readonly isLoading = signal(false);
   protected readonly isSaving = signal(false);
-  protected readonly isDeleting = signal(false);
-  protected readonly errorMessage = signal<string | null>(null);
-  protected readonly successMessage = signal<string | null>(null);
+
   protected readonly currentPage = computed(() => this.pageResponse()?.page ?? 0);
-  constructor() {
+
+  ngOnInit() {
     this.loadCategories();
   }
 
@@ -52,11 +53,12 @@ export class CategoryPage {
   }
 
   protected submitForm(payload: CategoryPayload): void {
-    this.errorMessage.set(null);
     this.successMessage.set(null);
+    this.errorMessage.set(null);
     this.isSaving.set(true);
 
     const category = this.editingCategory();
+
     const request$ =
       category === null
         ? this.categoryApiService.create(payload)

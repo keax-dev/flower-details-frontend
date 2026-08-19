@@ -1,15 +1,14 @@
-import { BrnDialogImports } from '@spartan-ng/brain/dialog';
+import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Component, effect, inject, input, output, signal } from '@angular/core';
-import { HlmButtonImports } from '@spartan-ng/helm/button';
+import { Product, ProductPayload } from '@features/product/domain/model/product.model';
+import { HlmTextareaImports } from '@spartan-ng/helm/textarea';
 import { HlmCheckboxImports } from '@spartan-ng/helm/checkbox';
+import { HlmButtonImports } from '@spartan-ng/helm/button';
+import { HlmSelectImports } from '@spartan-ng/helm/select';
+import { BrnDialogImports } from '@spartan-ng/brain/dialog';
 import { HlmInputImports } from '@spartan-ng/helm/input';
 import { HlmLabelImports } from '@spartan-ng/helm/label';
-import { HlmSelectImports } from '@spartan-ng/helm/select';
-import { HlmTextareaImports } from '@spartan-ng/helm/textarea';
-import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-
 import { Category } from '@features/category/domain/model/category.model';
-import { Product, ProductPayload } from '@features/product/domain/model/product.model';
 
 export interface ProductFormSubmission {
   payload: ProductPayload;
@@ -19,26 +18,30 @@ export interface ProductFormSubmission {
 @Component({
   selector: 'app-product-form-dialog',
   imports: [
+    ReactiveFormsModule,
+    HlmCheckboxImports,
+    HlmTextareaImports,
     BrnDialogImports,
     HlmButtonImports,
-    HlmCheckboxImports,
+    HlmSelectImports,
     HlmInputImports,
     HlmLabelImports,
-    HlmSelectImports,
-    HlmTextareaImports,
-    ReactiveFormsModule,
   ],
   templateUrl: './product-form-dialog.html',
 })
 export class ProductFormDialog {
   private readonly formBuilder = inject(NonNullableFormBuilder);
-  readonly product = input<Product | null>(null);
+
   readonly categories = input.required<readonly Category[]>();
-  readonly isOpen = input(false);
   readonly isSaving = input(false);
-  readonly save = output<ProductFormSubmission>();
+  readonly product = input<Product | null>(null);
+  readonly isOpen = input(false);
+
   readonly closed = output<void>();
+  readonly save = output<ProductFormSubmission>();
+
   protected readonly selectedFiles = signal<File[]>([]);
+
   protected readonly productForm = this.formBuilder.group({
     categoryId: [0, [Validators.required, Validators.min(1)]],
     title: ['', [Validators.required, Validators.maxLength(160)]],
@@ -46,6 +49,7 @@ export class ProductFormDialog {
     price: [0, [Validators.required, Validators.min(0.01)]],
     active: [true],
   });
+
   constructor() {
     effect(() => {
       if (this.isOpen()) {
@@ -53,14 +57,17 @@ export class ProductFormDialog {
       }
     });
   }
+
   protected setCategory(categoryId: number | null | undefined): void {
     this.productForm.controls.categoryId.setValue(categoryId ?? 0);
     this.productForm.controls.categoryId.markAsTouched();
   }
+
   protected selectFiles(event: Event): void {
     const input = event.target as HTMLInputElement;
     this.selectedFiles.set(Array.from(input.files ?? []));
   }
+
   protected submit(): void {
     if (this.productForm.invalid) {
       this.productForm.markAllAsTouched();
@@ -68,10 +75,12 @@ export class ProductFormDialog {
     }
     this.save.emit({ payload: this.productForm.getRawValue(), files: this.selectedFiles() });
   }
+
   protected hasError(controlName: 'categoryId' | 'title' | 'description' | 'price'): boolean {
     const control = this.productForm.controls[controlName];
     return control.invalid && control.touched;
   }
+
   private populateForm(product: Product | null): void {
     this.productForm.reset(
       product === null

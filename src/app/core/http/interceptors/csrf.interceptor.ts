@@ -1,10 +1,9 @@
 import { HttpErrorResponse, HttpInterceptorFn } from '@angular/common/http';
-import { inject } from '@angular/core';
 import { catchError, switchMap, throwError } from 'rxjs';
-
+import { isApiEndpoint, isApiRequest } from '@core/http/utils/api-request';
 import { API_BASE_URL } from '@core/http/config/api.config';
 import { CsrfService } from '@core/http/security/csrf.service';
-import { isApiEndpoint, isApiRequest } from '@core/http/utils/api-request';
+import { inject } from '@angular/core';
 
 const MUTATING_METHODS = new Set(['POST', 'PUT', 'PATCH', 'DELETE']);
 

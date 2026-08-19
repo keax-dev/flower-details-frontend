@@ -39,10 +39,10 @@
               <td class="max-w-md px-4 py-4 text-muted-foreground">{{ category.description }}</td>
               <td class="px-4 py-4">
                 <span
+                  [class.text-muted-foreground]="!category.active"
                   [class.bg-primary/10]="category.active"
                   [class.text-primary]="category.active"
                   [class.bg-muted]="!category.active"
-                  [class.text-muted-foreground]="!category.active"
                   class="inline-flex rounded-full px-2.5 py-1 text-xs font-semibold"
                 >
                   {{ category.active ? 'Activa' : 'Inactiva' }}
@@ -52,19 +52,19 @@
                 <div class="flex justify-end gap-2">
                   <button
                     (click)="edit.emit(category)"
-                    hlmBtn
+                    variant="outline"
                     size="sm"
                     type="button"
-                    variant="outline"
+                    hlmBtn
                   >
                     Editar
                   </button>
                   <button
                     (click)="remove.emit(category)"
-                    hlmBtn
+                    variant="destructive"
                     size="sm"
                     type="button"
-                    variant="destructive"
+                    hlmBtn
                   >
                     Eliminar
                   </button>
@@ -92,20 +92,20 @@
         <button
           (click)="previousPage()"
           [disabled]="!hasPreviousPage() || isLoading()"
-          hlmBtn
+          variant="outline"
           size="sm"
           type="button"
-          variant="outline"
+          hlmBtn
         >
           Anterior
         </button>
         <button
           (click)="nextPage()"
           [disabled]="!hasNextPage() || isLoading()"
-          hlmBtn
+          variant="outline"
           size="sm"
           type="button"
-          variant="outline"
+          hlmBtn
         >
           Siguiente
         </button>

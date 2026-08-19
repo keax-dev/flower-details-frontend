@@ -1,8 +1,7 @@
 import { Component, computed, input, output } from '@angular/core';
 import { HlmButtonImports } from '@spartan-ng/helm/button';
-
-import { Category } from '@features/category/domain/model/category.model';
 import { PageResponse } from '@shared/domain/pagination/page-response.model';
+import { Category } from '@features/category/domain/model/category.model';
 
 @Component({
   selector: 'app-category-list',
@@ -10,16 +9,16 @@ import { PageResponse } from '@shared/domain/pagination/page-response.model';
   templateUrl: './category-list.html',
 })
 export class CategoryList {
-  readonly categories = input.required<readonly Category[]>();
   readonly pageResponse = input<PageResponse<Category> | null>(null);
+  readonly categories = input.required<readonly Category[]>();
   readonly isLoading = input(false);
 
-  readonly edit = output<Category>();
-  readonly remove = output<Category>();
   readonly pageChange = output<number>();
+  readonly remove = output<Category>();
+  readonly edit = output<Category>();
 
-  protected readonly currentPage = computed(() => this.pageResponse()?.page ?? 0);
   protected readonly hasPreviousPage = computed(() => this.currentPage() > 0);
+  protected readonly currentPage = computed(() => this.pageResponse()?.page ?? 0);
   protected readonly hasNextPage = computed(() => {
     const page = this.pageResponse();
     return page !== null && page.page + 1 < page.totalPages;

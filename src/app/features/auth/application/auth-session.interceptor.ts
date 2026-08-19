@@ -1,11 +1,10 @@
 import { HttpErrorResponse, HttpInterceptorFn } from '@angular/common/http';
+import { isApiEndpoint, isApiRequest } from '@core/http/utils/api-request';
+import { catchError, throwError } from 'rxjs';
+import { AuthSessionStore } from './auth-session.store';
+import { API_BASE_URL } from '@core/http/config/api.config';
 import { inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { catchError, throwError } from 'rxjs';
-
-import { API_BASE_URL } from '@core/http/config/api.config';
-import { isApiEndpoint, isApiRequest } from '@core/http/utils/api-request';
-import { AuthSessionStore } from './auth-session.store';
 
 export const authSessionInterceptor: HttpInterceptorFn = (request, next) => {
   const apiBaseUrl = inject(API_BASE_URL);

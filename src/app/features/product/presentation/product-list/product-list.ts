@@ -1,8 +1,7 @@
 import { Component, computed, input, output } from '@angular/core';
 import { HlmButtonImports } from '@spartan-ng/helm/button';
-
-import { Product } from '@features/product/domain/model/product.model';
 import { PageResponse } from '@shared/domain/pagination/page-response.model';
+import { Product } from '@features/product/domain/model/product.model';
 
 @Component({
   selector: 'app-product-list',
@@ -10,12 +9,13 @@ import { PageResponse } from '@shared/domain/pagination/page-response.model';
   templateUrl: './product-list.html',
 })
 export class ProductList {
-  readonly products = input.required<readonly Product[]>();
   readonly pageResponse = input<PageResponse<Product> | null>(null);
   readonly isLoading = input(false);
-  readonly edit = output<Product>();
-  readonly remove = output<Product>();
+  readonly products = input.required<readonly Product[]>();
+
   readonly pageChange = output<number>();
+  readonly remove = output<Product>();
+  readonly edit = output<Product>();
 
   protected readonly currentPage = computed(() => this.pageResponse()?.page ?? 0);
   protected readonly hasPreviousPage = computed(() => this.currentPage() > 0);

@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { NgIcon, provideIcons } from '@ng-icons/core';
-import { lucideChevronUp } from '@ng-icons/lucide';
 import { BrnSelectScrollUp } from '@spartan-ng/brain/select';
+import { lucideChevronUp } from '@ng-icons/lucide';
 import { classes } from '@spartan-ng/helm/utils';
 
 @Component({

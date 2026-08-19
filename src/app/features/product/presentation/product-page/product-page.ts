@@ -1,19 +1,18 @@
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { HlmButtonImports } from '@spartan-ng/helm/button';
-import { Component, DestroyRef, computed, inject, signal } from '@angular/core';
-import { finalize } from 'rxjs';
-
-import { CategoryApiService } from '@features/category/infrastructure/http/category-api.service';
-import { Category } from '@features/category/domain/model/category.model';
-import { ProductApiService } from '@features/product/infrastructure/http/product-api.service';
-import { Product } from '@features/product/domain/model/product.model';
-import { PageResponse } from '@shared/domain/pagination/page-response.model';
+import { Component, DestroyRef, OnInit, computed, inject, signal } from '@angular/core';
 import { resolveApiErrorMessage } from '@core/http/utils/api-error';
-import {
-  ProductFormDialog,
-  ProductFormSubmission,
-} from '@features/product/presentation/product-form-dialog/product-form-dialog';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { CategoryApiService } from '@features/category/infrastructure/http/category-api.service';
+import { ProductApiService } from '@features/product/infrastructure/http/product-api.service';
+import { HlmButtonImports } from '@spartan-ng/helm/button';
+import { PageResponse } from '@shared/domain/pagination/page-response.model';
 import { ProductList } from '@features/product/presentation/product-list/product-list';
+import { Category } from '@features/category/domain/model/category.model';
+import { finalize } from 'rxjs';
+import { Product } from '@features/product/domain/model/product.model';
+import {
+  ProductFormSubmission,
+  ProductFormDialog,
+} from '@features/product/presentation/product-form-dialog/product-form-dialog';
 
 const PAGE_SIZE = 10;
 
@@ -22,25 +21,26 @@ const PAGE_SIZE = 10;
   imports: [HlmButtonImports, ProductFormDialog, ProductList],
   templateUrl: './product-page.html',
 })
-export class ProductPage {
+export class ProductPage implements OnInit {
   private readonly categoryApiService = inject(CategoryApiService);
   private readonly productApiService = inject(ProductApiService);
   private readonly destroyRef = inject(DestroyRef);
 
-  protected readonly products = signal<Product[]>([]);
-  protected readonly categories = signal<Category[]>([]);
-  protected readonly pageResponse = signal<PageResponse<Product> | null>(null);
-  protected readonly editingProduct = signal<Product | null>(null);
   protected readonly pendingDeletion = signal<Product | null>(null);
-  protected readonly isFormVisible = signal(false);
-  protected readonly isLoading = signal(false);
-  protected readonly isSaving = signal(false);
-  protected readonly isDeleting = signal(false);
-  protected readonly errorMessage = signal<string | null>(null);
+  protected readonly editingProduct = signal<Product | null>(null);
   protected readonly successMessage = signal<string | null>(null);
+  protected readonly isFormVisible = signal(false);
+  protected readonly pageResponse = signal<PageResponse<Product> | null>(null);
+  protected readonly errorMessage = signal<string | null>(null);
+  protected readonly categories = signal<Category[]>([]);
+  protected readonly isDeleting = signal(false);
+  protected readonly isLoading = signal(false);
+  protected readonly products = signal<Product[]>([]);
+  protected readonly isSaving = signal(false);
+
   protected readonly currentPage = computed(() => this.pageResponse()?.page ?? 0);
 
-  constructor() {
+  ngOnInit(): void {
     this.loadProducts();
     this.loadCategories();
   }
@@ -61,8 +61,8 @@ export class ProductPage {
   }
 
   protected submitForm({ payload, files }: ProductFormSubmission): void {
-    this.errorMessage.set(null);
     this.successMessage.set(null);
+    this.errorMessage.set(null);
     this.isSaving.set(true);
 
     const product = this.editingProduct();

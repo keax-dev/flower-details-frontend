@@ -1,6 +1,6 @@
-import { Directive } from '@angular/core';
 import { BrnFieldControlDescribedBy } from '@spartan-ng/brain/field';
 import { BrnTextarea } from '@spartan-ng/brain/textarea';
+import { Directive } from '@angular/core';
 import { classes } from '@spartan-ng/helm/utils';
 
 @Directive({

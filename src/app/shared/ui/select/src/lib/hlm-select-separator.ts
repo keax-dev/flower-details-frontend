@@ -1,5 +1,5 @@
-import { Directive } from '@angular/core';
 import { BrnSelectSeparator } from '@spartan-ng/brain/select';
+import { Directive } from '@angular/core';
 import { classes } from '@spartan-ng/helm/utils';
 
 @Directive({

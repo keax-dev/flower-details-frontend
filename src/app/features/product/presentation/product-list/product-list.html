@@ -8,7 +8,7 @@
     }
   </div>
   <div class="mt-5 overflow-x-auto border-y border-border">
-    <table class="w-full min-w-[55rem] text-left text-sm">
+    <table class="w-full min-w-220 text-left text-sm">
       <caption class="sr-only">
         Listado de productos
       </caption>
@@ -63,10 +63,10 @@
               <td class="px-4 py-4 text-muted-foreground">{{ product.images.length }}</td>
               <td class="px-4 py-4">
                 <span
+                  [class.text-muted-foreground]="!product.active"
                   [class.bg-primary/10]="product.active"
                   [class.text-primary]="product.active"
                   [class.bg-muted]="!product.active"
-                  [class.text-muted-foreground]="!product.active"
                   class="inline-flex rounded-full px-2.5 py-1 text-xs font-semibold"
                   >{{ product.active ? 'Activo' : 'Inactivo' }}</span
                 >
@@ -75,18 +75,18 @@
                 <div class="flex justify-end gap-2">
                   <button
                     (click)="edit.emit(product)"
-                    hlmBtn
+                    variant="outline"
                     size="sm"
                     type="button"
-                    variant="outline"
+                    hlmBtn
                   >
                     Editar</button
                   ><button
                     (click)="remove.emit(product)"
-                    hlmBtn
+                    variant="destructive"
                     size="sm"
                     type="button"
-                    variant="destructive"
+                    hlmBtn
                   >
                     Eliminar
                   </button>
@@ -113,19 +113,19 @@
         <button
           (click)="previousPage()"
           [disabled]="!hasPreviousPage() || isLoading()"
-          hlmBtn
+          variant="outline"
           size="sm"
           type="button"
-          variant="outline"
+          hlmBtn
         >
           Anterior</button
         ><button
           (click)="nextPage()"
           [disabled]="!hasNextPage() || isLoading()"
-          hlmBtn
+          variant="outline"
           size="sm"
           type="button"
-          variant="outline"
+          hlmBtn
         >
           Siguiente
         </button>

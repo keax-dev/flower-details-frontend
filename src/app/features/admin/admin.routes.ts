@@ -1,6 +1,5 @@
+import { roleGuard } from '@app/features/auth/guards/role.guard';
 import { Routes } from '@angular/router';
-
-import { roleGuard } from '@features/auth/presentation/guards/role.guard';
 
 export const ADMIN_ROUTES: Routes = [
   {
@@ -11,12 +10,16 @@ export const ADMIN_ROUTES: Routes = [
       {
         path: 'categories',
         loadChildren: () =>
-          import('@features/category/category.routes').then((module) => module.CATEGORY_ROUTES),
+          import('@app/features/category/route/category.routes').then(
+            (module) => module.CATEGORY_ROUTES,
+          ),
       },
       {
         path: 'products',
         loadChildren: () =>
-          import('@features/product/product.routes').then((module) => module.PRODUCT_ROUTES),
+          import('@app/features/product/route/product.routes').then(
+            (module) => module.PRODUCT_ROUTES,
+          ),
       },
       { path: '', pathMatch: 'full', redirectTo: 'categories' },
     ],

@@ -1,6 +1,5 @@
-import { FormControl } from '@angular/forms';
-
 import { maxUtf8Bytes } from './max-utf8-bytes.validator';
+import { FormControl } from '@angular/forms';
 
 describe('maxUtf8Bytes', () => {
   it('accepts a password of exactly 72 ASCII bytes', () => {

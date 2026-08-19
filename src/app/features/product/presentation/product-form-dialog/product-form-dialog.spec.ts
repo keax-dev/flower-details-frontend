@@ -1,6 +1,5 @@
-import { TestBed } from '@angular/core/testing';
-
 import { ProductFormDialog } from './product-form-dialog';
+import { TestBed } from '@angular/core/testing';
 
 describe('ProductFormDialog', () => {
   it('resets the form and selected files each time a create dialog is opened', async () => {

@@ -1,10 +1,9 @@
-import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { NavigationEnd, Router, RouterLink, RouterLinkActive } from '@angular/router';
-import { NgIcon, provideIcons } from '@ng-icons/core';
-import { lucideLogOut, lucideMenu, lucideX } from '@ng-icons/lucide';
 import { Component, DestroyRef, computed, inject, signal } from '@angular/core';
+import { lucideLogOut, lucideMenu, lucideX } from '@ng-icons/lucide';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { filter, finalize, map } from 'rxjs';
-
+import { NgIcon, provideIcons } from '@ng-icons/core';
 import { AuthService } from '@features/auth/application/auth.service';
 import { UserRole } from '@features/auth/domain/model/auth-user.model';
 
@@ -33,6 +32,7 @@ export class ApplicationNavigation {
   private readonly authService = inject(AuthService);
   private readonly destroyRef = inject(DestroyRef);
   private readonly router = inject(Router);
+
   private readonly currentUrl = toSignal(
     this.router.events.pipe(
       filter((event): event is NavigationEnd => event instanceof NavigationEnd),
@@ -41,9 +41,10 @@ export class ApplicationNavigation {
     { initialValue: this.router.url },
   );
 
-  protected readonly isMenuOpen = signal(false);
   protected readonly isLoggingOut = signal(false);
   protected readonly logoutError = signal<string | null>(null);
+  protected readonly isMenuOpen = signal(false);
+
   protected readonly user = this.authService.user;
   protected readonly navigationItems = computed(() => {
     const user = this.user();

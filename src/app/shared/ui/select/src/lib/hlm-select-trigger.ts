@@ -1,17 +1,17 @@
+import { BrnFieldControlDescribedBy } from '@spartan-ng/brain/field';
+import { NgIcon, provideIcons } from '@ng-icons/core';
 import type { BooleanInput } from '@angular/cdk/coercion';
+import { lucideChevronDown } from '@ng-icons/lucide';
+import { BrnSelectTrigger } from '@spartan-ng/brain/select';
+import type { ClassValue } from 'clsx';
+import { hlm } from '@spartan-ng/helm/utils';
 import {
-  booleanAttribute,
   ChangeDetectionStrategy,
+  booleanAttribute,
   Component,
   computed,
   input,
 } from '@angular/core';
-import { NgIcon, provideIcons } from '@ng-icons/core';
-import { lucideChevronDown } from '@ng-icons/lucide';
-import { BrnFieldControlDescribedBy } from '@spartan-ng/brain/field';
-import { BrnSelectTrigger } from '@spartan-ng/brain/select';
-import { hlm } from '@spartan-ng/helm/utils';
-import type { ClassValue } from 'clsx';
 
 @Component({
   selector: 'hlm-select-trigger',
@@ -20,13 +20,13 @@ import type { ClassValue } from 'clsx';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <button
-      brnSelectTrigger
-      brnFieldControlDescribedBy
-      [forceInvalid]="forceInvalid()"
-      [id]="buttonId()"
-      [class]="_computedClass()"
       [attr.data-size]="size()"
+      [forceInvalid]="forceInvalid()"
+      [class]="_computedClass()"
+      [id]="buttonId()"
       data-slot="select-trigger"
+      brnFieldControlDescribedBy
+      brnSelectTrigger
     >
       <ng-content />
       <ng-icon

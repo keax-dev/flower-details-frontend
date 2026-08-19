@@ -1,7 +1,7 @@
-import { AuthService } from '@features/auth/application/auth.service';
-import { HlmButtonImports } from '@spartan-ng/helm/button';
-import { RouterLink } from '@angular/router';
 import { Component, computed, inject } from '@angular/core';
+import { HlmButtonImports } from '@spartan-ng/helm/button';
+import { AuthService } from '@features/auth/application/auth.service';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-home-page',

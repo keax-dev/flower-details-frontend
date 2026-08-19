@@ -1,21 +1,20 @@
-import { LoginRequest, LoginResponse } from '@features/auth/domain/model/login.model';
-import { API_BASE_URL } from '@core/http/config/api.config';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { inject, Service } from '@angular/core';
-import { AuthUser } from '@features/auth/domain/model/auth-user.model';
 import { catchError, map, Observable, of, tap, throwError } from 'rxjs';
-import { finalize } from 'rxjs';
-
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { LoginRequest, LoginResponse } from '@features/auth/domain/model/login.model';
 import { AuthSessionStore } from './auth-session.store';
+import { inject, Service } from '@angular/core';
+import { API_BASE_URL } from '@core/http/config/api.config';
+import { finalize } from 'rxjs';
+import { AuthUser } from '@features/auth/domain/model/auth-user.model';
 
 @Service()
 export class AuthService {
-  private readonly apiBaseUrl = inject(API_BASE_URL);
-  private readonly httpClient = inject(HttpClient);
   private readonly sessionStore = inject(AuthSessionStore);
+  private readonly httpClient = inject(HttpClient);
+  private readonly apiBaseUrl = inject(API_BASE_URL);
 
-  readonly user = this.sessionStore.user;
   readonly isAuthenticated = this.sessionStore.isAuthenticated;
+  readonly user = this.sessionStore.user;
 
   login(request: LoginRequest): Observable<AuthUser> {
     return this.httpClient.post<LoginResponse>(`${this.apiBaseUrl}/auth/login`, request).pipe(

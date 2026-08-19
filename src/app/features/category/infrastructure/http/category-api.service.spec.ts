@@ -1,8 +1,7 @@
-import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
-import { TestBed } from '@angular/core/testing';
-
 import { CategoryApiService } from './category-api.service';
+import { provideHttpClient } from '@angular/common/http';
+import { TestBed } from '@angular/core/testing';
 
 describe('CategoryApiService', () => {
   let categoryApiService: CategoryApiService;
