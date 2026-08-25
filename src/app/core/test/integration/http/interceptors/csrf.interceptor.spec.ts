@@ -1,7 +1,7 @@
 import { HttpClient, provideHttpClient, withInterceptors } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
-import { csrfInterceptor } from './csrf.interceptor';
 import { TestBed } from '@angular/core/testing';
+import { csrfInterceptor } from '@core/http/interceptors/csrf.interceptor';
 
 describe('csrfInterceptor', () => {
   let httpClient: HttpClient;
@@ -20,6 +20,22 @@ describe('csrfInterceptor', () => {
   });
 
   afterEach(() => httpTestingController.verify());
+
+  it('does not request a token for safe requests', () => {
+    httpClient.get('/api/categories').subscribe();
+
+    const request = httpTestingController.expectOne('/api/categories');
+    expect(request.request.headers.has('X-XSRF-TOKEN')).toBe(false);
+    request.flush({});
+  });
+
+  it('does not require a token to authenticate', () => {
+    httpClient.post('/api/auth/login', {}).subscribe();
+
+    const request = httpTestingController.expectOne('/api/auth/login');
+    expect(request.request.headers.has('X-XSRF-TOKEN')).toBe(false);
+    request.flush({});
+  });
 
   it('reuses the cached token for subsequent mutating requests', () => {
     httpClient.post('/api/categories', {}).subscribe();
