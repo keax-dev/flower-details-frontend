@@ -1,102 +1,65 @@
 <section aria-labelledby="categories-title">
-  <div class="flex items-end justify-between gap-4">
-    <div>
-      <h2 id="categories-title" class="font-serif text-2xl">Todas las categorías</h2>
+  <div class="row align-items-end gy-2">
+    <div class="col-12">
+      <h2 id="categories-title" class="category-list__title mb-1">Todas las categorías</h2>
       @if (pageResponse(); as response) {
-        <p class="mt-1 text-sm text-muted-foreground">
+        <p class="category-list__summary mb-0">
           {{ response.totalElements }} categorías registradas
         </p>
       }
     </div>
   </div>
 
-  @if (pendingDeletion(); as category) {
-    <section aria-labelledby="delete-title" class="mt-5 border border-destructive/30 bg-card p-5">
-      <h3 id="delete-title" class="font-serif text-xl">Eliminar “{{ category.title }}”</h3>
-      <p class="mt-2 text-sm text-muted-foreground">
-        Esta acción realiza un borrado lógico y ya no se mostrará en el catálogo.
-      </p>
-      <div class="mt-5 flex flex-wrap gap-3">
-        <button
-          (click)="deleteCategory()"
-          [disabled]="isDeleting()"
-          hlmBtn
-          type="button"
-          variant="destructive"
-        >
-          <fa-icon [icon]="faTrash" aria-hidden="true" />
-          {{ isDeleting() ? 'Eliminando...' : 'Eliminar categoría' }}
-        </button>
-        <button
-          (click)="cancelDeletion()"
-          [disabled]="isDeleting()"
-          hlmBtn
-          type="button"
-          variant="outline"
-        >
-          <fa-icon [icon]="faXmark" aria-hidden="true" />
-          Cancelar
-        </button>
-      </div>
-    </section>
-  }
-
-  <div class="mt-5 overflow-x-auto border-y border-border">
-    <table class="w-full min-w-[41.25rem] text-left text-sm">
-      <caption class="sr-only">
+  <div class="category-list__table-container mt-4">
+    <table class="table table-hover align-middle mb-0">
+      <caption class="visually-hidden">
         Listado de categorías
       </caption>
-      <thead
-        class="border-b border-border bg-muted/60 text-xs tracking-[0.12em] text-muted-foreground uppercase"
-      >
+      <thead>
         <tr>
-          <th class="px-4 py-4 font-semibold" scope="col">Categoría</th>
-          <th class="px-4 py-4 font-semibold" scope="col">Descripción</th>
-          <th class="px-4 py-4 font-semibold" scope="col">Estado</th>
-          <th class="px-4 py-4 text-right font-semibold" scope="col">Acciones</th>
+          <th scope="col">Categoría</th>
+          <th class="category-list__description-column" scope="col">Descripción</th>
+          <th scope="col">Estado</th>
+          <th class="text-end" scope="col">Acciones</th>
         </tr>
       </thead>
       <tbody>
         @if (isLoading()) {
           <tr>
-            <td class="px-4 py-10 text-center text-muted-foreground" colspan="4">
-              Cargando categorías...
-            </td>
+            <td class="category-list__empty" colspan="4">Cargando categorías...</td>
           </tr>
         } @else {
           @for (category of categories(); track category.id) {
-            <tr class="border-b border-border last:border-0">
-              <td class="px-4 py-4 font-medium">{{ category.title }}</td>
-              <td class="max-w-md px-4 py-4 text-muted-foreground">{{ category.description }}</td>
-              <td class="px-4 py-4">
+            <tr>
+              <td class="fw-semibold">{{ category.title }}</td>
+              <td class="category-list__description category-list__description-column">
+                {{ category.description }}
+              </td>
+              <td>
                 <span
-                  [class.bg-primary/10]="category.active"
-                  [class.text-primary]="category.active"
-                  [class.bg-muted]="!category.active"
-                  [class.text-muted-foreground]="!category.active"
-                  class="inline-flex rounded-full px-2.5 py-1 text-xs font-semibold"
+                  [class.category-list__status--active]="category.active"
+                  [class.category-list__status--inactive]="!category.active"
+                  class="category-list__status"
                 >
                   {{ category.active ? 'Activa' : 'Inactiva' }}
                 </span>
               </td>
-              <td class="px-4 py-4">
-                <div class="flex justify-end gap-2">
-                  <button
-                    (click)="edit.emit(category)"
-                    hlmBtn
-                    size="sm"
-                    type="button"
-                    variant="outline"
-                  >
+              <td>
+                <div class="d-flex justify-content-end gap-2">
+                  <button (click)="edit.emit(category)" nz-button nzSize="small" type="button">
                     <fa-icon [icon]="faPen" aria-hidden="true" />
                     Editar
                   </button>
                   <button
-                    (click)="requestDeletion(category)"
-                    hlmBtn
-                    size="sm"
+                    (nzOnConfirm)="deleteCategory(category)"
+                    [disabled]="isDeleting()"
+                    [nzPopconfirmTitle]="'¿Eliminar la categoría ' + category.title + '?'"
+                    nz-button
+                    nzDanger
+                    nz-popconfirm
+                    nzPopconfirmPlacement="topRight"
+                    nzSize="small"
                     type="button"
-                    variant="destructive"
                   >
                     <fa-icon [icon]="faTrash" aria-hidden="true" />
                     Eliminar
@@ -106,9 +69,7 @@
             </tr>
           } @empty {
             <tr>
-              <td class="px-4 py-10 text-center text-muted-foreground" colspan="4">
-                Todavía no hay categorías registradas.
-              </td>
+              <td class="category-list__empty" colspan="4">Todavía no hay categorías registradas.</td>
             </tr>
           }
         }
@@ -117,33 +78,33 @@
   </div>
 
   @if (pageResponse(); as response) {
-    <nav aria-label="Paginación de categorías" class="mt-5 flex items-center justify-between gap-4">
-      <p class="text-sm text-muted-foreground">
-        Página {{ response.page + 1 }} de {{ response.totalPages || 1 }}
-      </p>
-      <div class="flex gap-2">
-        <button
-          (click)="previousPage()"
-          [disabled]="!hasPreviousPage() || isLoading()"
-          hlmBtn
-          size="sm"
-          type="button"
-          variant="outline"
-        >
-          <fa-icon [icon]="faArrowLeft" aria-hidden="true" />
-          Anterior
-        </button>
-        <button
-          (click)="nextPage()"
-          [disabled]="!hasNextPage() || isLoading()"
-          hlmBtn
-          size="sm"
-          type="button"
-          variant="outline"
-        >
-          Siguiente
-          <fa-icon [icon]="faArrowRight" aria-hidden="true" />
-        </button>
+    <nav aria-label="Paginación de categorías" class="row align-items-center gy-3 mt-4">
+      <div class="col-12 col-md">
+        <p class="category-list__summary mb-0">
+          Página {{ response.page + 1 }} de {{ response.totalPages || 1 }}
+        </p>
+      </div>
+      <div class="col-12 col-md-auto">
+        <div class="d-flex gap-2">
+          <button
+            (click)="previousPage()"
+            [disabled]="!hasPreviousPage() || isLoading()"
+            nz-button
+            type="button"
+          >
+            <fa-icon [icon]="faArrowLeft" aria-hidden="true" />
+            Anterior
+          </button>
+          <button
+            (click)="nextPage()"
+            [disabled]="!hasNextPage() || isLoading()"
+            nz-button
+            type="button"
+          >
+            Siguiente
+            <fa-icon [icon]="faArrowRight" aria-hidden="true" />
+          </button>
+        </div>
       </div>
     </nav>
   }

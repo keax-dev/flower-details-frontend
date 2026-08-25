@@ -4,6 +4,7 @@ import { credentialsInterceptor } from '@core/http/interceptors/credentials.inte
 import { authSessionInterceptor } from '@features/auth/application/auth-session.interceptor';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { csrfInterceptor } from '@core/http/interceptors/csrf.interceptor';
+import { es_ES, provideNzI18n } from 'ng-zorro-antd/i18n';
 import { provideRouter } from '@angular/router';
 import { routes } from '@app/app.routes';
 
@@ -11,6 +12,7 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideAnimationsAsync(),
+    provideNzI18n(es_ES),
     provideHttpClient(
       withInterceptors([credentialsInterceptor, csrfInterceptor, authSessionInterceptor]),
       withXsrfConfiguration({ cookieName: 'XSRF-TOKEN', headerName: 'X-XSRF-TOKEN' }),

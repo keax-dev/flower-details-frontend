@@ -10,6 +10,7 @@ import { Category } from '@app/features/category/models/category.model';
   selector: 'app-category-page',
   imports: [NzButtonModule, FontAwesomeModule, CategoryFormDialog, CategoryList],
   templateUrl: './category-page.html',
+  styleUrl: './category-page.css',
 })
 export class CategoryPage {
   protected readonly faPlus = faPlus;

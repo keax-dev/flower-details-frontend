@@ -1,0 +1,33 @@
+:host {
+  display: block;
+}
+
+.category-page {
+  min-height: calc(100vh - 4rem);
+}
+
+.category-page__container {
+  max-width: 90rem;
+  padding-right: clamp(1.5rem, 5vw, 6rem);
+  padding-left: clamp(1.5rem, 5vw, 6rem);
+}
+
+.category-page__header {
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid #c8d7cc;
+}
+
+.category-page__eyebrow {
+  color: var(--color-primary);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.category-page__title {
+  color: #173427;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: clamp(2rem, 4vw, 2.5rem);
+  font-weight: 600;
+}

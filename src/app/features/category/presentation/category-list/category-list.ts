@@ -1,11 +1,11 @@
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 import {
   faArrowLeft,
   faArrowRight,
   faPen,
   faTrash,
-  faXmark,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import {
@@ -30,8 +30,9 @@ const PAGE_SIZE = 10;
 
 @Component({
   selector: 'app-category-list',
-  imports: [NzButtonModule, FontAwesomeModule],
+  imports: [NzButtonModule, NzPopconfirmModule, FontAwesomeModule],
   templateUrl: './category-list.html',
+  styleUrl: './category-list.css',
 })
 export class CategoryList {
   private readonly categoryApiService = inject(CategoryApiService);
@@ -45,10 +46,8 @@ export class CategoryList {
   protected readonly faArrowLeft = faArrowLeft;
   protected readonly faArrowRight = faArrowRight;
   protected readonly faTrash = faTrash;
-  protected readonly faXmark = faXmark;
   protected readonly faPen = faPen;
   protected readonly pageResponse = signal<PageResponse<Category> | null>(null);
-  protected readonly pendingDeletion = signal<Category | null>(null);
   protected readonly isLoading = signal(false);
   protected readonly isDeleting = signal(false);
   protected readonly currentPage = computed(() => this.pageResponse()?.page ?? 0);
@@ -65,20 +64,7 @@ export class CategoryList {
     });
   }
 
-  protected requestDeletion(category: Category): void {
-    this.pendingDeletion.set(category);
-  }
-
-  protected cancelDeletion(): void {
-    this.pendingDeletion.set(null);
-  }
-
-  protected deleteCategory(): void {
-    const category = this.pendingDeletion();
-    if (category === null) {
-      return;
-    }
-
+  protected deleteCategory(category: Category): void {
     this.isDeleting.set(true);
     this.categoryApiService
       .delete(category.id)
@@ -88,7 +74,6 @@ export class CategoryList {
       )
       .subscribe({
         next: () => {
-          this.pendingDeletion.set(null);
           this.notificationService.success('Categoría eliminada correctamente.');
           this.loadCategories(
             this.categories().length === 1

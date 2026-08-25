@@ -1,13 +1,13 @@
 <nz-modal
   (nzOnCancel)="closed.emit()"
+  (nzOnOk)="submit()"
   [nzCancelDisabled]="isSaving()"
   [nzOkDisabled]="isSaving()"
   [nzOkLoading]="isSaving()"
-  [nzVisible]="isOpen()"
   [nzTitle]="category() ? 'Actualizar categoría' : 'Crear categoría'"
+  [nzVisible]="isOpen()"
   nzCancelText="Cancelar"
   nzOkText="Guardar categoría"
-  (nzOnOk)="submit()"
 >
   <ng-container *nzModalContent>
     <form [formGroup]="categoryForm" novalidate>
@@ -17,10 +17,10 @@
             <label class="form-label" for="category-title">Título</label>
             <input
               [class.is-invalid]="hasError('title')"
-              class="form-control"
               formControlName="title"
               id="category-title"
               maxlength="120"
+              nz-input
               type="text"
             />
             @if (hasError('title')) {
@@ -31,10 +31,10 @@
             <label class="form-label" for="category-description">Descripción</label>
             <textarea
               [class.is-invalid]="hasError('description')"
-              class="form-control"
               formControlName="description"
               id="category-description"
               maxlength="500"
+              nz-input
               rows="4"
             ></textarea>
             @if (hasError('description')) {
