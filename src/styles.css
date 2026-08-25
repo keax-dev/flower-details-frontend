@@ -1,3 +1,9 @@
+:root {
+  --color-primary: #198754;
+  --color-primary-hover: #146c43;
+  --color-secondary: #ffffff;
+}
+
 * {
   box-sizing: border-box;
 }
@@ -15,7 +21,7 @@ html {
 
 body {
   min-width: 20rem;
-  background: #faf8f0;
+  background: var(--color-secondary);
   color: #173427;
 }
 
@@ -25,12 +31,12 @@ input {
 }
 
 .ant-btn-primary {
-  background-color: #198754;
-  border-color: #198754;
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
 }
 
 .ant-btn-primary:hover,
 .ant-btn-primary:focus {
-  background-color: #146c43;
-  border-color: #146c43;
+  background-color: var(--color-primary-hover);
+  border-color: var(--color-primary-hover);
 }

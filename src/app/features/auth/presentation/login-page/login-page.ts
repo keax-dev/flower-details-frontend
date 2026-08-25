@@ -13,6 +13,7 @@ import { finalize } from 'rxjs';
   selector: 'app-login-page',
   imports: [NzButtonModule, NzInputModule, ReactiveFormsModule, RouterLink],
   templateUrl: './login-page.html',
+  styleUrl: './login-page.css',
 })
 export class LoginPage {
   private readonly activatedRoute = inject(ActivatedRoute);

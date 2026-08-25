@@ -1,0 +1,148 @@
+:host {
+  display: block;
+}
+
+.login-page__row {
+  min-height: 100vh;
+}
+
+.login-page__brand-panel {
+  display: flex;
+  align-items: center;
+  min-height: 20rem;
+  padding: 3rem clamp(1.5rem, 8vw, 9rem);
+  background-color: #e8f1e9;
+}
+
+.login-page__brand-content,
+.login-page__form-content {
+  width: 100%;
+}
+
+.login-page__brand-content {
+  max-width: 40rem;
+}
+
+.login-page__flower-mark {
+  position: relative;
+  width: 4rem;
+  height: 4rem;
+  margin-bottom: 2.5rem;
+}
+
+.login-page__flower-mark span,
+.login-page__flower-mark i {
+  position: absolute;
+  display: block;
+  border-radius: 50%;
+}
+
+.login-page__flower-mark span {
+  width: 2rem;
+  height: 2rem;
+  background-color: var(--color-primary);
+}
+
+.login-page__flower-mark span:nth-child(1) {
+  top: 0;
+  left: 1rem;
+  opacity: 0.8;
+}
+
+.login-page__flower-mark span:nth-child(2) {
+  top: 1rem;
+  right: 0;
+  opacity: 0.7;
+}
+
+.login-page__flower-mark span:nth-child(3) {
+  bottom: 0;
+  left: 1rem;
+  opacity: 0.6;
+}
+
+.login-page__flower-mark span:nth-child(4) {
+  top: 1rem;
+  left: 0;
+}
+
+.login-page__flower-mark i {
+  top: 1.375rem;
+  left: 1.375rem;
+  width: 1.25rem;
+  height: 1.25rem;
+  background-color: #f0b64d;
+}
+
+.login-page__eyebrow {
+  color: #527060;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.login-page__brand-title,
+.login-page__form-title {
+  color: #173427;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-weight: 600;
+}
+
+.login-page__brand-title {
+  max-width: 10ch;
+  font-size: clamp(3rem, 6vw, 5.5rem);
+  line-height: 0.95;
+}
+
+.login-page__brand-description,
+.login-page__form-description {
+  color: #527060;
+  line-height: 1.7;
+}
+
+.login-page__brand-description {
+  max-width: 32rem;
+  font-size: 1.125rem;
+}
+
+.login-page__form-panel {
+  display: flex;
+  align-items: center;
+  padding: 3rem clamp(1.5rem, 5vw, 5rem);
+  background-color: var(--color-secondary);
+}
+
+.login-page__form-content {
+  max-width: 28rem;
+  margin: 0 auto;
+}
+
+.login-page__back-link {
+  display: inline-block;
+  color: #527060;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.login-page__back-link:hover,
+.login-page__back-link:focus-visible {
+  color: var(--color-primary);
+  text-decoration: underline;
+}
+
+.login-page__form-title {
+  font-size: 2.25rem;
+}
+
+.login-page__form input[nz-input] {
+  width: 100%;
+}
+
+@media (min-width: 992px) {
+  .login-page__brand-panel,
+  .login-page__form-panel {
+    min-height: 100vh;
+  }
+}

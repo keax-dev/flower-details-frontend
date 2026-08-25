@@ -3,9 +3,9 @@
 }
 
 .application-navigation {
-  background-color: #198754;
-  border-bottom: 1px solid #146c43;
-  color: #fffdf5;
+  background-color: var(--color-primary);
+  border-bottom: 1px solid var(--color-primary-hover);
+  color: var(--color-secondary);
 }
 
 .application-navigation__container {
@@ -16,7 +16,7 @@
 
 .application-navigation__brand,
 .application-navigation__link {
-  color: #fffdf5;
+  color: var(--color-secondary);
   text-decoration: none;
 }
 
@@ -39,7 +39,7 @@
   flex-direction: column;
   align-items: stretch;
   padding: 0.75rem 0 1rem;
-  border-top: 1px solid rgb(255 253 245 / 28%);
+  border-top: 1px solid rgb(255 255 255 / 28%);
 }
 
 .application-navigation__links {
@@ -57,15 +57,15 @@
 .application-navigation__link:hover,
 .application-navigation__link:focus-visible,
 .application-navigation__link--active {
-  background-color: rgb(255 253 245 / 18%);
-  color: #fffdf5;
+  background-color: rgb(255 255 255 / 18%);
+  color: var(--color-secondary);
 }
 
 .application-navigation__account {
   justify-content: space-between;
   margin-top: 0.75rem;
   padding-top: 0.75rem;
-  border-top: 1px solid rgb(255 253 245 / 28%);
+  border-top: 1px solid rgb(255 255 255 / 28%);
 }
 
 .application-navigation__user {
@@ -77,31 +77,31 @@
 }
 
 .application-navigation__icon-button {
-  color: #fffdf5 !important;
+  color: var(--color-secondary) !important;
 }
 
 .application-navigation__icon-button:hover,
 .application-navigation__icon-button:focus-visible {
-  background-color: rgb(255 253 245 / 18%) !important;
-  color: #fffdf5 !important;
+  background-color: rgb(255 255 255 / 18%) !important;
+  color: var(--color-secondary) !important;
 }
 
 .application-navigation__login {
-  border-color: #fffdf5;
-  background-color: #fffdf5;
-  color: #198754;
+  border-color: var(--color-secondary);
+  background-color: var(--color-secondary);
+  color: var(--color-primary);
 }
 
 .application-navigation__login:hover,
 .application-navigation__login:focus-visible {
   border-color: #e8f1e9;
   background-color: #e8f1e9;
-  color: #146c43;
+  color: var(--color-primary-hover);
 }
 
 .application-navigation__error {
   padding: 0 1.5rem 0.75rem;
-  color: #fffdf5;
+  color: var(--color-secondary);
   font-size: 0.875rem;
   text-align: center;
 }
@@ -124,6 +124,6 @@
     padding-top: 0;
     padding-left: 1rem;
     border-top: 0;
-    border-left: 1px solid rgb(255 253 245 / 28%);
+    border-left: 1px solid rgb(255 255 255 / 28%);
   }
 }

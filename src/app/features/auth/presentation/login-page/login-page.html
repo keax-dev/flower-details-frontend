@@ -1,103 +1,87 @@
-<main class="grid min-h-dvh bg-background lg:grid-cols-[minmax(0,1.2fr)_minmax(25rem,0.8fr)]">
-  <section
-    aria-labelledby="brand-title"
-    class="flex min-h-80 flex-col justify-center bg-secondary px-6 py-14 sm:px-12 lg:px-[clamp(3rem,8vw,9rem)]"
-  >
-    <div aria-hidden="true" class="relative mb-10 flex h-16 w-16 items-center justify-center">
-      <span class="absolute h-8 w-8 -translate-y-3 rounded-full bg-primary/80"></span>
-      <span class="absolute h-8 w-8 translate-x-3 rounded-full bg-primary/70"></span>
-      <span class="absolute h-8 w-8 translate-y-3 rounded-full bg-primary/60"></span>
-      <span class="absolute h-8 w-8 -translate-x-3 rounded-full bg-primary"></span>
-      <span class="absolute h-5 w-5 rounded-full bg-[#f0b64d]"></span>
-    </div>
-    <p class="mb-3 text-xs font-bold tracking-[0.16em] text-muted-foreground uppercase">
-      Flower Details
-    </p>
-    <h1
-      id="brand-title"
-      class="max-w-[10ch] font-serif text-5xl leading-none text-foreground sm:text-6xl lg:text-7xl"
-    >
-      Detalles que florecen contigo.
-    </h1>
-    <p class="mt-7 max-w-md text-base leading-7 text-muted-foreground sm:text-lg">
-      Gestiona cada arreglo, pedido y momento especial desde un solo lugar.
-    </p>
-  </section>
+<main class="login-page">
+  <div class="container-fluid px-0">
+    <div class="row g-0 login-page__row">
+      <section aria-labelledby="brand-title" class="col-12 col-lg-7 login-page__brand-panel">
+        <div class="login-page__brand-content">
+          <div aria-hidden="true" class="login-page__flower-mark">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <i></i>
+          </div>
+          <p class="login-page__eyebrow mb-3">Flower Details</p>
+          <h1 id="brand-title" class="login-page__brand-title mb-4">Detalles que florecen contigo.</h1>
+          <p class="login-page__brand-description mb-0">
+            Gestiona cada arreglo, pedido y momento especial desde un solo lugar.
+          </p>
+        </div>
+      </section>
 
-  <section
-    aria-labelledby="login-title"
-    class="mx-auto flex w-full max-w-xl flex-col justify-center px-6 py-12 sm:px-12 lg:px-16"
-  >
-    <a
-      class="mb-14 w-fit text-sm font-medium text-muted-foreground transition-colors hover:text-primary focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:outline-none"
-      routerLink="/home"
-    >
-      Volver al inicio
-    </a>
-    <div>
-      <p class="mb-3 text-xs font-bold tracking-[0.16em] text-muted-foreground uppercase">
-        Acceso al sistema
-      </p>
-      <h2 id="login-title" class="font-serif text-4xl text-foreground">Inicia sesión</h2>
-      <p class="mt-3 text-muted-foreground">Ingresa con tu cuenta para continuar.</p>
-    </div>
+      <section aria-labelledby="login-title" class="col-12 col-lg-5 login-page__form-panel">
+        <div class="login-page__form-content">
+          <a class="login-page__back-link mb-5" routerLink="/home">Volver al inicio</a>
 
-    @if (errorMessage()) {
-      <p
-        class="mt-7 border-s-4 border-destructive bg-destructive/10 px-4 py-3 text-sm text-destructive"
-        role="alert"
-      >
-        {{ errorMessage() }}
-      </p>
-    }
+          <div>
+            <p class="login-page__eyebrow mb-3">Acceso al sistema</p>
+            <h2 id="login-title" class="login-page__form-title mb-3">Inicia sesión</h2>
+            <p class="login-page__form-description mb-0">Ingresa con tu cuenta para continuar.</p>
+          </div>
 
-    <form (ngSubmit)="submit()" [formGroup]="loginForm" class="mt-8 grid gap-2">
-      <label hlmLabel for="email" class="mt-3">Correo electrónico</label>
-      <input
-        [attr.aria-invalid]="hasError('email')"
-        formControlName="email"
-        autocomplete="email"
-        placeholder="nombre@correo.com"
-        inputmode="email"
-        name="email"
-        type="email"
-        id="email"
-        nz-input
-      />
-      @if (hasError('email')) {
-        <p class="text-sm text-destructive">Ingresa un correo electrónico válido.</p>
-      }
-
-      <label hlmLabel for="password" class="mt-4">Contraseña</label>
-      <input
-        [attr.aria-invalid]="hasError('password')"
-        formControlName="password"
-        autocomplete="current-password"
-        placeholder="Tu contraseña"
-        name="password"
-        type="password"
-        id="password"
-        nz-input
-      />
-      @if (hasError('password')) {
-        <p class="text-sm text-destructive">
-          @if (loginForm.controls.password.hasError('required')) {
-            La contraseña es obligatoria.
-          } @else {
-            La contraseña no puede superar 72 bytes.
+          @if (errorMessage()) {
+            <div class="alert alert-danger mt-4 mb-0" role="alert">
+              {{ errorMessage() }}
+            </div>
           }
-        </p>
-      }
 
-      <button
-        [disabled]="isSubmitting()"
-        class="mt-7 h-11 w-full text-base"
-        nz-button
-        nzType="primary"
-        type="submit"
-      >
-        {{ isSubmitting() ? 'Ingresando...' : 'Iniciar sesión' }}
-      </button>
-    </form>
-  </section>
+          <form (ngSubmit)="submit()" [formGroup]="loginForm" class="login-page__form mt-4">
+            <div class="mb-4">
+              <label class="form-label" for="email">Correo electrónico</label>
+              <input
+                [attr.aria-invalid]="hasError('email')"
+                autocomplete="email"
+                formControlName="email"
+                id="email"
+                inputmode="email"
+                name="email"
+                nz-input
+                placeholder="nombre@correo.com"
+                type="email"
+              />
+              @if (hasError('email')) {
+                <p class="invalid-feedback d-block mb-0">Ingresa un correo electrónico válido.</p>
+              }
+            </div>
+
+            <div class="mb-4">
+              <label class="form-label" for="password">Contraseña</label>
+              <input
+                [attr.aria-invalid]="hasError('password')"
+                autocomplete="current-password"
+                formControlName="password"
+                id="password"
+                name="password"
+                nz-input
+                placeholder="Tu contraseña"
+                type="password"
+              />
+              @if (hasError('password')) {
+                <p class="invalid-feedback d-block mb-0">
+                  @if (loginForm.controls.password.hasError('required')) {
+                    La contraseña es obligatoria.
+                  } @else {
+                    La contraseña no puede superar 72 bytes.
+                  }
+                </p>
+              }
+            </div>
+
+            <button [disabled]="isSubmitting()" class="w-100" nz-button nzType="primary" type="submit">
+              {{ isSubmitting() ? 'Ingresando...' : 'Iniciar sesión' }}
+            </button>
+          </form>
+        </div>
+      </section>
+    </div>
+  </div>
 </main>
