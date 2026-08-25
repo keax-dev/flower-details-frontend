@@ -21,10 +21,10 @@ describe('CategoryApiService', () => {
 
   afterEach(() => httpTestingController.verify());
 
-  it('requests a paginated category list', () => {
-    categoryApiService.list(2, 10).subscribe();
+  it('requests a paginated administrative category list', () => {
+    categoryApiService.listForAdministration(2, 10).subscribe();
 
-    const request = httpTestingController.expectOne('/api/categories?page=2&size=10');
+    const request = httpTestingController.expectOne('/api/categories/administration?page=2&size=10');
     expect(request.request.method).toBe('GET');
     request.flush(page([CATEGORY]));
   });

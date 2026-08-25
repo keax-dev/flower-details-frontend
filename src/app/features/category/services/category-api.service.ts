@@ -14,16 +14,18 @@ export class CategoryApiService {
   private readonly apiBaseUrl = inject(API_BASE_URL);
   private readonly httpClient = inject(HttpClient);
 
-  list(page: number, size: number): Observable<PageResponse<Category>> {
+  listForAdministration(page: number, size: number): Observable<PageResponse<Category>> {
     const params = new HttpParams().set('page', page).set('size', size);
-    return this.httpClient.get<PageResponse<Category>>(`${this.apiBaseUrl}/categories`, { params });
+    return this.httpClient.get<PageResponse<Category>>(`${this.apiBaseUrl}/categories/administration`, {
+      params,
+    });
   }
 
   listAll(): Observable<Category[]> {
-    return this.list(0, MAX_PAGE_SIZE).pipe(
+    return this.listActive(0, MAX_PAGE_SIZE).pipe(
       expand((response) =>
         response.page + 1 < response.totalPages
-          ? this.list(response.page + 1, MAX_PAGE_SIZE)
+          ? this.listActive(response.page + 1, MAX_PAGE_SIZE)
           : EMPTY,
       ),
       reduce((categories: Category[], response) => [...categories, ...response.items], []),
@@ -40,5 +42,10 @@ export class CategoryApiService {
 
   delete(id: number): Observable<void> {
     return this.httpClient.delete<void>(`${this.apiBaseUrl}/categories/${id}`);
+  }
+
+  private listActive(page: number, size: number): Observable<PageResponse<Category>> {
+    const params = new HttpParams().set('page', page).set('size', size);
+    return this.httpClient.get<PageResponse<Category>>(`${this.apiBaseUrl}/categories`, { params });
   }
 }

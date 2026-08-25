@@ -103,7 +103,7 @@ export class CategoryList {
   private loadCategories(page = 0): void {
     this.isLoading.set(true);
     this.categoryApiService
-      .list(page, PAGE_SIZE)
+      .listForAdministration(page, PAGE_SIZE)
       .pipe(
         finalize(() => this.isLoading.set(false)),
         takeUntilDestroyed(this.destroyRef),
