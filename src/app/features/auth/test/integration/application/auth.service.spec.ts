@@ -1,8 +1,8 @@
-import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { HttpErrorResponse, provideHttpClient } from '@angular/common/http';
-import { AuthService } from './auth.service';
-import { AuthUser } from '../domain/model/auth-user.model';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
+import { AuthService } from '@features/auth/application/auth.service';
+import { AuthUser } from '@features/auth/domain/model/auth-user.model';
 
 const USER: AuthUser = {
   id: 1,
