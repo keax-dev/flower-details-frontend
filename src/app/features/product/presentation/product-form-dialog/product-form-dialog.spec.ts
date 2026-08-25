@@ -1,12 +1,22 @@
 import { ProductFormDialog } from './product-form-dialog';
+import { CategoryApiService } from '@app/features/category/services/category-api.service';
+import { ProductApiService } from '@features/product/services/product-api.service';
 import { TestBed } from '@angular/core/testing';
+import { NotificationService } from '@core/notification/notification.service';
+import { of } from 'rxjs';
 
 describe('ProductFormDialog', () => {
   it('resets the form and selected files each time a create dialog is opened', async () => {
-    await TestBed.configureTestingModule({ imports: [ProductFormDialog] }).compileComponents();
+    await TestBed.configureTestingModule({
+      imports: [ProductFormDialog],
+      providers: [
+        { provide: CategoryApiService, useValue: { listAll: () => of([]) } },
+        { provide: ProductApiService, useValue: {} },
+        { provide: NotificationService, useValue: {} },
+      ],
+    }).compileComponents();
 
     const fixture = TestBed.createComponent(ProductFormDialog);
-    fixture.componentRef.setInput('categories', []);
     fixture.componentRef.setInput('isOpen', true);
     fixture.detectChanges();
 

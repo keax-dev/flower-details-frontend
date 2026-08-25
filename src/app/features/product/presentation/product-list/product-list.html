@@ -7,8 +7,40 @@
       </p>
     }
   </div>
+
+  @if (pendingDeletion(); as product) {
+    <section aria-labelledby="delete-title" class="mt-5 border border-destructive/30 bg-card p-5">
+      <h3 id="delete-title" class="font-serif text-xl">Eliminar “{{ product.title }}”</h3>
+      <p class="mt-2 text-sm text-muted-foreground">
+        Esta acción realiza un borrado lógico y el producto dejará de estar disponible.
+      </p>
+      <div class="mt-5 flex flex-wrap gap-3">
+        <button
+          (click)="deleteProduct()"
+          [disabled]="isDeleting()"
+          hlmBtn
+          type="button"
+          variant="destructive"
+        >
+          <fa-icon [icon]="faTrash" aria-hidden="true" />
+          {{ isDeleting() ? 'Eliminando...' : 'Eliminar producto' }}
+        </button>
+        <button
+          (click)="cancelDeletion()"
+          [disabled]="isDeleting()"
+          hlmBtn
+          type="button"
+          variant="outline"
+        >
+          <fa-icon [icon]="faXmark" aria-hidden="true" />
+          Cancelar
+        </button>
+      </div>
+    </section>
+  }
+
   <div class="mt-5 overflow-x-auto border-y border-border">
-    <table class="w-full min-w-220 text-left text-sm">
+    <table class="w-full min-w-[55rem] text-left text-sm">
       <caption class="sr-only">
         Listado de productos
       </caption>
@@ -63,31 +95,35 @@
               <td class="px-4 py-4 text-muted-foreground">{{ product.images.length }}</td>
               <td class="px-4 py-4">
                 <span
-                  [class.text-muted-foreground]="!product.active"
                   [class.bg-primary/10]="product.active"
                   [class.text-primary]="product.active"
                   [class.bg-muted]="!product.active"
+                  [class.text-muted-foreground]="!product.active"
                   class="inline-flex rounded-full px-2.5 py-1 text-xs font-semibold"
-                  >{{ product.active ? 'Activo' : 'Inactivo' }}</span
                 >
+                  {{ product.active ? 'Activo' : 'Inactivo' }}
+                </span>
               </td>
               <td class="px-4 py-4">
                 <div class="flex justify-end gap-2">
                   <button
                     (click)="edit.emit(product)"
+                    hlmBtn
+                    size="sm"
+                    type="button"
                     variant="outline"
+                  >
+                    <fa-icon [icon]="faPen" aria-hidden="true" />
+                    Editar
+                  </button>
+                  <button
+                    (click)="requestDeletion(product)"
+                    hlmBtn
                     size="sm"
                     type="button"
-                    hlmBtn
-                  >
-                    Editar</button
-                  ><button
-                    (click)="remove.emit(product)"
                     variant="destructive"
-                    size="sm"
-                    type="button"
-                    hlmBtn
                   >
+                    <fa-icon [icon]="faTrash" aria-hidden="true" />
                     Eliminar
                   </button>
                 </div>
@@ -104,6 +140,7 @@
       </tbody>
     </table>
   </div>
+
   @if (pageResponse(); as response) {
     <nav aria-label="Paginación de productos" class="mt-5 flex items-center justify-between gap-4">
       <p class="text-sm text-muted-foreground">
@@ -113,21 +150,24 @@
         <button
           (click)="previousPage()"
           [disabled]="!hasPreviousPage() || isLoading()"
-          variant="outline"
+          hlmBtn
           size="sm"
           type="button"
-          hlmBtn
+          variant="outline"
         >
-          Anterior</button
-        ><button
+          <fa-icon [icon]="faArrowLeft" aria-hidden="true" />
+          Anterior
+        </button>
+        <button
           (click)="nextPage()"
           [disabled]="!hasNextPage() || isLoading()"
-          variant="outline"
+          hlmBtn
           size="sm"
           type="button"
-          hlmBtn
+          variant="outline"
         >
           Siguiente
+          <fa-icon [icon]="faArrowRight" aria-hidden="true" />
         </button>
       </div>
     </nav>

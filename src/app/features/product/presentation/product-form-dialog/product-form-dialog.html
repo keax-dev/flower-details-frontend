@@ -4,8 +4,8 @@
   closeOnOutsidePointerEvents
 >
   <brn-dialog-overlay class="bg-black/40 backdrop-blur-[1px]" />
-  <ng-template brnDialogContent class="w-auto max-w-none p-0"
-    ><section
+  <ng-template brnDialogContent class="w-auto max-w-none p-0">
+    <section
       class="max-h-[calc(100dvh-2rem)] w-[calc(100vw-2rem)] max-w-3xl overflow-y-auto rounded-md border border-border bg-card p-5 shadow-2xl sm:p-6"
     >
       <div class="flex items-start justify-between gap-4">
@@ -20,109 +20,123 @@
         <button
           [disabled]="isSaving()"
           aria-label="Cerrar formulario"
-          variant="ghost"
-          size="icon"
-          type="button"
           brnDialogClose
           hlmBtn
+          size="icon"
+          type="button"
+          variant="ghost"
         >
-          ×
+          <fa-icon [icon]="faXmark" aria-hidden="true" />
         </button>
       </div>
-      <form (ngSubmit)="submit()" [formGroup]="productForm" class="mt-6 grid gap-3">
-        <label for="product-category" hlmLabel>Categoría</label
-        ><hlm-select
+
+      <form (ngSubmit)="submit()" [formGroup]="productForm" class="mt-6 grid gap-3" novalidate>
+        <label hlmLabel for="product-category">Categoría</label>
+        <hlm-select
           (valueChange)="setCategory($event)"
           [value]="productForm.controls.categoryId.value"
           id="product-category"
-          ><hlm-select-trigger class="w-full"
-            ><hlm-select-value placeholder="Selecciona una categoría" /></hlm-select-trigger
-          ><hlm-select-content>
+        >
+          <hlm-select-trigger class="w-full">
+            <hlm-select-value placeholder="Selecciona una categoría" />
+          </hlm-select-trigger>
+          <hlm-select-content>
             @for (category of categories(); track category.id) {
               <hlm-select-item [value]="category.id">{{ category.title }}</hlm-select-item>
             }
-          </hlm-select-content></hlm-select
-        >
+          </hlm-select-content>
+        </hlm-select>
         @if (hasError('categoryId')) {
           <p class="text-sm text-destructive">Selecciona una categoría.</p>
         }
-        <label hlmLabel for="product-title" class="mt-3">Título</label
-        ><input
+
+        <label hlmLabel for="product-title" class="mt-3">Título</label>
+        <input
           [attr.aria-invalid]="hasError('title')"
           formControlName="title"
-          placeholder="Ej. Ramo de rosas rojas"
-          maxlength="160"
-          type="text"
-          id="product-title"
           hlmInput
+          id="product-title"
+          maxlength="160"
+          placeholder="Ej. Ramo de rosas rojas"
+          type="text"
         />
         @if (hasError('title')) {
           <p class="text-sm text-destructive">
             El título es obligatorio y no puede superar 160 caracteres.
           </p>
         }
-        <label hlmLabel for="product-description" class="mt-3">Descripción</label
-        ><textarea
+
+        <label hlmLabel for="product-description" class="mt-3">Descripción</label>
+        <textarea
           [attr.aria-invalid]="hasError('description')"
-          formControlName="description"
-          placeholder="Describe el arreglo, flores y detalles incluidos."
-          maxlength="1000"
           class="min-h-28"
-          id="product-description"
+          formControlName="description"
           hlmTextarea
+          id="product-description"
+          maxlength="1000"
+          placeholder="Describe el arreglo, flores y detalles incluidos."
         ></textarea>
         @if (hasError('description')) {
           <p class="text-sm text-destructive">
             La descripción es obligatoria y no puede superar 1000 caracteres.
           </p>
         }
-        <label hlmLabel for="product-price" class="mt-3">Precio</label
-        ><input
+
+        <label hlmLabel for="product-price" class="mt-3">Precio</label>
+        <input
           [attr.aria-invalid]="hasError('price')"
           formControlName="price"
-          placeholder="0.00"
-          type="number"
-          step="0.01"
-          min="0.01"
-          id="product-price"
           hlmInput
+          id="product-price"
+          min="0.01"
+          placeholder="0.00"
+          step="0.01"
+          type="number"
         />
         @if (hasError('price')) {
           <p class="text-sm text-destructive">Ingresa un precio mayor a cero.</p>
         }
-        <label hlmLabel for="product-images" class="mt-3">Imágenes</label
-        ><input
+
+        <label hlmLabel for="product-images" class="mt-3">Imágenes</label>
+        <input
           (change)="selectFiles($event)"
           accept="image/jpeg,image/png,image/webp"
           class="block w-full text-sm text-muted-foreground file:mr-4 file:border-0 file:bg-primary/10 file:px-3 file:py-2 file:font-medium file:text-primary"
-          type="file"
           id="product-images"
           multiple
+          type="file"
         />
         @if (selectedFiles().length > 0) {
           <p class="text-xs text-muted-foreground">
             {{ selectedFiles().length }} imagen(es) lista(s) para cargar.
           </p>
         }
+
         <label
           class="mt-3 flex cursor-pointer items-center gap-3 text-sm font-medium"
           for="product-active"
-          ><hlm-checkbox formControlName="active" id="product-active" />Producto activo</label
         >
+          <hlm-checkbox formControlName="active" id="product-active" />
+          Producto activo
+        </label>
+
         <div class="mt-5 grid gap-3 sm:flex sm:flex-wrap">
           <button [disabled]="isSaving()" hlmBtn type="submit">
-            {{ isSaving() ? 'Guardando...' : 'Guardar producto' }}</button
-          ><button
+            <fa-icon [icon]="faFloppyDisk" aria-hidden="true" />
+            {{ isSaving() ? 'Guardando...' : 'Guardar producto' }}
+          </button>
+          <button
             (click)="closed.emit()"
             [disabled]="isSaving()"
-            variant="outline"
-            type="button"
             hlmBtn
+            type="button"
+            variant="outline"
           >
+            <fa-icon [icon]="faXmark" aria-hidden="true" />
             Cancelar
           </button>
         </div>
       </form>
-    </section></ng-template
-  >
+    </section>
+  </ng-template>
 </brn-dialog>

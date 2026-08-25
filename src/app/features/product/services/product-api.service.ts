@@ -1,8 +1,9 @@
-import { Product, ProductPayload } from '@features/product/domain/model/product.model';
+import { ProductPayload } from '@features/product/models/product-payload.model';
+import { Product } from '@features/product/models/product.model';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Service } from '@angular/core';
-import { PageResponse } from '@shared/domain/pagination/page-response.model';
 import { API_BASE_URL } from '@core/http/config/api.config';
+import { PageResponse } from '@shared/domain/pagination/page-response.model';
 import { Observable } from 'rxjs';
 
 @Service()
@@ -25,7 +26,7 @@ export class ProductApiService {
     return this.httpClient.put<Product>(`${this.apiBaseUrl}/products/${id}`, payload);
   }
 
-  uploadImages(id: number, files: File[]): Observable<Product> {
+  uploadImages(id: number, files: readonly File[]): Observable<Product> {
     const formData = new FormData();
     files.forEach((file) => formData.append('images', file));
     return this.httpClient.post<Product>(`${this.apiBaseUrl}/products/${id}/images`, formData);

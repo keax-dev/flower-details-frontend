@@ -6,66 +6,19 @@
       <p class="text-xs font-bold tracking-[0.16em] text-primary uppercase">Administración</p>
       <h1 class="mt-2 font-serif text-3xl sm:text-4xl">Productos</h1>
     </div>
-    <button (click)="openCreateForm()" hlmBtn type="button">Nuevo producto</button>
+    <button (click)="openCreateForm()" hlmBtn type="button">
+      <fa-icon [icon]="faPlus" aria-hidden="true" />
+      Nuevo producto
+    </button>
   </header>
-  @if (errorMessage(); as message) {
-    <p
-      class="mt-6 border-s-4 border-destructive bg-destructive/10 px-4 py-3 text-sm text-destructive"
-      role="alert"
-    >
-      {{ message }}
-    </p>
-  }
-  @if (successMessage(); as message) {
-    <p
-      class="mt-6 border-s-4 border-primary bg-primary/10 px-4 py-3 text-sm text-foreground"
-      role="status"
-    >
-      {{ message }}
-    </p>
-  }
-  @if (pendingDeletion(); as product) {
-    <section aria-labelledby="delete-title" class="mt-6 border border-destructive/30 bg-card p-5">
-      <h2 id="delete-title" class="font-serif text-xl">Eliminar “{{ product.title }}”</h2>
-      <p class="mt-2 text-sm text-muted-foreground">
-        Esta acción realiza un borrado lógico y el producto dejará de estar disponible.
-      </p>
-      <div class="mt-5 flex flex-wrap gap-3">
-        <button
-          (click)="deleteProduct()"
-          [disabled]="isDeleting()"
-          variant="destructive"
-          type="button"
-          hlmBtn
-        >
-          {{ isDeleting() ? 'Eliminando...' : 'Eliminar producto' }}</button
-        ><button
-          (click)="cancelDeletion()"
-          [disabled]="isDeleting()"
-          variant="outline"
-          type="button"
-          hlmBtn
-        >
-          Cancelar
-        </button>
-      </div>
-    </section>
-  }
+
   <div class="mt-8">
-    <app-product-list
-      [pageResponse]="pageResponse()"
-      [isLoading]="isLoading()"
-      [products]="products()"
-      (pageChange)="loadProducts($event)"
-      (remove)="requestDeletion($event)"
-      (edit)="openEditForm($event)"
-    />
+    <app-product-list [refreshVersion]="listRefreshVersion()" (edit)="openEditForm($event)" />
   </div>
+
   <app-product-form-dialog
     (closed)="closeForm()"
-    (save)="submitForm($event)"
-    [categories]="categories()"
-    [isSaving]="isSaving()"
+    (saved)="refreshList()"
     [product]="editingProduct()"
     [isOpen]="isFormVisible()"
   />
