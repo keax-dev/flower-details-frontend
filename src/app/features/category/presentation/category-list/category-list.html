@@ -46,7 +46,7 @@
               </td>
               <td>
                 <div class="d-flex justify-content-end gap-2">
-                  <button (click)="edit.emit(category)" nz-button nzSize="small" type="button">
+                  <button (click)="edit.emit(category)" nz-button type="button">
                     <fa-icon [icon]="faPen" aria-hidden="true" />
                     Editar
                   </button>
@@ -58,7 +58,6 @@
                     nzDanger
                     nz-popconfirm
                     nzPopconfirmPlacement="topRight"
-                    nzSize="small"
                     type="button"
                   >
                     <fa-icon [icon]="faTrash" aria-hidden="true" />

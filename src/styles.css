@@ -2,6 +2,18 @@
   --color-primary: #198754;
   --color-primary-hover: #146c43;
   --color-secondary: #ffffff;
+  --ant-primary-color: var(--color-primary);
+  --ant-primary-color-hover: var(--color-primary-hover);
+  --ant-primary-color-active: var(--color-primary-hover);
+  --ant-primary-color-outline: rgb(25 135 84 / 20%);
+  --ant-primary-1: #e8f1e9;
+  --ant-primary-2: #c8d7cc;
+  --ant-primary-3: #9fbea8;
+  --ant-primary-4: #6fa984;
+  --ant-primary-5: #3a9562;
+  --ant-primary-6: var(--color-primary);
+  --ant-primary-7: var(--color-primary-hover);
+  --antd-wave-shadow-color: var(--color-primary);
 }
 
 * {
@@ -30,13 +42,7 @@ input {
   font: inherit;
 }
 
-.ant-btn-primary {
-  background-color: var(--color-primary);
-  border-color: var(--color-primary);
-}
-
-.ant-btn-primary:hover,
-.ant-btn-primary:focus {
-  background-color: var(--color-primary-hover);
-  border-color: var(--color-primary-hover);
+.ant-modal .ant-btn:not(.ant-btn-primary) {
+  --ant-primary-color-hover: #000000;
+  --ant-primary-color-active: #000000;
 }
