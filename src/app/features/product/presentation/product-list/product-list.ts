@@ -16,10 +16,10 @@ import {
   faArrowRight,
   faPen,
   faTrash,
-  faXmark,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 import { resolveApiErrorMessage } from '@core/http/utils/api-error';
 import { NotificationService } from '@core/notification/notification.service';
 import { PageResponse } from '@shared/domain/pagination/page-response.model';
@@ -29,8 +29,9 @@ const PAGE_SIZE = 10;
 
 @Component({
   selector: 'app-product-list',
-  imports: [NzButtonModule, FontAwesomeModule],
+  imports: [NzButtonModule, NzPopconfirmModule, FontAwesomeModule],
   templateUrl: './product-list.html',
+  styleUrl: './product-list.css',
 })
 export class ProductList {
   private readonly currencyFormatter = new Intl.NumberFormat('es-EC', {
@@ -46,13 +47,11 @@ export class ProductList {
 
   protected readonly products = signal<Product[]>([]);
   protected readonly pageResponse = signal<PageResponse<Product> | null>(null);
-  protected readonly pendingDeletion = signal<Product | null>(null);
   protected readonly isLoading = signal(false);
   protected readonly isDeleting = signal(false);
   protected readonly faArrowLeft = faArrowLeft;
   protected readonly faArrowRight = faArrowRight;
   protected readonly faTrash = faTrash;
-  protected readonly faXmark = faXmark;
   protected readonly faPen = faPen;
   protected readonly currentPage = computed(() => this.pageResponse()?.page ?? 0);
   protected readonly hasPreviousPage = computed(() => this.currentPage() > 0);
@@ -68,20 +67,7 @@ export class ProductList {
     });
   }
 
-  protected requestDeletion(product: Product): void {
-    this.pendingDeletion.set(product);
-  }
-
-  protected cancelDeletion(): void {
-    this.pendingDeletion.set(null);
-  }
-
-  protected deleteProduct(): void {
-    const product = this.pendingDeletion();
-    if (product === null) {
-      return;
-    }
-
+  protected deleteProduct(product: Product): void {
     this.isDeleting.set(true);
     this.productApiService
       .delete(product.id)
@@ -91,7 +77,6 @@ export class ProductList {
       )
       .subscribe({
         next: () => {
-          this.pendingDeletion.set(null);
           this.notificationService.success('Producto eliminado correctamente.');
           this.loadProducts(
             this.products().length === 1 ? Math.max(0, this.currentPage() - 1) : this.currentPage(),

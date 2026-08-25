@@ -10,6 +10,7 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
   selector: 'app-product-page',
   imports: [NzButtonModule, FontAwesomeModule, ProductFormDialog, ProductList],
   templateUrl: './product-page.html',
+  styleUrl: './product-page.css',
 })
 export class ProductPage {
   protected readonly faPlus = faPlus;

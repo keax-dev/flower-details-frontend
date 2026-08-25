@@ -1,127 +1,81 @@
 <section aria-labelledby="products-title">
-  <div>
-    <h2 id="products-title" class="font-serif text-2xl">Todos los productos</h2>
-    @if (pageResponse(); as response) {
-      <p class="mt-1 text-sm text-muted-foreground">
-        {{ response.totalElements }} productos registrados
-      </p>
-    }
+  <div class="row align-items-end gy-2">
+    <div class="col-12">
+      <h2 id="products-title" class="product-list__title mb-1">Todos los productos</h2>
+      @if (pageResponse(); as response) {
+        <p class="product-list__summary mb-0">{{ response.totalElements }} productos registrados</p>
+      }
+    </div>
   </div>
 
-  @if (pendingDeletion(); as product) {
-    <section aria-labelledby="delete-title" class="mt-5 border border-destructive/30 bg-card p-5">
-      <h3 id="delete-title" class="font-serif text-xl">Eliminar “{{ product.title }}”</h3>
-      <p class="mt-2 text-sm text-muted-foreground">
-        Esta acción realiza un borrado lógico y el producto dejará de estar disponible.
-      </p>
-      <div class="mt-5 flex flex-wrap gap-3">
-        <button
-          (click)="deleteProduct()"
-          [disabled]="isDeleting()"
-          hlmBtn
-          type="button"
-          variant="destructive"
-        >
-          <fa-icon [icon]="faTrash" aria-hidden="true" />
-          {{ isDeleting() ? 'Eliminando...' : 'Eliminar producto' }}
-        </button>
-        <button
-          (click)="cancelDeletion()"
-          [disabled]="isDeleting()"
-          hlmBtn
-          type="button"
-          variant="outline"
-        >
-          <fa-icon [icon]="faXmark" aria-hidden="true" />
-          Cancelar
-        </button>
-      </div>
-    </section>
-  }
-
-  <div class="mt-5 overflow-x-auto border-y border-border">
-    <table class="w-full min-w-[55rem] text-left text-sm">
-      <caption class="sr-only">
+  <div class="product-list__table-container mt-4">
+    <table class="table table-hover align-middle mb-0">
+      <caption class="visually-hidden">
         Listado de productos
       </caption>
-      <thead
-        class="border-b border-border bg-muted/60 text-xs tracking-[0.12em] text-muted-foreground uppercase"
-      >
+      <thead>
         <tr>
-          <th class="px-4 py-4 font-semibold" scope="col">Producto</th>
-          <th class="px-4 py-4 font-semibold" scope="col">Categoría</th>
-          <th class="px-4 py-4 font-semibold" scope="col">Precio</th>
-          <th class="px-4 py-4 font-semibold" scope="col">Imágenes</th>
-          <th class="px-4 py-4 font-semibold" scope="col">Estado</th>
-          <th class="px-4 py-4 text-right font-semibold" scope="col">Acciones</th>
+          <th scope="col">Producto</th>
+          <th class="product-list__optional-column" scope="col">Categoría</th>
+          <th scope="col">Precio</th>
+          <th class="product-list__optional-column" scope="col">Imágenes</th>
+          <th scope="col">Estado</th>
+          <th class="text-end" scope="col">Acciones</th>
         </tr>
       </thead>
       <tbody>
         @if (isLoading()) {
           <tr>
-            <td class="px-4 py-10 text-center text-muted-foreground" colspan="6">
-              Cargando productos...
-            </td>
+            <td class="product-list__empty" colspan="6">Cargando productos...</td>
           </tr>
         } @else {
           @for (product of products(); track product.id) {
-            <tr class="border-b border-border last:border-0">
-              <td class="px-4 py-4">
-                <div class="flex min-w-48 items-center gap-3">
+            <tr>
+              <td>
+                <div class="d-flex align-items-center gap-3 product-list__product">
                   @if (product.images[0]; as image) {
-                    <img
-                      [alt]="product.title"
-                      [src]="image.url"
-                      class="size-12 shrink-0 object-cover"
-                    />
+                    <img [alt]="product.title" [src]="image.url" class="product-list__image" />
                   } @else {
-                    <div
-                      aria-hidden="true"
-                      class="flex size-12 shrink-0 items-center justify-center bg-muted text-xs text-muted-foreground"
-                    >
-                      Sin foto
-                    </div>
+                    <div aria-hidden="true" class="product-list__image-placeholder">Sin foto</div>
                   }
-                  <div>
-                    <p class="font-medium">{{ product.title }}</p>
-                    <p class="mt-1 max-w-64 truncate text-xs text-muted-foreground">
-                      {{ product.description }}
-                    </p>
+                  <div class="min-w-0">
+                    <p class="fw-semibold mb-1">{{ product.title }}</p>
+                    <p class="product-list__description mb-0">{{ product.description }}</p>
                   </div>
                 </div>
               </td>
-              <td class="px-4 py-4 text-muted-foreground">{{ product.category.title }}</td>
-              <td class="px-4 py-4 font-medium">{{ formatPrice(product.price) }}</td>
-              <td class="px-4 py-4 text-muted-foreground">{{ product.images.length }}</td>
-              <td class="px-4 py-4">
+              <td class="product-list__optional-column product-list__muted">
+                {{ product.category.title }}
+              </td>
+              <td class="fw-semibold">{{ formatPrice(product.price) }}</td>
+              <td class="product-list__optional-column product-list__muted">
+                {{ product.images.length }}
+              </td>
+              <td>
                 <span
-                  [class.bg-primary/10]="product.active"
-                  [class.text-primary]="product.active"
-                  [class.bg-muted]="!product.active"
-                  [class.text-muted-foreground]="!product.active"
-                  class="inline-flex rounded-full px-2.5 py-1 text-xs font-semibold"
+                  [class.product-list__status--active]="product.active"
+                  [class.product-list__status--inactive]="!product.active"
+                  class="product-list__status"
                 >
                   {{ product.active ? 'Activo' : 'Inactivo' }}
                 </span>
               </td>
-              <td class="px-4 py-4">
-                <div class="flex justify-end gap-2">
-                  <button
-                    (click)="edit.emit(product)"
-                    hlmBtn
-                    size="sm"
-                    type="button"
-                    variant="outline"
-                  >
+              <td>
+                <div class="d-flex flex-wrap justify-content-end gap-2">
+                  <button (click)="edit.emit(product)" nz-button nzSize="small" type="button">
                     <fa-icon [icon]="faPen" aria-hidden="true" />
                     Editar
                   </button>
                   <button
-                    (click)="requestDeletion(product)"
-                    hlmBtn
-                    size="sm"
+                    (nzOnConfirm)="deleteProduct(product)"
+                    [disabled]="isDeleting()"
+                    [nzPopconfirmTitle]="'¿Eliminar el producto ' + product.title + '?'"
+                    nz-button
+                    nzDanger
+                    nz-popconfirm
+                    nzPopconfirmPlacement="topRight"
+                    nzSize="small"
                     type="button"
-                    variant="destructive"
                   >
                     <fa-icon [icon]="faTrash" aria-hidden="true" />
                     Eliminar
@@ -131,9 +85,7 @@
             </tr>
           } @empty {
             <tr>
-              <td class="px-4 py-10 text-center text-muted-foreground" colspan="6">
-                Todavía no hay productos registrados.
-              </td>
+              <td class="product-list__empty" colspan="6">Todavía no hay productos registrados.</td>
             </tr>
           }
         }
@@ -142,33 +94,33 @@
   </div>
 
   @if (pageResponse(); as response) {
-    <nav aria-label="Paginación de productos" class="mt-5 flex items-center justify-between gap-4">
-      <p class="text-sm text-muted-foreground">
-        Página {{ response.page + 1 }} de {{ response.totalPages || 1 }}
-      </p>
-      <div class="flex gap-2">
-        <button
-          (click)="previousPage()"
-          [disabled]="!hasPreviousPage() || isLoading()"
-          hlmBtn
-          size="sm"
-          type="button"
-          variant="outline"
-        >
-          <fa-icon [icon]="faArrowLeft" aria-hidden="true" />
-          Anterior
-        </button>
-        <button
-          (click)="nextPage()"
-          [disabled]="!hasNextPage() || isLoading()"
-          hlmBtn
-          size="sm"
-          type="button"
-          variant="outline"
-        >
-          Siguiente
-          <fa-icon [icon]="faArrowRight" aria-hidden="true" />
-        </button>
+    <nav aria-label="Paginación de productos" class="row align-items-center gy-3 mt-4">
+      <div class="col-12 col-md">
+        <p class="product-list__summary mb-0">
+          Página {{ response.page + 1 }} de {{ response.totalPages || 1 }}
+        </p>
+      </div>
+      <div class="col-12 col-md-auto">
+        <div class="d-flex gap-2">
+          <button
+            (click)="previousPage()"
+            [disabled]="!hasPreviousPage() || isLoading()"
+            nz-button
+            type="button"
+          >
+            <fa-icon [icon]="faArrowLeft" aria-hidden="true" />
+            Anterior
+          </button>
+          <button
+            (click)="nextPage()"
+            [disabled]="!hasNextPage() || isLoading()"
+            nz-button
+            type="button"
+          >
+            Siguiente
+            <fa-icon [icon]="faArrowRight" aria-hidden="true" />
+          </button>
+        </div>
       </div>
     </nav>
   }

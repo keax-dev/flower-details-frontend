@@ -1,0 +1,125 @@
+:host {
+  display: block;
+}
+
+.product-list__title {
+  color: #173427;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 1.75rem;
+  font-weight: 600;
+}
+
+.product-list__summary,
+.product-list__muted,
+.product-list__description,
+.product-list__empty {
+  color: #527060;
+}
+
+.product-list__table-container {
+  width: 100%;
+  border: 1px solid #c8d7cc;
+}
+
+.product-list__table-container table {
+  width: 100%;
+}
+
+.product-list__table-container thead th {
+  padding: 1rem;
+  border-bottom-color: #c8d7cc;
+  background-color: #e8f1e9;
+  color: #527060;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.product-list__table-container tbody td {
+  padding: 1rem;
+  border-bottom-color: #dbe6de;
+}
+
+.product-list__product {
+  min-width: 16rem;
+}
+
+.product-list__image,
+.product-list__image-placeholder {
+  flex: 0 0 auto;
+  width: 3rem;
+  height: 3rem;
+}
+
+.product-list__image {
+  object-fit: cover;
+}
+
+.product-list__image-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #e8f1e9;
+  color: #527060;
+  font-size: 0.6875rem;
+  text-align: center;
+}
+
+.product-list__description {
+  display: -webkit-box;
+  overflow: hidden;
+  font-size: 0.75rem;
+  line-height: 1.4;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.product-list__empty {
+  padding: 2.5rem !important;
+  text-align: center;
+}
+
+.product-list__status {
+  display: inline-block;
+  padding: 0.25rem 0.625rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.product-list__status--active {
+  background-color: #d1e7dd;
+  color: #146c43;
+}
+
+.product-list__status--inactive {
+  background-color: #e9ecef;
+  color: #52615a;
+}
+
+@media (max-width: 767.98px) {
+  .product-list__optional-column {
+    display: none;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .product-list__table-container table {
+    table-layout: fixed;
+  }
+
+  .product-list__table-container thead th,
+  .product-list__table-container tbody td {
+    padding: 0.75rem 0.5rem;
+  }
+
+  .product-list__product {
+    min-width: 0;
+  }
+
+  .product-list__image,
+  .product-list__image-placeholder {
+    display: none;
+  }
+}

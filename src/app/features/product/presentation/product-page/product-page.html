@@ -1,25 +1,29 @@
-<main
-  class="min-h-dvh bg-background px-6 py-6 text-foreground sm:px-12 lg:px-[clamp(3rem,7vw,8rem)] lg:py-8"
->
-  <header class="flex flex-wrap items-center justify-between gap-4 border-b border-border pb-5">
-    <div>
-      <p class="text-xs font-bold tracking-[0.16em] text-primary uppercase">Administración</p>
-      <h1 class="mt-2 font-serif text-3xl sm:text-4xl">Productos</h1>
+<main class="product-page py-4 py-md-5">
+  <div class="container-fluid product-page__container">
+    <header class="row align-items-center gy-3 product-page__header">
+      <div class="col-12 col-md">
+        <p class="product-page__eyebrow mb-2">Administración</p>
+        <h1 class="product-page__title mb-0">Productos</h1>
+      </div>
+      <div class="col-12 col-md-auto">
+        <button (click)="openCreateForm()" nz-button nzType="primary" type="button">
+          <fa-icon [icon]="faPlus" aria-hidden="true" />
+          Nuevo producto
+        </button>
+      </div>
+    </header>
+
+    <div class="row mt-4 mt-md-5">
+      <div class="col-12">
+        <app-product-list [refreshVersion]="listRefreshVersion()" (edit)="openEditForm($event)" />
+      </div>
     </div>
-    <button (click)="openCreateForm()" nz-button nzType="primary" type="button">
-      <fa-icon [icon]="faPlus" aria-hidden="true" />
-      Nuevo producto
-    </button>
-  </header>
 
-  <div class="mt-8">
-    <app-product-list [refreshVersion]="listRefreshVersion()" (edit)="openEditForm($event)" />
+    <app-product-form-dialog
+      (closed)="closeForm()"
+      (saved)="refreshList()"
+      [product]="editingProduct()"
+      [isOpen]="isFormVisible()"
+    />
   </div>
-
-  <app-product-form-dialog
-    (closed)="closeForm()"
-    (saved)="refreshList()"
-    [product]="editingProduct()"
-    [isOpen]="isFormVisible()"
-  />
 </main>

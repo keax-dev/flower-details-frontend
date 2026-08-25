@@ -1,6 +1,5 @@
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzModalModule } from 'ng-zorro-antd/modal';
@@ -11,8 +10,6 @@ import { Component, DestroyRef, effect, inject, input, output, signal } from '@a
 import { ProductPayload } from '@features/product/models/product-payload.model';
 import { Product } from '@features/product/models/product.model';
 import { ProductApiService } from '@features/product/services/product-api.service';
-import { faFloppyDisk, faXmark } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { resolveApiErrorMessage } from '@core/http/utils/api-error';
 import { NotificationService } from '@core/notification/notification.service';
 import { finalize } from 'rxjs';
@@ -20,12 +17,10 @@ import { finalize } from 'rxjs';
 @Component({
   selector: 'app-product-form-dialog',
   imports: [
-    NzButtonModule,
     NzCheckboxModule,
     NzInputModule,
     NzModalModule,
     NzSelectModule,
-    FontAwesomeModule,
     ReactiveFormsModule,
   ],
   templateUrl: './product-form-dialog.html',
@@ -46,8 +41,6 @@ export class ProductFormDialog {
   protected readonly categories = signal<Category[]>([]);
   protected readonly selectedFiles = signal<File[]>([]);
   protected readonly isSaving = signal(false);
-  protected readonly faFloppyDisk = faFloppyDisk;
-  protected readonly faXmark = faXmark;
   protected readonly productForm = this.formBuilder.group({
     categoryId: [0, [Validators.required, Validators.min(1)]],
     title: ['', [Validators.required, Validators.maxLength(160)]],
@@ -63,11 +56,6 @@ export class ProductFormDialog {
         this.loadCategories();
       }
     });
-  }
-
-  protected setCategory(categoryId: number | null | undefined): void {
-    this.productForm.controls.categoryId.setValue(categoryId ?? 0);
-    this.productForm.controls.categoryId.markAsTouched();
   }
 
   protected selectFiles(event: Event): void {

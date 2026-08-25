@@ -4,8 +4,8 @@
   [nzCancelDisabled]="isSaving()"
   [nzOkDisabled]="isSaving()"
   [nzOkLoading]="isSaving()"
-  [nzVisible]="isOpen()"
   [nzTitle]="product() ? 'Actualizar producto' : 'Crear producto'"
+  [nzVisible]="isOpen()"
   nzCancelText="Cancelar"
   nzOkText="Guardar producto"
 >
@@ -14,8 +14,8 @@
       <div class="container-fluid px-0">
         <div class="row g-3">
           <div class="col-12 col-md-6">
-            <label class="form-label" for="product-category">Categoría</label
-            ><nz-select
+            <label class="form-label" for="product-category">Categoría</label>
+            <nz-select
               class="w-100"
               formControlName="categoryId"
               id="product-category"
@@ -30,10 +30,9 @@
             }
           </div>
           <div class="col-12 col-md-6">
-            <label class="form-label" for="product-price">Precio</label
-            ><input
+            <label class="form-label" for="product-price">Precio</label>
+            <input
               [class.is-invalid]="hasError('price')"
-              class="form-control"
               formControlName="price"
               id="product-price"
               min="0.01"
@@ -46,10 +45,9 @@
             }
           </div>
           <div class="col-12">
-            <label class="form-label" for="product-title">Título</label
-            ><input
+            <label class="form-label" for="product-title">Título</label>
+            <input
               [class.is-invalid]="hasError('title')"
-              class="form-control"
               formControlName="title"
               id="product-title"
               maxlength="160"
@@ -61,10 +59,9 @@
             }
           </div>
           <div class="col-12">
-            <label class="form-label" for="product-description">Descripción</label
-            ><textarea
+            <label class="form-label" for="product-description">Descripción</label>
+            <textarea
               [class.is-invalid]="hasError('description')"
-              class="form-control"
               formControlName="description"
               id="product-description"
               maxlength="1000"
@@ -76,8 +73,8 @@
             }
           </div>
           <div class="col-12">
-            <label class="form-label" for="product-images">Imágenes</label
-            ><input
+            <label class="form-label" for="product-images">Imágenes</label>
+            <input
               (change)="selectFiles($event)"
               accept="image/jpeg,image/png,image/webp"
               class="form-control"
