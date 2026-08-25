@@ -2,13 +2,13 @@ import { CategoryFormDialog } from '@features/category/presentation/category-for
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { Component, signal } from '@angular/core';
-import { HlmButtonImports } from '@spartan-ng/helm/button';
+import { NzButtonModule } from 'ng-zorro-antd/button';
 import { CategoryList } from '@features/category/presentation/category-list/category-list';
 import { Category } from '@app/features/category/models/category.model';
 
 @Component({
   selector: 'app-category-page',
-  imports: [HlmButtonImports, FontAwesomeModule, CategoryFormDialog, CategoryList],
+  imports: [NzButtonModule, FontAwesomeModule, CategoryFormDialog, CategoryList],
   templateUrl: './category-page.html',
 })
 export class CategoryPage {

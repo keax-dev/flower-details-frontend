@@ -7,11 +7,11 @@
       <div class="flex items-center gap-3">
         <span class="text-sm text-muted-foreground">Hola, {{ greeting() }}</span>
         @if (activeUser.role === 'ADMIN') {
-          <a hlmBtn routerLink="/admin/categories" size="sm" variant="outline">Administrar</a>
+          <a nz-button routerLink="/admin/categories">Administrar</a>
         }
       </div>
     } @else {
-      <a hlmBtn routerLink="/auth/login" size="sm" variant="outline">Iniciar sesión</a>
+      <a nz-button routerLink="/auth/login">Iniciar sesión</a>
     }
   </header>
 
@@ -27,7 +27,9 @@
       La administración de catálogo, pedidos y clientes irá tomando forma desde aquí.
     </p>
     @if (!user()) {
-      <a hlmBtn class="mt-8 h-11 px-5 text-base" routerLink="/auth/login">Acceder al sistema</a>
+      <a class="mt-8 h-11 px-5 text-base" nz-button nzType="primary" routerLink="/auth/login"
+        >Acceder al sistema</a
+      >
     }
   </section>
 

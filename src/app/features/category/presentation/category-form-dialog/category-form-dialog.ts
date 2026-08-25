@@ -1,11 +1,9 @@
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { BrnDialogImports } from '@spartan-ng/brain/dialog';
-import { HlmButtonImports } from '@spartan-ng/helm/button';
-import { HlmCheckboxImports } from '@spartan-ng/helm/checkbox';
-import { HlmInputImports } from '@spartan-ng/helm/input';
-import { HlmLabelImports } from '@spartan-ng/helm/label';
-import { HlmTextareaImports } from '@spartan-ng/helm/textarea';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzModalModule } from 'ng-zorro-antd/modal';
 import { faFloppyDisk, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { Component, DestroyRef, effect, inject, input, output, signal } from '@angular/core';
@@ -20,12 +18,10 @@ import { resolveApiErrorMessage } from '@core/http/utils/api-error';
 @Component({
   selector: 'app-category-form-dialog',
   imports: [
-    BrnDialogImports,
-    HlmButtonImports,
-    HlmCheckboxImports,
-    HlmInputImports,
-    HlmLabelImports,
-    HlmTextareaImports,
+    NzButtonModule,
+    NzCheckboxModule,
+    NzInputModule,
+    NzModalModule,
     FontAwesomeModule,
     ReactiveFormsModule,
   ],

@@ -5,15 +5,13 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RouterOutlet } from '@angular/router';
 import { AuthService } from '@features/auth/application/auth.service';
 import { CsrfService } from '@core/http/security/csrf.service';
-import { HlmToasterImports } from '@spartan-ng/helm/sonner';
 
 @Component({
   selector: 'app-root',
-  imports: [ApplicationNavigation, HlmToasterImports, RouterOutlet],
+  imports: [ApplicationNavigation, RouterOutlet],
   template: `
     <app-application-navigation />
     <router-outlet />
-    <hlm-toaster position="bottom-center" richColors />
   `,
 })
 export class App {

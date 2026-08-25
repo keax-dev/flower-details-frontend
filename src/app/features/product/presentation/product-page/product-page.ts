@@ -4,11 +4,11 @@ import { ProductFormDialog } from '@features/product/presentation/product-form-d
 import { ProductList } from '@features/product/presentation/product-list/product-list';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { HlmButtonImports } from '@spartan-ng/helm/button';
+import { NzButtonModule } from 'ng-zorro-antd/button';
 
 @Component({
   selector: 'app-product-page',
-  imports: [HlmButtonImports, FontAwesomeModule, ProductFormDialog, ProductList],
+  imports: [NzButtonModule, FontAwesomeModule, ProductFormDialog, ProductList],
   templateUrl: './product-page.html',
 })
 export class ProductPage {

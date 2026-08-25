@@ -1,9 +1,9 @@
 import { NavigationEnd, Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { Component, DestroyRef, computed, inject, signal } from '@angular/core';
-import { lucideLogOut, lucideMenu, lucideX } from '@ng-icons/lucide';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { filter, finalize, map } from 'rxjs';
-import { NgIcon, provideIcons } from '@ng-icons/core';
+import { faBars, faRightFromBracket, faXmark } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { AuthService } from '@features/auth/application/auth.service';
 import { UserRole } from '@features/auth/domain/model/auth-user.model';
 
@@ -24,11 +24,13 @@ const NAVIGATION_BY_ROLE: Readonly<Record<UserRole, readonly NavigationItem[]>> 
 
 @Component({
   selector: 'app-application-navigation',
-  imports: [NgIcon, RouterLink, RouterLinkActive],
-  providers: [provideIcons({ lucideLogOut, lucideMenu, lucideX })],
+  imports: [FontAwesomeModule, RouterLink, RouterLinkActive],
   templateUrl: './application-navigation.html',
 })
 export class ApplicationNavigation {
+  protected readonly faBars = faBars;
+  protected readonly faRightFromBracket = faRightFromBracket;
+  protected readonly faXmark = faXmark;
   private readonly authService = inject(AuthService);
   private readonly destroyRef = inject(DestroyRef);
   private readonly router = inject(Router);

@@ -1,6 +1,10 @@
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { BrnDialogImports } from '@spartan-ng/brain/dialog';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzModalModule } from 'ng-zorro-antd/modal';
+import { NzSelectModule } from 'ng-zorro-antd/select';
 import { Category } from '@app/features/category/models/category.model';
 import { CategoryApiService } from '@app/features/category/services/category-api.service';
 import { Component, DestroyRef, effect, inject, input, output, signal } from '@angular/core';
@@ -9,12 +13,6 @@ import { Product } from '@features/product/models/product.model';
 import { ProductApiService } from '@features/product/services/product-api.service';
 import { faFloppyDisk, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { HlmButtonImports } from '@spartan-ng/helm/button';
-import { HlmCheckboxImports } from '@spartan-ng/helm/checkbox';
-import { HlmInputImports } from '@spartan-ng/helm/input';
-import { HlmLabelImports } from '@spartan-ng/helm/label';
-import { HlmSelectImports } from '@spartan-ng/helm/select';
-import { HlmTextareaImports } from '@spartan-ng/helm/textarea';
 import { resolveApiErrorMessage } from '@core/http/utils/api-error';
 import { NotificationService } from '@core/notification/notification.service';
 import { finalize } from 'rxjs';
@@ -22,14 +20,12 @@ import { finalize } from 'rxjs';
 @Component({
   selector: 'app-product-form-dialog',
   imports: [
-    BrnDialogImports,
+    NzButtonModule,
+    NzCheckboxModule,
+    NzInputModule,
+    NzModalModule,
+    NzSelectModule,
     FontAwesomeModule,
-    HlmButtonImports,
-    HlmCheckboxImports,
-    HlmInputImports,
-    HlmLabelImports,
-    HlmSelectImports,
-    HlmTextareaImports,
     ReactiveFormsModule,
   ],
   templateUrl: './product-form-dialog.html',

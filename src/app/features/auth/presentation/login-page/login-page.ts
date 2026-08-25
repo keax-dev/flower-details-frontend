@@ -3,16 +3,15 @@ import { Component, DestroyRef, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { resolveApiErrorMessage } from '@core/http/utils/api-error';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { HlmButtonImports } from '@spartan-ng/helm/button';
-import { HlmInputImports } from '@spartan-ng/helm/input';
-import { HlmLabelImports } from '@spartan-ng/helm/label';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzInputModule } from 'ng-zorro-antd/input';
 import { maxUtf8Bytes } from '../validation/max-utf8-bytes.validator';
 import { AuthService } from '@features/auth/application/auth.service';
 import { finalize } from 'rxjs';
 
 @Component({
   selector: 'app-login-page',
-  imports: [HlmButtonImports, HlmInputImports, HlmLabelImports, ReactiveFormsModule, RouterLink],
+  imports: [NzButtonModule, NzInputModule, ReactiveFormsModule, RouterLink],
   templateUrl: './login-page.html',
 })
 export class LoginPage {

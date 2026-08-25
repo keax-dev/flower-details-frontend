@@ -1,21 +1,24 @@
 import { Service } from '@angular/core';
-import { toast } from '@spartan-ng/brain/sonner';
+import { NzMessageService } from 'ng-zorro-antd/message';
+import { inject } from '@angular/core';
 
 @Service()
 export class NotificationService {
+  private readonly messageService = inject(NzMessageService);
+
   success(message: string): void {
-    toast.success(message);
+    this.messageService.success(message);
   }
 
   error(message: string): void {
-    toast.error(message);
+    this.messageService.error(message);
   }
 
   warning(message: string): void {
-    toast.warning(message);
+    this.messageService.warning(message);
   }
 
   info(message: string): void {
-    toast.info(message);
+    this.messageService.info(message);
   }
 }

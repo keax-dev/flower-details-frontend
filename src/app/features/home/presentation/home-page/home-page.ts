@@ -1,11 +1,11 @@
 import { Component, computed, inject } from '@angular/core';
-import { HlmButtonImports } from '@spartan-ng/helm/button';
+import { NzButtonModule } from 'ng-zorro-antd/button';
 import { AuthService } from '@features/auth/application/auth.service';
 import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-home-page',
-  imports: [HlmButtonImports, RouterLink],
+  imports: [NzButtonModule, RouterLink],
   templateUrl: './home-page.html',
 })
 export class HomePage {

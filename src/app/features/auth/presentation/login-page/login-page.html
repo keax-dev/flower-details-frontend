@@ -62,7 +62,7 @@
         name="email"
         type="email"
         id="email"
-        hlmInput
+        nz-input
       />
       @if (hasError('email')) {
         <p class="text-sm text-destructive">Ingresa un correo electrónico válido.</p>
@@ -77,7 +77,7 @@
         name="password"
         type="password"
         id="password"
-        hlmInput
+        nz-input
       />
       @if (hasError('password')) {
         <p class="text-sm text-destructive">
@@ -89,7 +89,13 @@
         </p>
       }
 
-      <button [disabled]="isSubmitting()" class="mt-7 h-11 w-full text-base" hlmBtn type="submit">
+      <button
+        [disabled]="isSubmitting()"
+        class="mt-7 h-11 w-full text-base"
+        nz-button
+        nzType="primary"
+        type="submit"
+      >
         {{ isSubmitting() ? 'Ingresando...' : 'Iniciar sesión' }}
       </button>
     </form>

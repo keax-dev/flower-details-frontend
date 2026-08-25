@@ -19,7 +19,7 @@ import {
   faXmark,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { HlmButtonImports } from '@spartan-ng/helm/button';
+import { NzButtonModule } from 'ng-zorro-antd/button';
 import { resolveApiErrorMessage } from '@core/http/utils/api-error';
 import { NotificationService } from '@core/notification/notification.service';
 import { PageResponse } from '@shared/domain/pagination/page-response.model';
@@ -29,7 +29,7 @@ const PAGE_SIZE = 10;
 
 @Component({
   selector: 'app-product-list',
-  imports: [HlmButtonImports, FontAwesomeModule],
+  imports: [NzButtonModule, FontAwesomeModule],
   templateUrl: './product-list.html',
 })
 export class ProductList {

@@ -21,11 +21,7 @@
         class="inline-flex size-10 items-center justify-center rounded-sm text-primary-foreground hover:bg-primary-foreground/15 focus-visible:ring-3 focus-visible:ring-primary-foreground/60 focus-visible:outline-none md:hidden"
         type="button"
       >
-        <ng-icon
-          [name]="isMenuOpen() ? 'lucideX' : 'lucideMenu'"
-          aria-hidden="true"
-          size="1.25rem"
-        />
+        <fa-icon [icon]="isMenuOpen() ? faXmark : faBars" aria-hidden="true" />
       </button>
 
       <div
@@ -60,7 +56,7 @@
               class="inline-flex size-9 shrink-0 items-center justify-center rounded-sm text-primary-foreground hover:bg-primary-foreground/15 focus-visible:ring-3 focus-visible:ring-primary-foreground/60 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-60"
               type="button"
             >
-              <ng-icon aria-hidden="true" name="lucideLogOut" size="1.1rem" />
+              <fa-icon [icon]="faRightFromBracket" aria-hidden="true" />
             </button>
           } @else {
             <a

@@ -1,5 +1,5 @@
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { HlmButtonImports } from '@spartan-ng/helm/button';
+import { NzButtonModule } from 'ng-zorro-antd/button';
 import {
   faArrowLeft,
   faArrowRight,
@@ -30,7 +30,7 @@ const PAGE_SIZE = 10;
 
 @Component({
   selector: 'app-category-list',
-  imports: [HlmButtonImports, FontAwesomeModule],
+  imports: [NzButtonModule, FontAwesomeModule],
   templateUrl: './category-list.html',
 })
 export class CategoryList {
