@@ -1,26 +1,3 @@
-<ng-template #footer>
-  <div class="d-flex justify-content-end gap-2">
-    <button
-      (click)="closed.emit()"
-      [disabled]="isSaving()"
-      class="btn btn-sm btn-outline-dark px-3"
-      type="button"
-    >
-      <fa-icon [icon]="faXmark" aria-hidden="true" />
-      Cancelar
-    </button>
-    <button
-      (click)="submit()"
-      [disabled]="isSaving()"
-      class="btn btn-sm btn-success px-4"
-      type="button"
-    >
-      <fa-icon [icon]="faFloppyDisk" aria-hidden="true" />
-      {{ isSaving() ? 'Guardando...' : 'Guardar' }}
-    </button>
-  </div>
-</ng-template>
-
 <nz-modal
   (nzOnCancel)="closed.emit()"
   [nzFooter]="footer"
@@ -98,3 +75,26 @@
     </form>
   </ng-container>
 </nz-modal>
+
+<ng-template #footer>
+  <div class="d-flex justify-content-end gap-2">
+    <button
+      (click)="closed.emit()"
+      [disabled]="isSaving()"
+      class="btn btn-sm btn-outline-dark px-3"
+      type="button"
+    >
+      <fa-icon [icon]="faXmark" aria-hidden="true" />
+      Cancelar
+    </button>
+    <button
+      (click)="submit()"
+      [disabled]="isSaving()"
+      class="btn btn-sm btn-success px-4"
+      type="button"
+    >
+      <fa-icon [icon]="faFloppyDisk" aria-hidden="true" />
+      {{ isSaving() ? 'Guardando...' : 'Guardar' }}
+    </button>
+  </div>
+</ng-template>

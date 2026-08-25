@@ -1,6 +1,6 @@
 <nz-modal
   (nzOnCancel)="closed.emit()"
-  [nzFooter]="null"
+  [nzFooter]="footer"
   [nzTitle]="'Imágenes de ' + product().title"
   [nzVisible]="isOpen()"
 >
@@ -9,20 +9,29 @@
       <div class="row g-4">
         <div class="col-12">
           <p class="product-image-dialog__description mb-3">
-            Selecciona imágenes JPG, PNG o WEBP. Cada archivo se cargará automáticamente.
+            Selecciona imágenes JPG, PNG o WEBP. Podrás revisar la selección antes de guardarla.
           </p>
           <nz-upload
-            [(nzFileList)]="fileList"
+            [nzBeforeUpload]="queueImage"
             [nzAccept]="acceptedImageTypes"
-            [nzCustomRequest]="uploadImage"
+            [nzFileList]="fileList"
+            [nzDownload]="downloadImage"
             [nzDisabled]="isUploading()"
-            [nzMultiple]="true"
+            [nzIconRender]="fileIcon"
+            [nzMultiple]="false"
+            [nzRemove]="removeQueuedImage"
+            [nzShowUploadList]="{
+              showPreviewIcon: false,
+              showDownloadIcon: true,
+              showRemoveIcon: true,
+              downloadIcon: downloadIcon,
+              removeIcon: removeIcon
+            }"
             nzListType="picture-card"
-            nzName="images"
           >
             <button class="btn btn-outline-success" type="button">
               <fa-icon [icon]="faUpload" aria-hidden="true" />
-              Añadir imágenes
+              Añadir imagen
             </button>
           </nz-upload>
         </div>
@@ -43,3 +52,33 @@
     </div>
   </ng-container>
 </nz-modal>
+
+<ng-template #fileIcon>
+  <fa-icon [icon]="faImage" aria-hidden="true" />
+</ng-template>
+
+<ng-template #removeIcon>
+  <fa-icon [icon]="faTrash" aria-hidden="true" class="text-white" />
+</ng-template>
+
+<ng-template #downloadIcon>
+  <fa-icon [icon]="faDownload" aria-hidden="true" class="text-white" />
+</ng-template>
+
+<ng-template #footer>
+  <div class="d-flex justify-content-end gap-2">
+    <button (click)="closed.emit()" [disabled]="isUploading()" class="btn btn-sm btn-outline-dark px-3" type="button">
+      <fa-icon [icon]="faXmark" aria-hidden="true" />
+      Cancelar
+    </button>
+    <button
+      (click)="saveImages()"
+      [disabled]="isUploading() || fileList.length === 0"
+      class="btn btn-sm btn-success px-4"
+      type="button"
+    >
+      <fa-icon [icon]="faFloppyDisk" aria-hidden="true" />
+      {{ isUploading() ? 'Guardando...' : 'Guardar' }}
+    </button>
+  </div>
+</ng-template>
