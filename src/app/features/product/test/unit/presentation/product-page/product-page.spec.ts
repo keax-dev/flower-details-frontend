@@ -25,15 +25,17 @@ describe('ProductPage', () => {
     expect(component['isFormVisible']()).toBe(true);
   });
 
-  it('closes the form and refreshes the list after save', async () => {
+  it('refreshes the list and opens image management after creating a product', async () => {
     await TestBed.configureTestingModule({ imports: [ProductPage] }).compileComponents();
     const component = TestBed.createComponent(ProductPage).componentInstance;
 
-    component['openEditForm'](PRODUCT);
-    component['refreshList']();
+    component['openCreateForm']();
+    component['handleProductSaved'](PRODUCT);
 
     expect(component['editingProduct']()).toBeNull();
     expect(component['isFormVisible']()).toBe(false);
     expect(component['listRefreshVersion']()).toBe(1);
+    expect(component['imageProduct']()).toBe(PRODUCT);
+    expect(component['isImageManagerVisible']()).toBe(true);
   });
 });

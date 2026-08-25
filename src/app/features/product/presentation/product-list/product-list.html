@@ -62,23 +62,36 @@
               </td>
               <td>
                 <div class="d-flex flex-wrap justify-content-end gap-2">
-                  <button (click)="edit.emit(product)" nz-button nzSize="small" type="button">
+                  <button
+                    (click)="manageImages.emit(product)"
+                    aria-label="Gestionar imágenes"
+                    class="btn btn-outline-secondary btn-sm product-list__action-button"
+                    title="Gestionar imágenes"
+                    type="button"
+                  >
+                    <fa-icon [icon]="faImages" aria-hidden="true" />
+                  </button>
+                  <button
+                    (click)="edit.emit(product)"
+                    aria-label="Editar producto"
+                    class="btn btn-outline-dark btn-sm product-list__action-button"
+                    title="Editar producto"
+                    type="button"
+                  >
                     <fa-icon [icon]="faPen" aria-hidden="true" />
-                    Editar
                   </button>
                   <button
                     (nzOnConfirm)="deleteProduct(product)"
                     [disabled]="isDeleting()"
                     [nzPopconfirmTitle]="'¿Eliminar el producto ' + product.title + '?'"
-                    nz-button
-                    nzDanger
+                    aria-label="Eliminar producto"
+                    class="btn btn-outline-danger btn-sm product-list__action-button"
                     nz-popconfirm
                     nzPopconfirmPlacement="topRight"
-                    nzSize="small"
+                    title="Eliminar producto"
                     type="button"
                   >
                     <fa-icon [icon]="faTrash" aria-hidden="true" />
-                    Eliminar
                   </button>
                 </div>
               </td>
@@ -105,7 +118,7 @@
           <button
             (click)="previousPage()"
             [disabled]="!hasPreviousPage() || isLoading()"
-            nz-button
+            class="btn btn-sm btn-outline-dark"
             type="button"
           >
             <fa-icon [icon]="faArrowLeft" aria-hidden="true" />
@@ -114,7 +127,7 @@
           <button
             (click)="nextPage()"
             [disabled]="!hasNextPage() || isLoading()"
-            nz-button
+            class="btn btn-sm btn-outline-dark"
             type="button"
           >
             Siguiente

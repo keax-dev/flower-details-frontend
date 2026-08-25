@@ -1,13 +1,31 @@
+<ng-template #footer>
+  <div class="d-flex justify-content-end gap-2">
+    <button
+      (click)="closed.emit()"
+      [disabled]="isSaving()"
+      class="btn btn-sm btn-outline-dark px-3"
+      type="button"
+    >
+      <fa-icon [icon]="faXmark" aria-hidden="true" />
+      Cancelar
+    </button>
+    <button
+      (click)="submit()"
+      [disabled]="isSaving()"
+      class="btn btn-sm btn-success px-4"
+      type="button"
+    >
+      <fa-icon [icon]="faFloppyDisk" aria-hidden="true" />
+      {{ isSaving() ? 'Guardando...' : 'Guardar' }}
+    </button>
+  </div>
+</ng-template>
+
 <nz-modal
   (nzOnCancel)="closed.emit()"
-  (nzOnOk)="submit()"
-  [nzCancelDisabled]="isSaving()"
-  [nzOkDisabled]="isSaving()"
-  [nzOkLoading]="isSaving()"
+  [nzFooter]="footer"
   [nzTitle]="product() ? 'Actualizar producto' : 'Crear producto'"
   [nzVisible]="isOpen()"
-  nzCancelText="Cancelar"
-  nzOkText="Guardar producto"
 >
   <ng-container *nzModalContent>
     <form [formGroup]="productForm" novalidate>
@@ -73,23 +91,7 @@
             }
           </div>
           <div class="col-12">
-            <label class="form-label" for="product-images">Imágenes</label>
-            <input
-              (change)="selectFiles($event)"
-              accept="image/jpeg,image/png,image/webp"
-              class="form-control"
-              id="product-images"
-              multiple
-              type="file"
-            />
-            @if (selectedFiles().length > 0) {
-              <div class="form-text">
-                {{ selectedFiles().length }} imagen(es) lista(s) para cargar.
-              </div>
-            }
-          </div>
-          <div class="col-12">
-            <label formControlName="active" nz-checkbox>Producto activo</label>
+            <label formControlName="active" nz-checkbox>Activo</label>
           </div>
         </div>
       </div>

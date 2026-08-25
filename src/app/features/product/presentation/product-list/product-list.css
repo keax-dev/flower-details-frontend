@@ -98,6 +98,15 @@
   color: #52615a;
 }
 
+.product-list__action-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+}
+
 @media (max-width: 767.98px) {
   .product-list__optional-column {
     display: none;

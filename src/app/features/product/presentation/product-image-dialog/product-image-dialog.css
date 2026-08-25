@@ -1,0 +1,22 @@
+:host {
+  display: block;
+}
+
+.product-image-dialog__description {
+  color: #527060;
+  line-height: 1.6;
+}
+
+.product-image-dialog__title {
+  margin-bottom: 1rem;
+  color: #173427;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.product-image-dialog__image {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+}

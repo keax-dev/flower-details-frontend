@@ -1,0 +1,45 @@
+<nz-modal
+  (nzOnCancel)="closed.emit()"
+  [nzFooter]="null"
+  [nzTitle]="'Imágenes de ' + product().title"
+  [nzVisible]="isOpen()"
+>
+  <ng-container *nzModalContent>
+    <div class="container-fluid px-0">
+      <div class="row g-4">
+        <div class="col-12">
+          <p class="product-image-dialog__description mb-3">
+            Selecciona imágenes JPG, PNG o WEBP. Cada archivo se cargará automáticamente.
+          </p>
+          <nz-upload
+            [(nzFileList)]="fileList"
+            [nzAccept]="acceptedImageTypes"
+            [nzCustomRequest]="uploadImage"
+            [nzDisabled]="isUploading()"
+            [nzMultiple]="true"
+            nzListType="picture-card"
+            nzName="images"
+          >
+            <button class="btn btn-outline-success" type="button">
+              <fa-icon [icon]="faUpload" aria-hidden="true" />
+              Añadir imágenes
+            </button>
+          </nz-upload>
+        </div>
+
+        @if (product().images.length > 0) {
+          <div class="col-12">
+            <h3 class="product-image-dialog__title">Imágenes actuales</h3>
+            <div class="row g-3">
+              @for (image of product().images; track image.id) {
+                <div class="col-6 col-md-4">
+                  <img [alt]="image.originalFileName" [src]="image.url" class="product-image-dialog__image" />
+                </div>
+              }
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  </ng-container>
+</nz-modal>

@@ -14,11 +14,11 @@ import { ProductApiService } from '@features/product/services/product-api.servic
 import {
   faArrowLeft,
   faArrowRight,
+  faImages,
   faPen,
   faTrash,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 import { resolveApiErrorMessage } from '@core/http/utils/api-error';
 import { NotificationService } from '@core/notification/notification.service';
@@ -29,7 +29,7 @@ const PAGE_SIZE = 10;
 
 @Component({
   selector: 'app-product-list',
-  imports: [NzButtonModule, NzPopconfirmModule, FontAwesomeModule],
+  imports: [NzPopconfirmModule, FontAwesomeModule],
   templateUrl: './product-list.html',
   styleUrl: './product-list.css',
 })
@@ -44,6 +44,7 @@ export class ProductList {
 
   readonly refreshVersion = input(0);
   readonly edit = output<Product>();
+  readonly manageImages = output<Product>();
 
   protected readonly products = signal<Product[]>([]);
   protected readonly pageResponse = signal<PageResponse<Product> | null>(null);
@@ -51,6 +52,7 @@ export class ProductList {
   protected readonly isDeleting = signal(false);
   protected readonly faArrowLeft = faArrowLeft;
   protected readonly faArrowRight = faArrowRight;
+  protected readonly faImages = faImages;
   protected readonly faTrash = faTrash;
   protected readonly faPen = faPen;
   protected readonly currentPage = computed(() => this.pageResponse()?.page ?? 0);

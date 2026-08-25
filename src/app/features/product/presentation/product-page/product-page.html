@@ -6,7 +6,7 @@
         <h1 class="product-page__title mb-0">Productos</h1>
       </div>
       <div class="col-12 col-md-auto">
-        <button (click)="openCreateForm()" nz-button nzType="primary" type="button">
+        <button (click)="openCreateForm()" class="btn btn-sm btn-success" type="button">
           <fa-icon [icon]="faPlus" aria-hidden="true" />
           Nuevo producto
         </button>
@@ -15,15 +15,28 @@
 
     <div class="row mt-4 mt-md-5">
       <div class="col-12">
-        <app-product-list [refreshVersion]="listRefreshVersion()" (edit)="openEditForm($event)" />
+        <app-product-list
+          [refreshVersion]="listRefreshVersion()"
+          (edit)="openEditForm($event)"
+          (manageImages)="openImageManager($event)"
+        />
       </div>
     </div>
 
     <app-product-form-dialog
       (closed)="closeForm()"
-      (saved)="refreshList()"
+      (saved)="handleProductSaved($event)"
       [product]="editingProduct()"
       [isOpen]="isFormVisible()"
     />
+
+    @if (imageProduct(); as product) {
+      <app-product-image-dialog
+        (closed)="closeImageManager()"
+        (uploaded)="handleImagesUploaded($event)"
+        [isOpen]="isImageManagerVisible()"
+        [product]="product"
+      />
+    }
   </div>
 </main>
