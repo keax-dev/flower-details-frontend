@@ -4,6 +4,7 @@ import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { filter, finalize, map } from 'rxjs';
 import { faBars, faRightFromBracket, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { NzButtonModule } from 'ng-zorro-antd/button';
 import { AuthService } from '@features/auth/application/auth.service';
 import { UserRole } from '@features/auth/domain/model/auth-user.model';
 
@@ -24,8 +25,9 @@ const NAVIGATION_BY_ROLE: Readonly<Record<UserRole, readonly NavigationItem[]>> 
 
 @Component({
   selector: 'app-application-navigation',
-  imports: [FontAwesomeModule, RouterLink, RouterLinkActive],
+  imports: [FontAwesomeModule, NzButtonModule, RouterLink, RouterLinkActive],
   templateUrl: './application-navigation.html',
+  styleUrl: './application-navigation.css',
 })
 export class ApplicationNavigation {
   protected readonly faBars = faBars;

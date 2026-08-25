@@ -1,53 +1,42 @@
-<main
-  class="min-h-dvh bg-background px-6 py-6 text-foreground sm:px-12 lg:px-[clamp(3rem,7vw,8rem)] lg:py-8"
->
-  <header class="hidden">
-    <a class="font-serif text-xl text-foreground no-underline" routerLink="/home">Flower Details</a>
-    @if (user(); as activeUser) {
-      <div class="flex items-center gap-3">
-        <span class="text-sm text-muted-foreground">Hola, {{ greeting() }}</span>
-        @if (activeUser.role === 'ADMIN') {
-          <a nz-button routerLink="/admin/categories">Administrar</a>
+<main class="home-page py-4 py-md-5">
+  <div class="container-fluid home-page__container">
+    <section aria-labelledby="home-title" class="row">
+      <div class="col-12 col-lg-9 col-xl-8">
+        <p class="home-page__eyebrow mb-3">Gestión floral</p>
+        <h1 id="home-title" class="home-page__title mb-4">Cada detalle, bien cuidado.</h1>
+        <p class="home-page__description mb-0">
+          La administración de catálogo, pedidos y clientes irá tomando forma desde aquí.
+        </p>
+        @if (!user()) {
+          <a class="mt-4" nz-button nzType="primary" routerLink="/auth/login">
+            Acceder al sistema
+          </a>
+        } @else if (user()?.role === 'ADMIN') {
+          <a class="mt-4" nz-button nzType="primary" routerLink="/admin/categories">
+            Administrar catálogo
+          </a>
         }
       </div>
-    } @else {
-      <a nz-button routerLink="/auth/login">Iniciar sesión</a>
-    }
-  </header>
+    </section>
 
-  <section aria-labelledby="home-title" class="max-w-3xl py-24 sm:py-32 lg:py-44">
-    <p class="mb-4 text-xs font-bold tracking-[0.16em] text-primary uppercase">Gestión floral</p>
-    <h1
-      id="home-title"
-      class="max-w-[10ch] font-serif text-5xl leading-none sm:text-6xl lg:text-8xl"
-    >
-      Cada detalle, bien cuidado.
-    </h1>
-    <p class="mt-8 max-w-xl text-lg leading-8 text-muted-foreground">
-      La administración de catálogo, pedidos y clientes irá tomando forma desde aquí.
-    </p>
-    @if (!user()) {
-      <a class="mt-8 h-11 px-5 text-base" nz-button nzType="primary" routerLink="/auth/login"
-        >Acceder al sistema</a
-      >
-    }
-  </section>
-
-  <section aria-label="Módulos próximos" class="grid border-t border-border md:grid-cols-3">
-    <article class="border-b border-border py-7 md:border-r md:border-b-0 md:pr-8">
-      <span class="text-xs font-bold text-primary">01</span>
-      <h2 class="mt-6 font-serif text-2xl">Catálogo</h2>
-      <p class="mt-2 text-muted-foreground">Productos y arreglos florales.</p>
-    </article>
-    <article class="border-b border-border py-7 md:border-r md:border-b-0 md:px-8">
-      <span class="text-xs font-bold text-primary">02</span>
-      <h2 class="mt-6 font-serif text-2xl">Pedidos</h2>
-      <p class="mt-2 text-muted-foreground">Seguimiento de cada entrega.</p>
-    </article>
-    <article class="py-7 md:pl-8">
-      <span class="text-xs font-bold text-primary">03</span>
-      <h2 class="mt-6 font-serif text-2xl">Clientes</h2>
-      <p class="mt-2 text-muted-foreground">Historias que vuelven a florecer.</p>
-    </article>
-  </section>
+    <section aria-label="Módulos principales" class="home-page__modules mt-5">
+      <div class="row g-0">
+        <article class="col-12 col-md-4 home-page__module">
+          <span class="home-page__module-number">01</span>
+          <h2 class="home-page__module-title">Catálogo</h2>
+          <p class="home-page__module-description mb-0">Productos y arreglos florales.</p>
+        </article>
+        <article class="col-12 col-md-4 home-page__module">
+          <span class="home-page__module-number">02</span>
+          <h2 class="home-page__module-title">Pedidos</h2>
+          <p class="home-page__module-description mb-0">Seguimiento de cada entrega.</p>
+        </article>
+        <article class="col-12 col-md-4 home-page__module">
+          <span class="home-page__module-number">03</span>
+          <h2 class="home-page__module-title">Clientes</h2>
+          <p class="home-page__module-description mb-0">Historias que vuelven a florecer.</p>
+        </article>
+      </div>
+    </section>
+  </div>
 </main>

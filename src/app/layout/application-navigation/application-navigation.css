@@ -1,0 +1,129 @@
+:host {
+  display: block;
+}
+
+.application-navigation {
+  background-color: #198754;
+  border-bottom: 1px solid #146c43;
+  color: #fffdf5;
+}
+
+.application-navigation__container {
+  max-width: 90rem;
+  padding-right: clamp(1.5rem, 5vw, 6rem);
+  padding-left: clamp(1.5rem, 5vw, 6rem);
+}
+
+.application-navigation__brand,
+.application-navigation__link {
+  color: #fffdf5;
+  text-decoration: none;
+}
+
+.application-navigation__brand {
+  display: inline-block;
+  padding: 1rem 0;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.application-navigation__content,
+.application-navigation__links,
+.application-navigation__account {
+  display: flex;
+  align-items: center;
+}
+
+.application-navigation__content {
+  flex-direction: column;
+  align-items: stretch;
+  padding: 0.75rem 0 1rem;
+  border-top: 1px solid rgb(255 253 245 / 28%);
+}
+
+.application-navigation__links {
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.application-navigation__link {
+  padding: 0.625rem 0.75rem;
+  border-radius: 0.25rem;
+  font-size: 0.9375rem;
+  font-weight: 500;
+}
+
+.application-navigation__link:hover,
+.application-navigation__link:focus-visible,
+.application-navigation__link--active {
+  background-color: rgb(255 253 245 / 18%);
+  color: #fffdf5;
+}
+
+.application-navigation__account {
+  justify-content: space-between;
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid rgb(255 253 245 / 28%);
+}
+
+.application-navigation__user {
+  max-width: 12rem;
+  overflow: hidden;
+  font-size: 0.9375rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.application-navigation__icon-button {
+  color: #fffdf5 !important;
+}
+
+.application-navigation__icon-button:hover,
+.application-navigation__icon-button:focus-visible {
+  background-color: rgb(255 253 245 / 18%) !important;
+  color: #fffdf5 !important;
+}
+
+.application-navigation__login {
+  border-color: #fffdf5;
+  background-color: #fffdf5;
+  color: #198754;
+}
+
+.application-navigation__login:hover,
+.application-navigation__login:focus-visible {
+  border-color: #e8f1e9;
+  background-color: #e8f1e9;
+  color: #146c43;
+}
+
+.application-navigation__error {
+  padding: 0 1.5rem 0.75rem;
+  color: #fffdf5;
+  font-size: 0.875rem;
+  text-align: center;
+}
+
+@media (min-width: 768px) {
+  .application-navigation__content {
+    flex-direction: row;
+    gap: 1rem;
+    padding: 0;
+    border-top: 0;
+  }
+
+  .application-navigation__links {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .application-navigation__account {
+    margin-top: 0;
+    padding-top: 0;
+    padding-left: 1rem;
+    border-top: 0;
+    border-left: 1px solid rgb(255 253 245 / 28%);
+  }
+}
