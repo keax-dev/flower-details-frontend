@@ -45,6 +45,7 @@
 
 .product-image-dialog__position-editor .form-control {
   width: 4rem;
+  opacity: 1;
 }
 
 .product-image-dialog__position {

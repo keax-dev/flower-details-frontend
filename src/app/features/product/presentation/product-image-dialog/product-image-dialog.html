@@ -31,7 +31,7 @@
           >
             <button class="btn btn-outline-success" type="button">
               <fa-icon [icon]="faUpload" aria-hidden="true" />
-              Añadir imagen
+              Imagen
             </button>
           </nz-upload>
         </div>
@@ -42,25 +42,22 @@
               <h3 class="product-image-dialog__title mb-0">Imágenes actuales</h3>
               @if (isChangingPositions()) {
                 <div class="d-flex flex-wrap gap-2">
-                  <button (click)="cancelChangingPositions()" [disabled]="isSavingPositions()" class="btn btn-sm btn-outline-dark" type="button">
+                  <button (click)="cancelChangingPositions()" [disabled]="isSavingPositions()" class="btn btn-sm btn-dark" type="button">
                     <fa-icon [icon]="faXmark" aria-hidden="true" />
                     Cancelar
                   </button>
                   <button (click)="savePositions()" [disabled]="isSavingPositions()" class="btn btn-sm btn-success" type="button">
                     <fa-icon [icon]="faFloppyDisk" aria-hidden="true" />
-                    {{ isSavingPositions() ? 'Guardando...' : 'Guardar posiciones' }}
+                    {{ isSavingPositions() ? 'Guardando...' : 'Posiciones' }}
                   </button>
                 </div>
               } @else {
-                <button (click)="startChangingPositions()" class="btn btn-sm btn-outline-dark" type="button">
+                <button (click)="startChangingPositions()" class="btn btn-sm btn-dark" type="button">
                   <fa-icon [icon]="faPenToSquare" aria-hidden="true" />
-                  Cambiar posiciones
+                  Posiciones
                 </button>
               }
             </div>
-            @if (positionError(); as error) {
-              <p class="form-validation-message text-danger small mb-3">{{ error }}</p>
-            }
             <div class="row g-3">
               @for (image of managedImages(); track image.id) {
                 <div class="col-6 col-md-4">
@@ -70,18 +67,16 @@
                       <div class="product-image-dialog__position-editor">
                         <label [for]="'image-position-' + image.id" class="visually-hidden">Posición</label>
                         <input
-                          (input)="updatePosition(image.id, $any($event.target).value)"
-                          [disabled]="isSavingPositions()"
+                          disabled
                           [id]="'image-position-' + image.id"
                           [value]="positionFor(image)"
                           class="form-control form-control-sm"
-                          min="1"
                           type="number"
                         />
-                        <button (click)="moveImage(image.id, -1)" [disabled]="isFirstImage(image) || isSavingPositions()" aria-label="Mover imagen hacia arriba" class="btn btn-sm btn-outline-dark product-image-dialog__icon-button" title="Mover hacia arriba" type="button">
+                        <button (click)="moveImage(image.id, -1)" [disabled]="isFirstImage(image) || isSavingPositions()" aria-label="Mover imagen hacia arriba" class="btn btn-sm btn-dark product-image-dialog__icon-button" title="Mover hacia arriba" type="button">
                           <fa-icon [icon]="faArrowUp" aria-hidden="true" />
                         </button>
-                        <button (click)="moveImage(image.id, 1)" [disabled]="isLastImage(image) || isSavingPositions()" aria-label="Mover imagen hacia abajo" class="btn btn-sm btn-outline-dark product-image-dialog__icon-button" title="Mover hacia abajo" type="button">
+                        <button (click)="moveImage(image.id, 1)" [disabled]="isLastImage(image) || isSavingPositions()" aria-label="Mover imagen hacia abajo" class="btn btn-sm btn-dark product-image-dialog__icon-button" title="Mover hacia abajo" type="button">
                           <fa-icon [icon]="faArrowDown" aria-hidden="true" />
                         </button>
                       </div>
@@ -128,7 +123,7 @@
 
 <ng-template #footer>
   <div class="d-flex justify-content-end gap-2">
-    <button (click)="closed.emit()" [disabled]="isUploading() || isSavingPositions() || deletingImageId() !== null" class="btn btn-sm btn-outline-dark px-3" type="button">
+    <button (click)="closed.emit()" [disabled]="isUploading() || isSavingPositions() || deletingImageId() !== null" class="btn btn-sm btn-dark px-3" type="button">
       <fa-icon [icon]="faXmark" aria-hidden="true" />
       Cancelar
     </button>

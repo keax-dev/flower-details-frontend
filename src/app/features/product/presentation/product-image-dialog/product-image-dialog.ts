@@ -18,7 +18,6 @@ import { NzBeforeUploadFileType, NzUploadFile, NzUploadModule } from 'ng-zorro-a
 
 import { Product } from '@features/product/models/product.model';
 import { ProductImage } from '@features/product/models/product-image.model';
-import { ProductImagePosition } from '@features/product/models/product-image-position.model';
 import { ProductApiService } from '@features/product/services/product-api.service';
 import { resolveApiErrorMessage } from '@core/http/utils/api-error';
 import { NotificationService } from '@core/notification/notification.service';
@@ -57,8 +56,6 @@ export class ProductImageDialog {
   protected readonly isSavingPositions = signal(false);
   protected readonly deletingImageId = signal<number | null>(null);
   protected readonly managedImages = signal<ProductImage[]>([]);
-  protected readonly positionValues = signal<Record<number, number>>({});
-  protected readonly positionError = signal<string | null>(null);
   protected fileList: NzUploadFile[] = [];
 
   constructor() {
@@ -122,20 +119,11 @@ export class ProductImageDialog {
   }
 
   protected startChangingPositions(): void {
-    this.positionError.set(null);
-    this.positionValues.set(this.positionsFor(this.managedImages()));
     this.isChangingPositions.set(true);
   }
 
   protected cancelChangingPositions(): void {
-    this.positionError.set(null);
-    this.positionValues.set(this.positionsFor(this.managedImages()));
     this.isChangingPositions.set(false);
-  }
-
-  protected updatePosition(imageId: number, value: string): void {
-    this.positionValues.update((positions) => ({ ...positions, [imageId]: Number(value) }));
-    this.positionError.set(null);
   }
 
   protected moveImage(imageId: number, direction: -1 | 1): void {
@@ -152,7 +140,6 @@ export class ProductImageDialog {
       reorderedImages[sourceIndex],
     ];
     this.managedImages.set(reorderedImages);
-    this.positionValues.set(this.positionsFor(reorderedImages));
   }
 
   protected savePositions(): void {
@@ -200,7 +187,7 @@ export class ProductImageDialog {
   }
 
   protected positionFor(image: ProductImage): number {
-    return this.positionValues()[image.id] ?? image.sortOrder + 1;
+    return this.managedImages().findIndex((candidate) => candidate.id === image.id) + 1;
   }
 
   protected isFirstImage(image: ProductImage): boolean {
@@ -230,29 +217,9 @@ export class ProductImageDialog {
   private resetManagedImages(images: readonly ProductImage[]): void {
     const sortedImages = [...images].sort((first, second) => first.sortOrder - second.sortOrder);
     this.managedImages.set(sortedImages);
-    this.positionValues.set(this.positionsFor(sortedImages));
-    this.positionError.set(null);
   }
 
-  private positionsFor(images: readonly ProductImage[]): Record<number, number> {
-    return Object.fromEntries(images.map((image, index) => [image.id, index + 1]));
-  }
-
-  private toPositions(): ProductImagePosition[] | null {
-    const images = this.managedImages();
-    const enteredPositions = images.map((image) => this.positionFor(image));
-    const expectedPositions = Array.from({ length: images.length }, (_, index) => index + 1);
-    const validPositions =
-      enteredPositions.every(Number.isInteger) &&
-      new Set(enteredPositions).size === images.length &&
-      expectedPositions.every((position) => enteredPositions.includes(position));
-
-    if (!validPositions) {
-      this.positionError.set('Las posiciones deben ser únicas y consecutivas, desde 1 hasta el total de imágenes.');
-      return null;
-    }
-
-    this.positionError.set(null);
-    return images.map((image) => ({ imageId: image.id, sortOrder: this.positionFor(image) - 1 }));
+  private toPositions() {
+    return this.managedImages().map((image, index) => ({ imageId: image.id, sortOrder: index }));
   }
 }

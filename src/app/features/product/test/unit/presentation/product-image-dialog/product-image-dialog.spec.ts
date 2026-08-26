@@ -71,8 +71,8 @@ describe('ProductImageDialog', () => {
     expect(notificationService.success).toHaveBeenCalledWith('Imagenes guardadas correctamente.');
   });
 
-  it('validates positions before saving the new image order', async () => {
-    const { fixture, notificationService, productApiService } = await createComponent();
+  it('saves the order generated with the movement controls', async () => {
+    const { fixture, productApiService } = await createComponent();
     fixture.componentRef.setInput('product', {
       ...PRODUCT,
       images: [
@@ -84,12 +84,12 @@ describe('ProductImageDialog', () => {
     fixture.detectChanges();
 
     fixture.componentInstance['startChangingPositions']();
-    fixture.componentInstance['updatePosition'](4, '1');
-    fixture.componentInstance['updatePosition'](5, '1');
+    fixture.componentInstance['moveImage'](5, -1);
     fixture.componentInstance['savePositions']();
 
-    expect(productApiService.updateImagePositions).not.toHaveBeenCalled();
-    expect(notificationService.warning).not.toHaveBeenCalled();
-    expect(fixture.componentInstance['positionError']()).not.toBeNull();
+    expect(productApiService.updateImagePositions).toHaveBeenCalledWith(PRODUCT.id, [
+      { imageId: 5, sortOrder: 0 },
+      { imageId: 4, sortOrder: 1 },
+    ]);
   });
 });
