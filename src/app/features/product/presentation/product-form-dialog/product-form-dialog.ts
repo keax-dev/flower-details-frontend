@@ -14,6 +14,8 @@ import { ProductCategory } from '@features/product/models/product-category.model
 import { ProductApiService } from '@features/product/services/product-api.service';
 import { resolveApiErrorMessage } from '@core/http/utils/api-error';
 import { NotificationService } from '@core/notification/notification.service';
+import { RICH_TEXT_FORMATS, RICH_TEXT_MODULES } from '@shared/config/rich-text-editor.config';
+import { QuillEditorComponent } from 'ngx-quill';
 
 @Component({
   selector: 'app-product-form-dialog',
@@ -23,6 +25,7 @@ import { NotificationService } from '@core/notification/notification.service';
     NzModalModule,
     NzSelectModule,
     FontAwesomeModule,
+    QuillEditorComponent,
     ReactiveFormsModule,
   ],
   templateUrl: './product-form-dialog.html',
@@ -44,10 +47,13 @@ export class ProductFormDialog {
   protected readonly isSaving = signal(false);
   protected readonly faFloppyDisk = faFloppyDisk;
   protected readonly faXmark = faXmark;
+  protected readonly descriptionMaxLength = 1000;
+  protected readonly richTextFormats = RICH_TEXT_FORMATS;
+  protected readonly richTextModules = RICH_TEXT_MODULES;
   protected readonly productForm = this.formBuilder.group({
     categoryId: [0, [Validators.required, Validators.min(1)]],
     title: ['', [Validators.required, Validators.maxLength(160)]],
-    description: ['', [Validators.required, Validators.maxLength(1000)]],
+    description: ['', [Validators.required]],
     price: [0, [Validators.required, Validators.min(0.01)]],
     active: [true],
   });

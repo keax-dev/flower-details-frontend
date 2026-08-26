@@ -47,6 +47,53 @@ input {
   --ant-primary-color-active: #000000;
 }
 
+.rich-text-content {
+  overflow-wrap: anywhere;
+}
+
+.rich-text-content > :last-child {
+  margin-bottom: 0;
+}
+
+quill-editor .ql-toolbar.ql-snow {
+  border-color: #c8d7cc;
+  border-radius: 0.25rem 0.25rem 0 0;
+}
+
+quill-editor .ql-container.ql-snow {
+  min-height: 10rem;
+  border-color: #c8d7cc;
+  border-radius: 0 0 0.25rem 0.25rem;
+  font: inherit;
+}
+
+quill-editor:focus-within .ql-toolbar.ql-snow,
+quill-editor:focus-within .ql-container.ql-snow {
+  border-color: var(--color-primary);
+}
+
+quill-editor .ql-snow.ql-toolbar button:hover .ql-stroke,
+quill-editor .ql-snow.ql-toolbar button.ql-active .ql-stroke {
+  stroke: var(--color-primary);
+}
+
+quill-editor .ql-snow.ql-toolbar button:hover .ql-fill,
+quill-editor .ql-snow.ql-toolbar button.ql-active .ql-fill {
+  fill: var(--color-primary);
+}
+
+quill-editor .ql-snow.ql-toolbar .ql-picker-label:hover,
+quill-editor .ql-snow.ql-toolbar .ql-picker-label.ql-active,
+quill-editor .ql-snow.ql-toolbar .ql-picker-item:hover,
+quill-editor .ql-snow.ql-toolbar .ql-picker-item.ql-selected {
+  color: var(--color-primary);
+}
+
+quill-editor.is-invalid .ql-toolbar.ql-snow,
+quill-editor.is-invalid .ql-container.ql-snow {
+  border-color: var(--bs-danger);
+}
+
 .invalid-feedback,
 .form-validation-message {
   animation: validation-feedback-in 180ms ease-out;

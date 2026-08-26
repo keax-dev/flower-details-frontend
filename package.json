@@ -37,6 +37,8 @@
     "@fortawesome/free-solid-svg-icons": "^7.3.1",
     "bootstrap": "5.3.8",
     "ng-zorro-antd": "^22.0.1",
+    "ngx-quill": "^31.0.1",
+    "quill": "^2.0.3",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0"
   },

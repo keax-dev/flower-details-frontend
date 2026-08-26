@@ -7,12 +7,14 @@ import { csrfInterceptor } from '@core/http/interceptors/csrf.interceptor';
 import { es_ES, provideNzI18n } from 'ng-zorro-antd/i18n';
 import { provideRouter } from '@angular/router';
 import { routes } from '@app/app.routes';
+import { provideQuillConfig } from 'ngx-quill/config';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideAnimationsAsync(),
     provideNzI18n(es_ES),
+    provideQuillConfig({ format: 'html', sanitize: true, theme: 'snow' }),
     provideHttpClient(
       withInterceptors([credentialsInterceptor, csrfInterceptor, authSessionInterceptor]),
       withXsrfConfiguration({ cookieName: 'XSRF-TOKEN', headerName: 'X-XSRF-TOKEN' }),

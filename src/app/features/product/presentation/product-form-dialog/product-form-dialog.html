@@ -5,7 +5,7 @@
   [nzVisible]="isOpen()"
 >
   <ng-container *nzModalContent>
-    <form (ngSubmit)="submit()" [formGroup]="productForm" novalidate>
+    <form [formGroup]="productForm" novalidate>
       <div class="container-fluid px-0">
         <div class="row g-3">
           <div class="col-12 col-md-6">
@@ -54,20 +54,26 @@
             }
           </div>
           <div class="col-12">
-            <label class="form-label" for="product-description">Descripción</label>
-            <textarea
+            <span class="form-label d-block">Descripción</span>
+            <quill-editor
               [class.is-invalid]="hasError('description')"
+              [formats]="richTextFormats"
+              [maxLength]="descriptionMaxLength"
+              [modules]="richTextModules"
+              [required]="true"
+              [sanitize]="true"
               formControlName="description"
               id="product-description"
-              maxlength="1000"
-              nz-input
-              rows="4"
-            ></textarea>
+              placeholder="Describe el producto"
+            />
             @if (hasError('description')) {
-              <div class="invalid-feedback">La descripción es obligatoria.</div>
+              <div class="form-validation-message text-danger small mt-1">
+                La descripción es obligatoria y no puede superar 1000 caracteres.
+              </div>
             }
           </div>
           <div class="col-12">
+            <!-- eslint-disable-next-line @angular-eslint/template/label-has-associated-control -->
             <label formControlName="active" nz-checkbox>Activo</label>
           </div>
         </div>
@@ -81,16 +87,17 @@
     <button
       (click)="closed.emit()"
       [disabled]="isSaving()"
-      class="btn btn-sm btn-dark px-3"
+      class="btn btn-sm btn-outline-dark px-3"
       type="button"
     >
       <fa-icon [icon]="faXmark" aria-hidden="true" />
       Cancelar
     </button>
     <button
+      (click)="submit()"
       [disabled]="isSaving()"
       class="btn btn-sm btn-success px-4"
-      type="submit"
+      type="button"
     >
       <fa-icon [icon]="faFloppyDisk" aria-hidden="true" />
       {{ isSaving() ? 'Guardando...' : 'Guardar' }}

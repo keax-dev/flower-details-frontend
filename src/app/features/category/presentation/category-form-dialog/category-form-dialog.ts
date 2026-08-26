@@ -7,12 +7,14 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzModalModule } from 'ng-zorro-antd/modal';
 import { Component, DestroyRef, effect, inject, input, output, signal } from '@angular/core';
 import { finalize } from 'rxjs';
+import { QuillEditorComponent } from 'ngx-quill';
 
 import { Category } from '@app/features/category/models/category.model';
 import { CategoryPayload } from '@app/features/category/models/category-payload.model';
 import { CategoryApiService } from '@app/features/category/services/category-api.service';
 import { NotificationService } from '@core/notification/notification.service';
 import { resolveApiErrorMessage } from '@core/http/utils/api-error';
+import { RICH_TEXT_FORMATS, RICH_TEXT_MODULES } from '@shared/config/rich-text-editor.config';
 
 @Component({
   selector: 'app-category-form-dialog',
@@ -21,6 +23,7 @@ import { resolveApiErrorMessage } from '@core/http/utils/api-error';
     FontAwesomeModule,
     NzInputModule,
     NzModalModule,
+    QuillEditorComponent,
     ReactiveFormsModule,
   ],
   templateUrl: './category-form-dialog.html',
@@ -40,9 +43,12 @@ export class CategoryFormDialog {
   protected readonly isSaving = signal(false);
   protected readonly faFloppyDisk = faFloppyDisk;
   protected readonly faXmark = faXmark;
+  protected readonly descriptionMaxLength = 500;
+  protected readonly richTextFormats = RICH_TEXT_FORMATS;
+  protected readonly richTextModules = RICH_TEXT_MODULES;
   protected readonly categoryForm = this.formBuilder.group({
     title: ['', [Validators.required, Validators.maxLength(120)]],
-    description: ['', [Validators.required, Validators.maxLength(500)]],
+    description: ['', [Validators.required]],
     active: [true],
   });
 

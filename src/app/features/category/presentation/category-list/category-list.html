@@ -32,9 +32,7 @@
           @for (category of categories(); track category.id) {
             <tr>
               <td class="fw-semibold">{{ category.title }}</td>
-              <td class="category-list__description category-list__description-column">
-                {{ category.description }}
-              </td>
+              <td class="category-list__description category-list__description-column rich-text-content" [innerHTML]="category.description"></td>
               <td>
                 <span
                   [class.category-list__status--active]="category.active"
