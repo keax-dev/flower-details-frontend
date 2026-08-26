@@ -74,6 +74,24 @@ describe('ProductApiService', () => {
     request.flush(PRODUCT);
   });
 
+  it('updates image positions and deletes a product image', () => {
+    const positions = [
+      { imageId: 5, sortOrder: 0 },
+      { imageId: 4, sortOrder: 1 },
+    ];
+
+    productApiService.updateImagePositions(PRODUCT.id, positions).subscribe();
+    const positionsRequest = httpTestingController.expectOne('/api/products/1/images/positions');
+    expect(positionsRequest.request.method).toBe('PUT');
+    expect(positionsRequest.request.body).toEqual({ positions });
+    positionsRequest.flush(PRODUCT);
+
+    productApiService.deleteImage(PRODUCT.id, 4).subscribe();
+    const deleteImageRequest = httpTestingController.expectOne('/api/products/1/images/4');
+    expect(deleteImageRequest.request.method).toBe('DELETE');
+    deleteImageRequest.flush(PRODUCT);
+  });
+
   it('deletes a product by identifier', () => {
     productApiService.delete(PRODUCT.id).subscribe();
 

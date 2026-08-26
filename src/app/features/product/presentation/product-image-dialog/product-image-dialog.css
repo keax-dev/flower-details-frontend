@@ -20,3 +20,51 @@
   aspect-ratio: 1;
   object-fit: cover;
 }
+
+.product-image-dialog__card {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid #c8d7cc;
+}
+
+.product-image-dialog__image-actions,
+.product-image-dialog__position-editor {
+  position: absolute;
+  right: 0.5rem;
+  bottom: 0.5rem;
+  left: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.product-image-dialog__position-editor {
+  justify-content: flex-end;
+}
+
+.product-image-dialog__position-editor .form-control {
+  width: 4rem;
+}
+
+.product-image-dialog__position {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background-color: var(--color-secondary);
+  color: #173427;
+  font-size: 0.875rem;
+  font-weight: 700;
+}
+
+.product-image-dialog__icon-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+}

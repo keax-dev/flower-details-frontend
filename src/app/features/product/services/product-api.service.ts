@@ -1,4 +1,5 @@
 import { ProductPayload } from '@features/product/models/product-payload.model';
+import { ProductImagePosition } from '@features/product/models/product-image-position.model';
 import { Product } from '@features/product/models/product.model';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Service } from '@angular/core';
@@ -30,6 +31,14 @@ export class ProductApiService {
     const formData = new FormData();
     files.forEach((file) => formData.append('images', file));
     return this.httpClient.post<Product>(`${this.apiBaseUrl}/products/${id}/images`, formData);
+  }
+
+  updateImagePositions(id: number, positions: readonly ProductImagePosition[]): Observable<Product> {
+    return this.httpClient.put<Product>(`${this.apiBaseUrl}/products/${id}/images/positions`, { positions });
+  }
+
+  deleteImage(productId: number, imageId: number): Observable<Product> {
+    return this.httpClient.delete<Product>(`${this.apiBaseUrl}/products/${productId}/images/${imageId}`);
   }
 
   delete(id: number): Observable<void> {

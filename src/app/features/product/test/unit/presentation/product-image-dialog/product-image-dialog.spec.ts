@@ -19,7 +19,11 @@ const PRODUCT: Product = {
 };
 
 async function createComponent() {
-  const productApiService = { uploadImages: vi.fn(() => of(PRODUCT)) };
+  const productApiService = {
+    deleteImage: vi.fn(() => of(PRODUCT)),
+    updateImagePositions: vi.fn(() => of(PRODUCT)),
+    uploadImages: vi.fn(() => of(PRODUCT)),
+  };
   const notificationService = {
     success: vi.fn(),
     error: vi.fn(),
@@ -65,5 +69,27 @@ describe('ProductImageDialog', () => {
     expect(productApiService.uploadImages).toHaveBeenCalledWith(PRODUCT.id, [image]);
     expect(fixture.componentInstance['fileList']).toEqual([]);
     expect(notificationService.success).toHaveBeenCalledWith('Imagenes guardadas correctamente.');
+  });
+
+  it('validates positions before saving the new image order', async () => {
+    const { fixture, notificationService, productApiService } = await createComponent();
+    fixture.componentRef.setInput('product', {
+      ...PRODUCT,
+      images: [
+        { id: 4, url: '/first.png', originalFileName: 'first.png', contentType: 'image/png', sizeBytes: 1, sortOrder: 0 },
+        { id: 5, url: '/second.png', originalFileName: 'second.png', contentType: 'image/png', sizeBytes: 1, sortOrder: 1 },
+      ],
+    });
+    fixture.componentRef.setInput('isOpen', true);
+    fixture.detectChanges();
+
+    fixture.componentInstance['startChangingPositions']();
+    fixture.componentInstance['updatePosition'](4, '1');
+    fixture.componentInstance['updatePosition'](5, '1');
+    fixture.componentInstance['savePositions']();
+
+    expect(productApiService.updateImagePositions).not.toHaveBeenCalled();
+    expect(notificationService.warning).not.toHaveBeenCalled();
+    expect(fixture.componentInstance['positionError']()).not.toBeNull();
   });
 });
