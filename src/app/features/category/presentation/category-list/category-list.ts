@@ -1,5 +1,4 @@
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 import {
   faArrowLeft,
@@ -30,7 +29,7 @@ const PAGE_SIZE = 10;
 
 @Component({
   selector: 'app-category-list',
-  imports: [NzButtonModule, NzPopconfirmModule, FontAwesomeModule],
+  imports: [NzPopconfirmModule, FontAwesomeModule],
   templateUrl: './category-list.html',
   styleUrl: './category-list.css',
 })

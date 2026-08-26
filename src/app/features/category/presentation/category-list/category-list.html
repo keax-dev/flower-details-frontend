@@ -45,23 +45,28 @@
                 </span>
               </td>
               <td>
-                <div class="d-flex justify-content-end gap-2">
-                  <button (click)="edit.emit(category)" nz-button type="button">
+                <div class="d-flex flex-wrap justify-content-end gap-2">
+                  <button
+                    (click)="edit.emit(category)"
+                    aria-label="Editar categoria"
+                    class="btn btn-outline-dark btn-sm category-list__action-button"
+                    title="Editar categoria"
+                    type="button"
+                  >
                     <fa-icon [icon]="faPen" aria-hidden="true" />
-                    Editar
                   </button>
                   <button
                     (nzOnConfirm)="deleteCategory(category)"
                     [disabled]="isDeleting()"
                     [nzPopconfirmTitle]="'¿Eliminar la categoría ' + category.title + '?'"
-                    nz-button
-                    nzDanger
+                    aria-label="Eliminar categoria"
+                    class="btn btn-outline-danger btn-sm category-list__action-button"
                     nz-popconfirm
                     nzPopconfirmPlacement="topRight"
+                    title="Eliminar categoria"
                     type="button"
                   >
                     <fa-icon [icon]="faTrash" aria-hidden="true" />
-                    Eliminar
                   </button>
                 </div>
               </td>
@@ -88,7 +93,7 @@
           <button
             (click)="previousPage()"
             [disabled]="!hasPreviousPage() || isLoading()"
-            nz-button
+            class="btn btn-sm btn-outline-dark"
             type="button"
           >
             <fa-icon [icon]="faArrowLeft" aria-hidden="true" />
@@ -97,7 +102,7 @@
           <button
             (click)="nextPage()"
             [disabled]="!hasNextPage() || isLoading()"
-            nz-button
+            class="btn btn-sm btn-outline-dark"
             type="button"
           >
             Siguiente

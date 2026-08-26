@@ -1,6 +1,8 @@
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { faFloppyDisk, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzModalModule } from 'ng-zorro-antd/modal';
 import { Component, DestroyRef, effect, inject, input, output, signal } from '@angular/core';
@@ -16,6 +18,7 @@ import { resolveApiErrorMessage } from '@core/http/utils/api-error';
   selector: 'app-category-form-dialog',
   imports: [
     NzCheckboxModule,
+    FontAwesomeModule,
     NzInputModule,
     NzModalModule,
     ReactiveFormsModule,
@@ -35,6 +38,8 @@ export class CategoryFormDialog {
   readonly saved = output<void>();
 
   protected readonly isSaving = signal(false);
+  protected readonly faFloppyDisk = faFloppyDisk;
+  protected readonly faXmark = faXmark;
   protected readonly categoryForm = this.formBuilder.group({
     title: ['', [Validators.required, Validators.maxLength(120)]],
     description: ['', [Validators.required, Validators.maxLength(500)]],

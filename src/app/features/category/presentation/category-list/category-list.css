@@ -63,6 +63,15 @@
   color: #52615a;
 }
 
+.category-list__action-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+}
+
 @media (max-width: 575.98px) {
   .category-list__table-container table {
     table-layout: fixed;
