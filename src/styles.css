@@ -46,3 +46,27 @@ input {
   --ant-primary-color-hover: #000000;
   --ant-primary-color-active: #000000;
 }
+
+.invalid-feedback,
+.form-validation-message {
+  animation: validation-feedback-in 180ms ease-out;
+}
+
+@keyframes validation-feedback-in {
+  from {
+    opacity: 0;
+    transform: translateY(-0.25rem);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .invalid-feedback,
+  .form-validation-message {
+    animation: none;
+  }
+}
