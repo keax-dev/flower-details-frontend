@@ -53,6 +53,18 @@ describe('AuthService', () => {
     expect(authService.isAuthenticated()).toBe(false);
   });
 
+  it('shares an in-progress session restoration request', () => {
+    const restoredUsers: Array<AuthUser | null> = [];
+
+    authService.restoreSession().subscribe((user) => restoredUsers.push(user));
+    authService.restoreSession().subscribe((user) => restoredUsers.push(user));
+
+    const request = httpTestingController.expectOne('/api/me');
+    request.flush(USER);
+
+    expect(restoredUsers).toEqual([USER, USER]);
+  });
+
   it('preserves a server error so the application can distinguish it from a logged out session', () => {
     const receivedErrors: HttpErrorResponse[] = [];
 
