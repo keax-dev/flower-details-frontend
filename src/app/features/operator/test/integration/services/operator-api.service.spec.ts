@@ -28,7 +28,7 @@ describe('OperatorApiService', () => {
   it('requests the paginated operator list', () => {
     service.list(1, 10).subscribe();
 
-    const request = httpTestingController.expectOne('/api/users/operators?page=1&size=10');
+    const request = httpTestingController.expectOne('/api/users/staff?page=1&size=10');
     expect(request.request.method).toBe('GET');
     request.flush({ items: [], page: 1, size: 10, totalElements: 0, totalPages: 0 });
   });
@@ -41,11 +41,12 @@ describe('OperatorApiService', () => {
         email: 'ana@example.com',
         password: 'Password123',
         phone: '0999999999',
+        role: 'OPERATOR',
         active: true,
       })
       .subscribe();
 
-    const request = httpTestingController.expectOne('/api/users/operators');
+    const request = httpTestingController.expectOne('/api/users/staff');
     expect(request.request.method).toBe('POST');
     request.flush({});
   });

@@ -5,7 +5,7 @@ export interface Operator {
   lastNames: string;
   email: string;
   phone: string;
-  role: 'OPERATOR';
+  role: 'ADMIN' | 'OPERATOR';
   active: boolean;
   createdAt: string;
   updatedAt: string;

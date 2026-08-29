@@ -1,11 +1,9 @@
 <section aria-labelledby="operators-title">
   <div class="row align-items-end gy-2">
     <div class="col-12">
-      <h2 id="operators-title" class="operator-list__title mb-1">Equipo operativo</h2>
+      <h2 id="operators-title" class="operator-list__title mb-1">Equipo administrativo</h2>
       @if (pageResponse(); as response) {
-        <p class="operator-list__summary mb-0">
-          {{ response.totalElements }} operadores registrados
-        </p>
+        <p class="operator-list__summary mb-0">{{ response.totalElements }} usuarios registrados</p>
       }
     </div>
   </div>
@@ -13,11 +11,12 @@
   <div class="operator-list__table-container mt-4">
     <table class="table table-hover align-middle mb-0">
       <caption class="visually-hidden">
-        Listado de operadores
+        Listado de personal administrativo
       </caption>
       <thead>
         <tr>
-          <th scope="col">Operador</th>
+          <th scope="col">Usuario</th>
+          <th class="operator-list__role-column" scope="col">Rol</th>
           <th class="operator-list__contact-column" scope="col">Contacto</th>
           <th scope="col">Estado</th>
           <th class="text-end" scope="col">Acciones</th>
@@ -26,13 +25,16 @@
       <tbody>
         @if (isLoading()) {
           <tr>
-            <td class="operator-list__empty" colspan="4">Cargando operadores...</td>
+            <td class="operator-list__empty" colspan="5">Cargando usuarios...</td>
           </tr>
         } @else {
           @for (operator of operators(); track operator.id) {
             <tr>
               <td>
                 <p class="fw-semibold mb-1">{{ operator.names }} {{ operator.lastNames }}</p>
+              </td>
+              <td class="operator-list__role-column">
+                {{ operator.role === 'ADMIN' ? 'Administrador' : 'Operador' }}
               </td>
               <td class="operator-list__contact-column">
                 <p class="mb-1">{{ operator.email }}</p>
@@ -93,9 +95,7 @@
             </tr>
           } @empty {
             <tr>
-              <td class="operator-list__empty" colspan="4">
-                Todavia no hay operadores registrados.
-              </td>
+              <td class="operator-list__empty" colspan="5">Todavia no hay usuarios registrados.</td>
             </tr>
           }
         }

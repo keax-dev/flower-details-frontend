@@ -6,6 +6,7 @@ import { faEye, faEyeSlash, faFloppyDisk, faXmark } from '@fortawesome/free-soli
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { NzModalModule } from 'ng-zorro-antd/modal';
+import { NzSelectModule } from 'ng-zorro-antd/select';
 import { finalize } from 'rxjs';
 
 import { resolveApiErrorMessage } from '@core/http/utils/api-error';
@@ -19,7 +20,14 @@ import { OperatorApiService } from '@features/operator/services/operator-api.ser
 
 @Component({
   selector: 'app-operator-form-dialog',
-  imports: [FontAwesomeModule, NzCheckboxModule, NzInputModule, NzModalModule, ReactiveFormsModule],
+  imports: [
+    FontAwesomeModule,
+    NzCheckboxModule,
+    NzInputModule,
+    NzModalModule,
+    NzSelectModule,
+    ReactiveFormsModule,
+  ],
   templateUrl: './operator-form-dialog.html',
   styleUrl: './operator-form-dialog.css',
 })
@@ -46,6 +54,7 @@ export class OperatorFormDialog {
     email: ['', [Validators.required, Validators.email, Validators.maxLength(160)]],
     password: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(72)]],
     phone: ['', [Validators.required, Validators.maxLength(30)]],
+    role: this.formBuilder.control<'ADMIN' | 'OPERATOR'>('OPERATOR', Validators.required),
     active: [true],
   });
 
@@ -79,8 +88,8 @@ export class OperatorFormDialog {
         next: () => {
           this.notificationService.success(
             operator === null
-              ? 'Operador creado correctamente.'
-              : 'Operador actualizado correctamente.',
+              ? 'Usuario creado correctamente.'
+              : 'Usuario actualizado correctamente.',
           );
           this.saved.emit();
         },
@@ -111,13 +120,22 @@ export class OperatorFormDialog {
     passwordControl.updateValueAndValidity({ emitEvent: false });
     this.operatorForm.reset(
       operator === null
-        ? { names: '', lastNames: '', email: '', password: '', phone: '', active: true }
+        ? {
+            names: '',
+            lastNames: '',
+            email: '',
+            password: '',
+            phone: '',
+            role: 'OPERATOR',
+            active: true,
+          }
         : {
             names: operator.names,
             lastNames: operator.lastNames,
             email: operator.email,
             password: '',
             phone: operator.phone,
+            role: operator.role,
             active: operator.active,
           },
     );
@@ -125,7 +143,7 @@ export class OperatorFormDialog {
 
   private createPayload(): CreateOperatorPayload {
     const value = this.operatorForm.getRawValue();
-    return { ...this.updatePayload(), password: value.password };
+    return { ...this.updatePayload(), password: value.password, role: value.role };
   }
 
   private updatePayload(): UpdateOperatorPayload {
@@ -135,6 +153,7 @@ export class OperatorFormDialog {
       lastNames: value.lastNames.trim(),
       email: value.email.trim(),
       phone: value.phone.trim(),
+      role: value.role,
       active: value.active,
     };
   }

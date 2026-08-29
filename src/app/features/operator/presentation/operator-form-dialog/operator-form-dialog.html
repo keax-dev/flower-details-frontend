@@ -50,6 +50,13 @@
               <div class="invalid-feedback">Ingresa un correo valido.</div>
             }
           </div>
+          <div class="col-12 col-md-6">
+            <label class="form-label" for="operator-role">Rol</label>
+            <nz-select formControlName="role" id="operator-role" class="w-100">
+              <nz-option nzLabel="Administrador" nzValue="ADMIN" />
+              <nz-option nzLabel="Operador" nzValue="OPERATOR" />
+            </nz-select>
+          </div>
           @if (operator() === null) {
             <div class="col-12 col-md-6">
               <label class="form-label" for="operator-password">Contrasena</label>
@@ -94,8 +101,9 @@
             }
           </div>
           <div class="col-12 col-md-6 d-flex align-items-end">
-            <!-- eslint-disable-next-line @angular-eslint/template/label-has-associated-control -->
-            <label formControlName="active" nz-checkbox>Operador activo</label>
+            @if (!operator()) {
+              <label formControlName="active" nz-checkbox> Activo </label>
+            }
           </div>
         </div>
       </div>

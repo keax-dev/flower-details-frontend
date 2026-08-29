@@ -17,17 +17,17 @@ export class OperatorApiService {
 
   list(page: number, size: number): Observable<PageResponse<Operator>> {
     const params = new HttpParams().set('page', page).set('size', size);
-    return this.httpClient.get<PageResponse<Operator>>(`${this.apiBaseUrl}/users/operators`, {
+    return this.httpClient.get<PageResponse<Operator>>(`${this.apiBaseUrl}/users/staff`, {
       params,
     });
   }
 
   create(payload: CreateOperatorPayload): Observable<Operator> {
-    return this.httpClient.post<Operator>(`${this.apiBaseUrl}/users/operators`, payload);
+    return this.httpClient.post<Operator>(`${this.apiBaseUrl}/users/staff`, payload);
   }
 
   update(id: number, payload: UpdateOperatorPayload): Observable<Operator> {
-    return this.httpClient.put<Operator>(`${this.apiBaseUrl}/users/operators/${id}`, payload);
+    return this.httpClient.put<Operator>(`${this.apiBaseUrl}/users/staff/${id}`, payload);
   }
 
   activate(id: number): Observable<Operator> {

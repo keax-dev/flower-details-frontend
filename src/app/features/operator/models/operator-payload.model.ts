@@ -4,6 +4,7 @@ export interface CreateOperatorPayload {
   email: string;
   password: string;
   phone: string;
+  role: 'ADMIN' | 'OPERATOR';
   active: boolean;
 }
 
@@ -12,5 +13,6 @@ export interface UpdateOperatorPayload {
   lastNames: string;
   email: string;
   phone: string;
+  role: 'ADMIN' | 'OPERATOR';
   active: boolean;
 }
