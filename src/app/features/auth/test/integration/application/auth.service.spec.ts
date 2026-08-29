@@ -54,7 +54,7 @@ describe('AuthService', () => {
   });
 
   it('shares an in-progress session restoration request', () => {
-    const restoredUsers: Array<AuthUser | null> = [];
+    const restoredUsers: (AuthUser | null)[] = [];
 
     authService.restoreSession().subscribe((user) => restoredUsers.push(user));
     authService.restoreSession().subscribe((user) => restoredUsers.push(user));

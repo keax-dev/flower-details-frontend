@@ -1,6 +1,5 @@
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzModalModule } from 'ng-zorro-antd/modal';
 import { NzSelectModule } from 'ng-zorro-antd/select';
@@ -19,7 +18,7 @@ import { QuillEditorComponent } from 'ngx-quill';
 
 @Component({
   selector: 'app-product-form-dialog',
-  imports: [NzCheckboxModule, NzInputModule, NzModalModule, NzSelectModule, FontAwesomeModule, QuillEditorComponent, ReactiveFormsModule],
+  imports: [NzInputModule, NzModalModule, NzSelectModule, FontAwesomeModule, QuillEditorComponent, ReactiveFormsModule],
   templateUrl: './product-form-dialog.html',
 })
 export class ProductFormDialog {

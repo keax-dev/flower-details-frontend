@@ -1,10 +1,10 @@
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faFloppyDisk, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzModalModule } from 'ng-zorro-antd/modal';
+import { NzSelectModule } from 'ng-zorro-antd/select';
 import { Component, DestroyRef, effect, inject, input, output, signal } from '@angular/core';
 import { finalize } from 'rxjs';
 import { QuillEditorComponent } from 'ngx-quill';
@@ -18,7 +18,7 @@ import { RICH_TEXT_FORMATS, RICH_TEXT_MODULES } from '@shared/config/rich-text-e
 
 @Component({
   selector: 'app-category-form-dialog',
-  imports: [NzCheckboxModule, FontAwesomeModule, NzInputModule, NzModalModule, QuillEditorComponent, ReactiveFormsModule],
+  imports: [FontAwesomeModule, NzInputModule, NzModalModule, NzSelectModule, QuillEditorComponent, ReactiveFormsModule],
   templateUrl: './category-form-dialog.html',
 })
 export class CategoryFormDialog {

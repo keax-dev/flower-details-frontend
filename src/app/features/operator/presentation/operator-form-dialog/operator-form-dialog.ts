@@ -4,7 +4,6 @@ import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angula
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faEye, faEyeSlash, faFloppyDisk, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { NzInputModule } from 'ng-zorro-antd/input';
-import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { NzModalModule } from 'ng-zorro-antd/modal';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { finalize } from 'rxjs';
@@ -17,7 +16,7 @@ import { OperatorApiService } from '@features/operator/services/operator-api.ser
 
 @Component({
   selector: 'app-operator-form-dialog',
-  imports: [FontAwesomeModule, NzCheckboxModule, NzInputModule, NzModalModule, NzSelectModule, ReactiveFormsModule],
+  imports: [FontAwesomeModule, NzInputModule, NzModalModule, NzSelectModule, ReactiveFormsModule],
   templateUrl: './operator-form-dialog.html',
   styleUrl: './operator-form-dialog.css',
 })

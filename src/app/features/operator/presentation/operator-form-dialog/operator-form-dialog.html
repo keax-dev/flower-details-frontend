@@ -72,9 +72,13 @@
               <div class="invalid-feedback">El telefono es obligatorio.</div>
             }
           </div>
-          <div class="col-12 col-md-6 d-flex align-items-end">
+          <div class="col-12 col-md-6">
             @if (!operator()) {
-              <label formControlName="active" nz-checkbox> Activo </label>
+              <label class="form-label" for="operator-status">Estado</label>
+              <nz-select class="w-100" formControlName="active" id="operator-status">
+                <nz-option nzLabel="Activo" [nzValue]="true" />
+                <nz-option nzLabel="Inactivo" [nzValue]="false" />
+              </nz-select>
             }
           </div>
         </div>
