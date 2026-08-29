@@ -85,7 +85,7 @@ export class ProductFormDialog {
       next: (savedProduct) => this.completeSave(savedProduct, product === null),
       error: (error: unknown) => {
         this.isSaving.set(false);
-        this.notificationService.error(
+        this.notificationService.errorApi(
           resolveApiErrorMessage(error, 'No fue posible guardar el producto.'),
         );
       },
@@ -112,7 +112,7 @@ export class ProductFormDialog {
       .subscribe({
         next: (categories) => this.categories.set(this.includeCurrentCategory(categories, product)),
         error: (error: unknown) =>
-          this.notificationService.error(
+          this.notificationService.errorApi(
             resolveApiErrorMessage(error, 'No fue posible cargar las categorías.'),
           ),
       });

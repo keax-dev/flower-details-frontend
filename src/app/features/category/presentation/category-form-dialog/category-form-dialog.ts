@@ -89,7 +89,7 @@ export class CategoryFormDialog {
           this.saved.emit();
         },
         error: (error: unknown) =>
-          this.notificationService.error(
+          this.notificationService.errorApi(
             resolveApiErrorMessage(error, 'No fue posible guardar la categoría.'),
           ),
       });

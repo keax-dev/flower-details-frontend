@@ -24,7 +24,7 @@ async function createComponent(activeCategories = [PRODUCT.category]) {
     create: vi.fn(() => of(PRODUCT)),
     update: vi.fn(() => of(PRODUCT)),
   };
-  const notificationService = { success: vi.fn(), error: vi.fn() };
+  const notificationService = { success: vi.fn(), error: vi.fn(), errorApi: vi.fn() };
 
   await TestBed.configureTestingModule({
     imports: [ProductFormDialog],

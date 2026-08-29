@@ -112,7 +112,9 @@ export class ProductImageDialog {
           this.isUploading.set(false);
         },
         error: (error: unknown) => {
-          this.notificationService.error(resolveApiErrorMessage(error, 'No fue posible guardar las imagenes.'));
+          this.notificationService.errorApi(
+            resolveApiErrorMessage(error, 'No fue posible guardar las imagenes.'),
+          );
           this.isUploading.set(false);
         },
       });
@@ -161,7 +163,7 @@ export class ProductImageDialog {
         },
         error: (error: unknown) => {
           this.isSavingPositions.set(false);
-          this.notificationService.error(
+          this.notificationService.errorApi(
             resolveApiErrorMessage(error, 'No fue posible actualizar las posiciones.'),
           );
         },
@@ -181,7 +183,9 @@ export class ProductImageDialog {
         },
         error: (error: unknown) => {
           this.deletingImageId.set(null);
-          this.notificationService.error(resolveApiErrorMessage(error, 'No fue posible eliminar la imagen.'));
+          this.notificationService.errorApi(
+            resolveApiErrorMessage(error, 'No fue posible eliminar la imagen.'),
+          );
         },
       });
   }

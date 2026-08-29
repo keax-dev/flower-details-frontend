@@ -11,7 +11,9 @@
             <i></i>
           </div>
           <p class="login-page__eyebrow mb-3">Flower Details</p>
-          <h1 id="brand-title" class="login-page__brand-title mb-4">Detalles que florecen contigo.</h1>
+          <h1 id="brand-title" class="login-page__brand-title mb-4">
+            Detalles que florecen contigo.
+          </h1>
           <p class="login-page__brand-description mb-0">
             Gestiona cada arreglo, pedido y momento especial desde un solo lugar.
           </p>
@@ -30,7 +32,9 @@
 
           @if (errorMessage()) {
             <div class="alert alert-danger mt-4 mb-0" role="alert">
-              {{ errorMessage() }}
+              @for (message of errorMessages(); track message) {
+                <p class="mb-0">{{ message }}</p>
+              }
             </div>
           }
 
@@ -76,7 +80,13 @@
               }
             </div>
 
-            <button [disabled]="isSubmitting()" class="w-100" nz-button nzType="primary" type="submit">
+            <button
+              [disabled]="isSubmitting()"
+              class="w-100"
+              nz-button
+              nzType="primary"
+              type="submit"
+            >
               {{ isSubmitting() ? 'Ingresando...' : 'Iniciar sesión' }}
             </button>
           </form>

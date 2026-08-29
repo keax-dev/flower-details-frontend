@@ -33,12 +33,19 @@ export class ProductApiService {
     return this.httpClient.post<Product>(`${this.apiBaseUrl}/products/${id}/images`, formData);
   }
 
-  updateImagePositions(id: number, positions: readonly ProductImagePosition[]): Observable<Product> {
-    return this.httpClient.put<Product>(`${this.apiBaseUrl}/products/${id}/images/positions`, { positions });
+  updateImagePositions(
+    id: number,
+    positions: readonly ProductImagePosition[],
+  ): Observable<Product> {
+    return this.httpClient.put<Product>(`${this.apiBaseUrl}/products/${id}/images/positions`, {
+      positions,
+    });
   }
 
   deleteImage(productId: number, imageId: number): Observable<Product> {
-    return this.httpClient.delete<Product>(`${this.apiBaseUrl}/products/${productId}/images/${imageId}`);
+    return this.httpClient.delete<Product>(
+      `${this.apiBaseUrl}/products/${productId}/images/${imageId}`,
+    );
   }
 
   delete(id: number): Observable<void> {

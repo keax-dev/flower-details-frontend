@@ -21,4 +21,13 @@ export class NotificationService {
   info(message: string): void {
     this.messageService.info(message);
   }
+
+  errorApi(messages: string | string[]): void {
+    if (Array.isArray(messages)) {
+      messages.forEach((message) => this.messageService.error(message));
+      return;
+    }
+
+    this.error(messages);
+  }
 }

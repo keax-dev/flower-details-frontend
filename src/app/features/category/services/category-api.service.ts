@@ -16,9 +16,12 @@ export class CategoryApiService {
 
   listForAdministration(page: number, size: number): Observable<PageResponse<Category>> {
     const params = new HttpParams().set('page', page).set('size', size);
-    return this.httpClient.get<PageResponse<Category>>(`${this.apiBaseUrl}/categories/administration`, {
-      params,
-    });
+    return this.httpClient.get<PageResponse<Category>>(
+      `${this.apiBaseUrl}/categories/administration`,
+      {
+        params,
+      },
+    );
   }
 
   listAll(): Observable<Category[]> {

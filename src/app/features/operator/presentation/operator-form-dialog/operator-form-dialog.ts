@@ -94,7 +94,7 @@ export class OperatorFormDialog {
           this.saved.emit();
         },
         error: (error: unknown) =>
-          this.notificationService.error(
+          this.notificationService.errorApi(
             resolveApiErrorMessage(error, 'No fue posible guardar el operador.'),
           ),
       });

@@ -85,7 +85,7 @@ export class ProductList {
           );
         },
         error: (error: unknown) =>
-          this.notificationService.error(
+          this.notificationService.errorApi(
             resolveApiErrorMessage(error, 'No fue posible eliminar el producto.'),
           ),
       });
@@ -121,7 +121,7 @@ export class ProductList {
           this.pageResponse.set(response);
         },
         error: (error: unknown) =>
-          this.notificationService.error(
+          this.notificationService.errorApi(
             resolveApiErrorMessage(error, 'No fue posible cargar los productos.'),
           ),
       });

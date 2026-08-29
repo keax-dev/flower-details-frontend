@@ -12,7 +12,9 @@
           <button
             (click)="toggleMenu()"
             [attr.aria-expanded]="isMenuOpen()"
-            [attr.aria-label]="isMenuOpen() ? 'Cerrar menú de navegación' : 'Abrir menú de navegación'"
+            [attr.aria-label]="
+              isMenuOpen() ? 'Cerrar menú de navegación' : 'Abrir menú de navegación'
+            "
             class="application-navigation__icon-button"
             nz-button
             nzShape="circle"

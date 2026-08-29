@@ -22,7 +22,7 @@ export class LoginPage {
   private readonly destroyRef = inject(DestroyRef);
   private readonly router = inject(Router);
 
-  protected readonly errorMessage = signal<string | null>(null);
+  protected readonly errorMessage = signal<string | string[] | null>(null);
   protected readonly isSubmitting = signal(false);
 
   protected readonly loginForm = this.formBuilder.group({
@@ -57,6 +57,14 @@ export class LoginPage {
   protected hasError(controlName: 'email' | 'password'): boolean {
     const control = this.loginForm.controls[controlName];
     return control.invalid && control.touched;
+  }
+
+  protected errorMessages(): string[] {
+    const message = this.errorMessage();
+    if (message === null) {
+      return [];
+    }
+    return Array.isArray(message) ? message : [message];
   }
 
   private navigateAfterLogin(): void {

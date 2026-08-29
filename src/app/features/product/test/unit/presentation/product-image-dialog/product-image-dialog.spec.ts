@@ -27,6 +27,7 @@ async function createComponent() {
   const notificationService = {
     success: vi.fn(),
     error: vi.fn(),
+    errorApi: vi.fn(),
     warning: vi.fn(),
   };
 
@@ -76,8 +77,22 @@ describe('ProductImageDialog', () => {
     fixture.componentRef.setInput('product', {
       ...PRODUCT,
       images: [
-        { id: 4, url: '/first.png', originalFileName: 'first.png', contentType: 'image/png', sizeBytes: 1, sortOrder: 0 },
-        { id: 5, url: '/second.png', originalFileName: 'second.png', contentType: 'image/png', sizeBytes: 1, sortOrder: 1 },
+        {
+          id: 4,
+          url: '/first.png',
+          originalFileName: 'first.png',
+          contentType: 'image/png',
+          sizeBytes: 1,
+          sortOrder: 0,
+        },
+        {
+          id: 5,
+          url: '/second.png',
+          originalFileName: 'second.png',
+          contentType: 'image/png',
+          sizeBytes: 1,
+          sortOrder: 1,
+        },
       ],
     });
     fixture.componentRef.setInput('isOpen', true);

@@ -19,7 +19,7 @@ async function createComponent() {
     create: vi.fn(() => of(CATEGORY)),
     update: vi.fn(() => of(CATEGORY)),
   };
-  const notificationService = { success: vi.fn(), error: vi.fn() };
+  const notificationService = { success: vi.fn(), error: vi.fn(), errorApi: vi.fn() };
 
   await TestBed.configureTestingModule({
     imports: [CategoryFormDialog],

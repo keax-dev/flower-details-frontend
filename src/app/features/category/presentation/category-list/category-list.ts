@@ -1,11 +1,6 @@
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
-import {
-  faArrowLeft,
-  faArrowRight,
-  faPen,
-  faTrash,
-} from '@fortawesome/free-solid-svg-icons';
+import { faArrowLeft, faArrowRight, faPen, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import {
   Component,
@@ -81,7 +76,7 @@ export class CategoryList {
           );
         },
         error: (error: unknown) =>
-          this.notificationService.error(
+          this.notificationService.errorApi(
             resolveApiErrorMessage(error, 'No fue posible eliminar la categoría.'),
           ),
       });
@@ -113,7 +108,7 @@ export class CategoryList {
           this.pageResponse.set(response);
         },
         error: (error: unknown) =>
-          this.notificationService.error(
+          this.notificationService.errorApi(
             resolveApiErrorMessage(error, 'No fue posible cargar las categorías.'),
           ),
       });

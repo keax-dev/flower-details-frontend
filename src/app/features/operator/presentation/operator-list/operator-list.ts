@@ -85,7 +85,7 @@ export class OperatorList {
           this.loadOperators(this.currentPage());
         },
         error: (error: unknown) =>
-          this.notificationService.error(
+          this.notificationService.errorApi(
             resolveApiErrorMessage(error, 'No fue posible actualizar el estado del operador.'),
           ),
       });
@@ -109,7 +109,7 @@ export class OperatorList {
           );
         },
         error: (error: unknown) =>
-          this.notificationService.error(
+          this.notificationService.errorApi(
             resolveApiErrorMessage(error, 'No fue posible eliminar el operador.'),
           ),
       });
@@ -141,7 +141,7 @@ export class OperatorList {
           this.pageResponse.set(response);
         },
         error: (error: unknown) =>
-          this.notificationService.error(
+          this.notificationService.errorApi(
             resolveApiErrorMessage(error, 'No fue posible cargar los operadores.'),
           ),
       });
