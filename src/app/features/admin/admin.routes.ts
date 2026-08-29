@@ -21,6 +21,13 @@ export const ADMIN_ROUTES: Routes = [
             (module) => module.PRODUCT_ROUTES,
           ),
       },
+      {
+        path: 'operators',
+        loadChildren: () =>
+          import('@app/features/operator/route/operator.routes').then(
+            (module) => module.OPERATOR_ROUTES,
+          ),
+      },
       { path: '', pathMatch: 'full', redirectTo: 'categories' },
     ],
   },

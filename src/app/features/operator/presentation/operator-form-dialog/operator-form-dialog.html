@@ -1,0 +1,127 @@
+<nz-modal
+  (nzOnCancel)="closed.emit()"
+  [nzFooter]="footer"
+  [nzTitle]="operator() ? 'Actualizar operador' : 'Crear operador'"
+  [nzVisible]="isOpen()"
+>
+  <ng-container *nzModalContent>
+    <form [formGroup]="operatorForm" novalidate>
+      <div class="container-fluid px-0">
+        <div class="row g-3">
+          <div class="col-12 col-md-6">
+            <label class="form-label" for="operator-names">Nombres</label>
+            <input
+              [class.is-invalid]="hasError('names')"
+              formControlName="names"
+              id="operator-names"
+              maxlength="80"
+              nz-input
+              type="text"
+            />
+            @if (hasError('names')) {
+              <div class="invalid-feedback">Los nombres son obligatorios.</div>
+            }
+          </div>
+          <div class="col-12 col-md-6">
+            <label class="form-label" for="operator-last-names">Apellidos</label>
+            <input
+              [class.is-invalid]="hasError('lastNames')"
+              formControlName="lastNames"
+              id="operator-last-names"
+              maxlength="80"
+              nz-input
+              type="text"
+            />
+            @if (hasError('lastNames')) {
+              <div class="invalid-feedback">Los apellidos son obligatorios.</div>
+            }
+          </div>
+          <div class="col-12 col-md-6">
+            <label class="form-label" for="operator-email">Correo</label>
+            <input
+              [class.is-invalid]="hasError('email')"
+              formControlName="email"
+              id="operator-email"
+              maxlength="160"
+              nz-input
+              type="email"
+            />
+            @if (hasError('email')) {
+              <div class="invalid-feedback">Ingresa un correo valido.</div>
+            }
+          </div>
+          @if (operator() === null) {
+            <div class="col-12 col-md-6">
+              <label class="form-label" for="operator-password">Contrasena</label>
+              <div class="input-group operator-form-dialog__password-group">
+                <input
+                  [class.is-invalid]="hasError('password')"
+                  class="operator-form-dialog__password-input"
+                  formControlName="password"
+                  id="operator-password"
+                  maxlength="72"
+                  nz-input
+                  [type]="isPasswordVisible() ? 'text' : 'password'"
+                />
+                <button
+                  (click)="togglePasswordVisibility()"
+                  [attr.aria-label]="
+                    isPasswordVisible() ? 'Ocultar contrasena' : 'Mostrar contrasena'
+                  "
+                  class="btn btn-sm btn-outline-dark"
+                  type="button"
+                >
+                  <fa-icon [icon]="isPasswordVisible() ? faEyeSlash : faEye" aria-hidden="true" />
+                </button>
+              </div>
+              @if (hasError('password')) {
+                <div class="invalid-feedback">La contrasena debe tener al menos 8 caracteres.</div>
+              }
+            </div>
+          }
+          <div class="col-12 col-md-6">
+            <label class="form-label" for="operator-phone">Telefono</label>
+            <input
+              [class.is-invalid]="hasError('phone')"
+              formControlName="phone"
+              id="operator-phone"
+              maxlength="30"
+              nz-input
+              type="tel"
+            />
+            @if (hasError('phone')) {
+              <div class="invalid-feedback">El telefono es obligatorio.</div>
+            }
+          </div>
+          <div class="col-12 col-md-6 d-flex align-items-end">
+            <!-- eslint-disable-next-line @angular-eslint/template/label-has-associated-control -->
+            <label formControlName="active" nz-checkbox>Operador activo</label>
+          </div>
+        </div>
+      </div>
+    </form>
+  </ng-container>
+</nz-modal>
+
+<ng-template #footer>
+  <div class="d-flex justify-content-end gap-2">
+    <button
+      (click)="closed.emit()"
+      [disabled]="isSaving()"
+      class="btn btn-sm btn-dark px-3"
+      type="button"
+    >
+      <fa-icon [icon]="faXmark" aria-hidden="true" />
+      Cancelar
+    </button>
+    <button
+      (click)="submit()"
+      [disabled]="isSaving()"
+      class="btn btn-sm btn-success px-4"
+      type="button"
+    >
+      <fa-icon [icon]="faFloppyDisk" aria-hidden="true" />
+      {{ isSaving() ? 'Guardando...' : 'Guardar' }}
+    </button>
+  </div>
+</ng-template>

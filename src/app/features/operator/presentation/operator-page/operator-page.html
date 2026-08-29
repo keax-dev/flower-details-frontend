@@ -1,0 +1,29 @@
+<main class="operator-page py-4 py-md-5">
+  <div class="container-fluid operator-page__container">
+    <header class="row align-items-center gy-3 operator-page__header">
+      <div class="col-12 col-md">
+        <p class="operator-page__eyebrow mb-2">Administracion</p>
+        <h1 class="operator-page__title mb-0">Operadores</h1>
+      </div>
+      <div class="col-12 col-md-auto">
+        <button (click)="openCreateForm()" class="btn btn-sm btn-success" type="button">
+          <fa-icon [icon]="faPlus" aria-hidden="true" />
+          Nuevo operador
+        </button>
+      </div>
+    </header>
+
+    <div class="row mt-4 mt-md-5">
+      <div class="col-12">
+        <app-operator-list [refreshVersion]="listRefreshVersion()" (edit)="openEditForm($event)" />
+      </div>
+    </div>
+
+    <app-operator-form-dialog
+      (closed)="closeForm()"
+      (saved)="refreshList()"
+      [isOpen]="isFormVisible()"
+      [operator]="editingOperator()"
+    />
+  </div>
+</main>

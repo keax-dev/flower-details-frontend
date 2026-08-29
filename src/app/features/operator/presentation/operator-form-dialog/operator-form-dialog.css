@@ -1,0 +1,9 @@
+.operator-form-dialog__password-group {
+  flex-wrap: nowrap;
+}
+
+.operator-form-dialog__password-input {
+  flex: 1 1 auto;
+  width: 1%;
+  min-width: 0;
+}

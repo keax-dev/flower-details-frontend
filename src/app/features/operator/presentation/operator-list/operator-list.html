@@ -1,0 +1,135 @@
+<section aria-labelledby="operators-title">
+  <div class="row align-items-end gy-2">
+    <div class="col-12">
+      <h2 id="operators-title" class="operator-list__title mb-1">Equipo operativo</h2>
+      @if (pageResponse(); as response) {
+        <p class="operator-list__summary mb-0">
+          {{ response.totalElements }} operadores registrados
+        </p>
+      }
+    </div>
+  </div>
+
+  <div class="operator-list__table-container mt-4">
+    <table class="table table-hover align-middle mb-0">
+      <caption class="visually-hidden">
+        Listado de operadores
+      </caption>
+      <thead>
+        <tr>
+          <th scope="col">Operador</th>
+          <th class="operator-list__contact-column" scope="col">Contacto</th>
+          <th scope="col">Estado</th>
+          <th class="text-end" scope="col">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        @if (isLoading()) {
+          <tr>
+            <td class="operator-list__empty" colspan="4">Cargando operadores...</td>
+          </tr>
+        } @else {
+          @for (operator of operators(); track operator.id) {
+            <tr>
+              <td>
+                <p class="fw-semibold mb-1">{{ operator.names }} {{ operator.lastNames }}</p>
+              </td>
+              <td class="operator-list__contact-column">
+                <p class="mb-1">{{ operator.email }}</p>
+                <small class="operator-list__secondary">{{ operator.phone }}</small>
+              </td>
+              <td>
+                <span
+                  [class.operator-list__status--active]="operator.active"
+                  [class.operator-list__status--inactive]="!operator.active"
+                  class="operator-list__status"
+                >
+                  {{ operator.active ? 'Activo' : 'Inactivo' }}
+                </span>
+              </td>
+              <td>
+                <div class="d-flex flex-wrap justify-content-end gap-2">
+                  <button
+                    (click)="edit.emit(operator)"
+                    aria-label="Editar operador"
+                    class="btn btn-outline-dark btn-sm operator-list__action-button"
+                    title="Editar operador"
+                    type="button"
+                  >
+                    <fa-icon [icon]="faPen" aria-hidden="true" />
+                  </button>
+                  <button
+                    (nzOnConfirm)="updateStatus(operator)"
+                    [disabled]="pendingActionId() === operator.id"
+                    [nzPopconfirmTitle]="
+                      operator.active
+                        ? 'Desactivar a ' + operator.names + '?'
+                        : 'Activar a ' + operator.names + '?'
+                    "
+                    [attr.aria-label]="operator.active ? 'Desactivar operador' : 'Activar operador'"
+                    class="btn btn-outline-dark btn-sm operator-list__action-button"
+                    nz-popconfirm
+                    nzPopconfirmPlacement="topRight"
+                    [title]="operator.active ? 'Desactivar operador' : 'Activar operador'"
+                    type="button"
+                  >
+                    <fa-icon [icon]="faPowerOff" aria-hidden="true" />
+                  </button>
+                  <button
+                    (nzOnConfirm)="deleteOperator(operator)"
+                    [disabled]="pendingActionId() === operator.id"
+                    [nzPopconfirmTitle]="'Eliminar al operador ' + operator.names + '?'"
+                    aria-label="Eliminar operador"
+                    class="btn btn-outline-danger btn-sm operator-list__action-button"
+                    nz-popconfirm
+                    nzPopconfirmPlacement="topRight"
+                    title="Eliminar operador"
+                    type="button"
+                  >
+                    <fa-icon [icon]="faTrash" aria-hidden="true" />
+                  </button>
+                </div>
+              </td>
+            </tr>
+          } @empty {
+            <tr>
+              <td class="operator-list__empty" colspan="4">
+                Todavia no hay operadores registrados.
+              </td>
+            </tr>
+          }
+        }
+      </tbody>
+    </table>
+  </div>
+
+  @if (pageResponse(); as response) {
+    <nav aria-label="Paginacion de operadores" class="row align-items-center gy-3 mt-4">
+      <div class="col-12 col-md">
+        <p class="operator-list__summary mb-0">
+          Pagina {{ response.page + 1 }} de {{ response.totalPages || 1 }}
+        </p>
+      </div>
+      <div class="col-12 col-md-auto">
+        <div class="d-flex gap-2">
+          <button
+            (click)="previousPage()"
+            [disabled]="!hasPreviousPage() || isLoading()"
+            class="btn btn-sm btn-outline-dark"
+            type="button"
+          >
+            <fa-icon [icon]="faArrowLeft" aria-hidden="true" /> Anterior
+          </button>
+          <button
+            (click)="nextPage()"
+            [disabled]="!hasNextPage() || isLoading()"
+            class="btn btn-sm btn-outline-dark"
+            type="button"
+          >
+            Siguiente <fa-icon [icon]="faArrowRight" aria-hidden="true" />
+          </button>
+        </div>
+      </div>
+    </nav>
+  }
+</section>

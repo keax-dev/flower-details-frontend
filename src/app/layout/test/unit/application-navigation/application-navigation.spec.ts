@@ -47,7 +47,7 @@ describe('ApplicationNavigation', () => {
 
     const labels = fixture.componentInstance['navigationItems']().map((item) => item.label);
 
-    expect(labels).toEqual(['Inicio', 'Categorías', 'Productos']);
+    expect(labels).toEqual(['Inicio', 'Categorías', 'Productos', 'Operadores']);
   });
 
   it('shows only public navigation to customers and guests', async () => {
