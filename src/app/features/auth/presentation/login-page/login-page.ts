@@ -47,10 +47,7 @@ export class LoginPage {
       )
       .subscribe({
         next: () => this.navigateAfterLogin(),
-        error: (error: unknown) =>
-          this.errorMessage.set(
-            resolveApiErrorMessage(error, 'No fue posible iniciar sesión. Inténtalo nuevamente.'),
-          ),
+        error: (error: unknown) => this.errorMessage.set(resolveApiErrorMessage(error, 'No fue posible iniciar sesión. Inténtalo nuevamente.')),
       });
   }
 
@@ -69,10 +66,7 @@ export class LoginPage {
 
   private navigateAfterLogin(): void {
     const returnUrl = this.activatedRoute.snapshot.queryParamMap.get('returnUrl');
-    const redirectUrl =
-      returnUrl !== null && returnUrl.startsWith('/') && !returnUrl.startsWith('//')
-        ? returnUrl
-        : '/home';
+    const redirectUrl = returnUrl !== null && returnUrl.startsWith('/') && !returnUrl.startsWith('//') ? returnUrl : '/home';
 
     this.router.navigateByUrl(redirectUrl);
   }

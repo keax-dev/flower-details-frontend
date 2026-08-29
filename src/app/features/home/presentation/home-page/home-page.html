@@ -4,17 +4,11 @@
       <div class="col-12 col-lg-9 col-xl-8">
         <p class="home-page__eyebrow mb-3">Gestión floral</p>
         <h1 id="home-title" class="home-page__title mb-4">Cada detalle, bien cuidado.</h1>
-        <p class="home-page__description mb-0">
-          La administración de catálogo, pedidos y clientes irá tomando forma desde aquí.
-        </p>
+        <p class="home-page__description mb-0">La administración de catálogo, pedidos y clientes irá tomando forma desde aquí.</p>
         @if (!user()) {
-          <a class="mt-4" nz-button nzType="primary" routerLink="/auth/login">
-            Acceder al sistema
-          </a>
+          <a class="mt-4" nz-button nzType="primary" routerLink="/auth/login"> Acceder al sistema </a>
         } @else if (user()?.role === 'ADMIN') {
-          <a class="mt-4" nz-button nzType="primary" routerLink="/admin/categories">
-            Administrar catálogo
-          </a>
+          <a class="mt-4" nz-button nzType="primary" routerLink="/admin/categories"> Administrar catálogo </a>
         }
       </div>
     </section>

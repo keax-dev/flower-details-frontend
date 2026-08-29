@@ -19,9 +19,5 @@ export function resolveApiErrorMessage(error: unknown, fallbackMessage: string):
 }
 
 function isApiErrorResponse(error: unknown): error is ApiErrorResponse {
-  return (
-    typeof error === 'object' &&
-    error !== null &&
-    ('message' in error || 'validationErrors' in error)
-  );
+  return typeof error === 'object' && error !== null && ('message' in error || 'validationErrors' in error);
 }

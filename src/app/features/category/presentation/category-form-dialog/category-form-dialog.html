@@ -1,23 +1,11 @@
-<nz-modal
-  (nzOnCancel)="closed.emit()"
-  [nzFooter]="footer"
-  [nzTitle]="category() ? 'Actualizar categoría' : 'Crear categoría'"
-  [nzVisible]="isOpen()"
->
+<nz-modal (nzOnCancel)="closed.emit()" [nzFooter]="footer" [nzTitle]="category() ? 'Actualizar categoría' : 'Crear categoría'" [nzVisible]="isOpen()">
   <ng-container *nzModalContent>
     <form [formGroup]="categoryForm" novalidate>
       <div class="container-fluid px-0">
         <div class="row g-3">
           <div class="col-12">
             <label class="form-label" for="category-title">Título</label>
-            <input
-              [class.is-invalid]="hasError('title')"
-              formControlName="title"
-              id="category-title"
-              maxlength="120"
-              nz-input
-              type="text"
-            />
+            <input [class.is-invalid]="hasError('title')" formControlName="title" id="category-title" maxlength="120" nz-input type="text" />
             @if (hasError('title')) {
               <div class="invalid-feedback">El título es obligatorio.</div>
             }
@@ -36,9 +24,7 @@
               placeholder="Describe la categoría"
             />
             @if (hasError('description')) {
-              <div class="form-validation-message text-danger small mt-1">
-                La descripción es obligatoria y no puede superar 500 caracteres.
-              </div>
+              <div class="form-validation-message text-danger small mt-1">La descripción es obligatoria y no puede superar 500 caracteres.</div>
             }
           </div>
           <div class="col-12">
@@ -53,21 +39,11 @@
 
 <ng-template #footer>
   <div class="d-flex justify-content-end gap-2">
-    <button
-      (click)="closed.emit()"
-      [disabled]="isSaving()"
-      class="btn btn-sm btn-dark px-3"
-      type="button"
-    >
+    <button (click)="closed.emit()" [disabled]="isSaving()" class="btn btn-sm btn-dark px-3" type="button">
       <fa-icon [icon]="faXmark" aria-hidden="true" />
       Cancelar
     </button>
-    <button
-      (click)="submit()"
-      [disabled]="isSaving()"
-      class="btn btn-sm btn-success px-4"
-      type="button"
-    >
+    <button (click)="submit()" [disabled]="isSaving()" class="btn btn-sm btn-success px-4" type="button">
       <fa-icon [icon]="faFloppyDisk" aria-hidden="true" />
       {{ isSaving() ? 'Guardando...' : 'Guardar' }}
     </button>

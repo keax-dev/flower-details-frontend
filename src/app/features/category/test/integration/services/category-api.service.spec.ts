@@ -24,9 +24,7 @@ describe('CategoryApiService', () => {
   it('requests a paginated administrative category list', () => {
     categoryApiService.listForAdministration(2, 10).subscribe();
 
-    const request = httpTestingController.expectOne(
-      '/api/categories/administration?page=2&size=10',
-    );
+    const request = httpTestingController.expectOne('/api/categories/administration?page=2&size=10');
     expect(request.request.method).toBe('GET');
     request.flush(page([CATEGORY]));
   });
@@ -36,12 +34,8 @@ describe('CategoryApiService', () => {
 
     categoryApiService.listAll().subscribe((response) => (categories = response));
 
-    httpTestingController
-      .expectOne('/api/categories?page=0&size=100')
-      .flush(page([CATEGORY], 0, 2));
-    httpTestingController
-      .expectOne('/api/categories?page=1&size=100')
-      .flush(page([category(2, 'Aniversarios')], 1, 2));
+    httpTestingController.expectOne('/api/categories?page=0&size=100').flush(page([CATEGORY], 0, 2));
+    httpTestingController.expectOne('/api/categories?page=1&size=100').flush(page([category(2, 'Aniversarios')], 1, 2));
 
     expect(categories.map((item) => item.title)).toEqual(['Cumpleaños', 'Aniversarios']);
   });

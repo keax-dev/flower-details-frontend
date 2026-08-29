@@ -23,16 +23,14 @@ export class CsrfService {
   }
 
   token(): Observable<CsrfTokenResponse> {
-    this.tokenRequest$ ??= this.httpClient
-      .get<CsrfTokenResponse>(`${this.apiBaseUrl}/auth/csrf`)
-      .pipe(
-        catchError((error: unknown) => {
-          this.tokenRequest$ = undefined;
-          return throwError(() => error);
-        }),
-        tap(({ token }) => this.storeCsrfCookie(token)),
-        shareReplay({ bufferSize: 1, refCount: false }),
-      );
+    this.tokenRequest$ ??= this.httpClient.get<CsrfTokenResponse>(`${this.apiBaseUrl}/auth/csrf`).pipe(
+      catchError((error: unknown) => {
+        this.tokenRequest$ = undefined;
+        return throwError(() => error);
+      }),
+      tap(({ token }) => this.storeCsrfCookie(token)),
+      shareReplay({ bufferSize: 1, refCount: false }),
+    );
 
     return this.tokenRequest$;
   }

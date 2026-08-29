@@ -12,22 +12,12 @@ import { finalize } from 'rxjs';
 import { resolveApiErrorMessage } from '@core/http/utils/api-error';
 import { NotificationService } from '@core/notification/notification.service';
 import { Operator } from '@features/operator/models/operator.model';
-import {
-  CreateOperatorPayload,
-  UpdateOperatorPayload,
-} from '@features/operator/models/operator-payload.model';
+import { CreateOperatorPayload, UpdateOperatorPayload } from '@features/operator/models/operator-payload.model';
 import { OperatorApiService } from '@features/operator/services/operator-api.service';
 
 @Component({
   selector: 'app-operator-form-dialog',
-  imports: [
-    FontAwesomeModule,
-    NzCheckboxModule,
-    NzInputModule,
-    NzModalModule,
-    NzSelectModule,
-    ReactiveFormsModule,
-  ],
+  imports: [FontAwesomeModule, NzCheckboxModule, NzInputModule, NzModalModule, NzSelectModule, ReactiveFormsModule],
   templateUrl: './operator-form-dialog.html',
   styleUrl: './operator-form-dialog.css',
 })
@@ -75,9 +65,7 @@ export class OperatorFormDialog {
     const operator = this.operator();
     this.isSaving.set(true);
     const request$ =
-      operator === null
-        ? this.operatorApiService.create(this.createPayload())
-        : this.operatorApiService.update(operator.id, this.updatePayload());
+      operator === null ? this.operatorApiService.create(this.createPayload()) : this.operatorApiService.update(operator.id, this.updatePayload());
 
     request$
       .pipe(
@@ -86,17 +74,10 @@ export class OperatorFormDialog {
       )
       .subscribe({
         next: () => {
-          this.notificationService.success(
-            operator === null
-              ? 'Usuario creado correctamente.'
-              : 'Usuario actualizado correctamente.',
-          );
+          this.notificationService.success(operator === null ? 'Usuario creado correctamente.' : 'Usuario actualizado correctamente.');
           this.saved.emit();
         },
-        error: (error: unknown) =>
-          this.notificationService.errorApi(
-            resolveApiErrorMessage(error, 'No fue posible guardar el operador.'),
-          ),
+        error: (error: unknown) => this.notificationService.errorApi(resolveApiErrorMessage(error, 'No fue posible guardar el operador.')),
       });
   }
 
@@ -113,9 +94,7 @@ export class OperatorFormDialog {
     this.isPasswordVisible.set(false);
     const passwordControl = this.operatorForm.controls.password;
     passwordControl.setValidators(
-      operator === null
-        ? [Validators.required, Validators.minLength(8), Validators.maxLength(72)]
-        : [Validators.maxLength(72)],
+      operator === null ? [Validators.required, Validators.minLength(8), Validators.maxLength(72)] : [Validators.maxLength(72)],
     );
     passwordControl.updateValueAndValidity({ emitEvent: false });
     this.operatorForm.reset(

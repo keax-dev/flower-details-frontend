@@ -40,10 +40,7 @@
                   }
                   <div class="min-w-0">
                     <p class="fw-semibold mb-1">{{ product.title }}</p>
-                    <div
-                      class="product-list__description rich-text-content"
-                      [innerHTML]="product.description"
-                    ></div>
+                    <div class="product-list__description rich-text-content" [innerHTML]="product.description"></div>
                   </div>
                 </div>
               </td>
@@ -112,27 +109,15 @@
   @if (pageResponse(); as response) {
     <nav aria-label="Paginación de productos" class="row align-items-center gy-3 mt-4">
       <div class="col-12 col-md">
-        <p class="product-list__summary mb-0">
-          Página {{ response.page + 1 }} de {{ response.totalPages || 1 }}
-        </p>
+        <p class="product-list__summary mb-0">Página {{ response.page + 1 }} de {{ response.totalPages || 1 }}</p>
       </div>
       <div class="col-12 col-md-auto">
         <div class="d-flex gap-2">
-          <button
-            (click)="previousPage()"
-            [disabled]="!hasPreviousPage() || isLoading()"
-            class="btn btn-sm btn-outline-dark"
-            type="button"
-          >
+          <button (click)="previousPage()" [disabled]="!hasPreviousPage() || isLoading()" class="btn btn-sm btn-outline-dark" type="button">
             <fa-icon [icon]="faArrowLeft" aria-hidden="true" />
             Anterior
           </button>
-          <button
-            (click)="nextPage()"
-            [disabled]="!hasNextPage() || isLoading()"
-            class="btn btn-sm btn-outline-dark"
-            type="button"
-          >
+          <button (click)="nextPage()" [disabled]="!hasNextPage() || isLoading()" class="btn btn-sm btn-outline-dark" type="button">
             Siguiente
             <fa-icon [icon]="faArrowRight" aria-hidden="true" />
           </button>

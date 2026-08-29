@@ -91,9 +91,7 @@ export class ProductImageDialog {
   };
 
   protected saveImages(): void {
-    const images = this.fileList
-      .map((file) => file.originFileObj)
-      .filter((file): file is File => file instanceof File);
+    const images = this.fileList.map((file) => file.originFileObj).filter((file): file is File => file instanceof File);
 
     if (images.length === 0) {
       this.notificationService.warning('Selecciona al menos una imagen para guardar.');
@@ -112,9 +110,7 @@ export class ProductImageDialog {
           this.isUploading.set(false);
         },
         error: (error: unknown) => {
-          this.notificationService.errorApi(
-            resolveApiErrorMessage(error, 'No fue posible guardar las imagenes.'),
-          );
+          this.notificationService.errorApi(resolveApiErrorMessage(error, 'No fue posible guardar las imagenes.'));
           this.isUploading.set(false);
         },
       });
@@ -137,10 +133,7 @@ export class ProductImageDialog {
     }
 
     const reorderedImages = [...images];
-    [reorderedImages[sourceIndex], reorderedImages[targetIndex]] = [
-      reorderedImages[targetIndex],
-      reorderedImages[sourceIndex],
-    ];
+    [reorderedImages[sourceIndex], reorderedImages[targetIndex]] = [reorderedImages[targetIndex], reorderedImages[sourceIndex]];
     this.managedImages.set(reorderedImages);
   }
 
@@ -163,9 +156,7 @@ export class ProductImageDialog {
         },
         error: (error: unknown) => {
           this.isSavingPositions.set(false);
-          this.notificationService.errorApi(
-            resolveApiErrorMessage(error, 'No fue posible actualizar las posiciones.'),
-          );
+          this.notificationService.errorApi(resolveApiErrorMessage(error, 'No fue posible actualizar las posiciones.'));
         },
       });
   }
@@ -183,9 +174,7 @@ export class ProductImageDialog {
         },
         error: (error: unknown) => {
           this.deletingImageId.set(null);
-          this.notificationService.errorApi(
-            resolveApiErrorMessage(error, 'No fue posible eliminar la imagen.'),
-          );
+          this.notificationService.errorApi(resolveApiErrorMessage(error, 'No fue posible eliminar la imagen.'));
         },
       });
   }

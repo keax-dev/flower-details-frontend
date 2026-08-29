@@ -52,15 +52,11 @@ describe('ApplicationNavigation', () => {
 
   it('shows only public navigation to customers and guests', async () => {
     const { fixture } = await createComponent({ ...adminUser, role: 'CUSTOMER' });
-    expect(fixture.componentInstance['navigationItems']().map((item) => item.label)).toEqual([
-      'Inicio',
-    ]);
+    expect(fixture.componentInstance['navigationItems']().map((item) => item.label)).toEqual(['Inicio']);
 
     TestBed.resetTestingModule();
     const guest = await createComponent(null);
-    expect(guest.fixture.componentInstance['navigationItems']().map((item) => item.label)).toEqual([
-      'Inicio',
-    ]);
+    expect(guest.fixture.componentInstance['navigationItems']().map((item) => item.label)).toEqual(['Inicio']);
   });
 
   it('toggles the mobile menu state', async () => {

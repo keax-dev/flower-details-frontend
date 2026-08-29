@@ -2,8 +2,7 @@ module.exports = {
   forbidden: [
     {
       name: 'no-circular-dependencies',
-      comment:
-        'Las dependencias circulares vuelven impredecible la inicialización de los features.',
+      comment: 'Las dependencias circulares vuelven impredecible la inicialización de los features.',
       severity: 'error',
       from: {},
       to: { circular: true },

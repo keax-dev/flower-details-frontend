@@ -18,14 +18,7 @@ import { RICH_TEXT_FORMATS, RICH_TEXT_MODULES } from '@shared/config/rich-text-e
 
 @Component({
   selector: 'app-category-form-dialog',
-  imports: [
-    NzCheckboxModule,
-    FontAwesomeModule,
-    NzInputModule,
-    NzModalModule,
-    QuillEditorComponent,
-    ReactiveFormsModule,
-  ],
+  imports: [NzCheckboxModule, FontAwesomeModule, NzInputModule, NzModalModule, QuillEditorComponent, ReactiveFormsModule],
   templateUrl: './category-form-dialog.html',
 })
 export class CategoryFormDialog {
@@ -69,10 +62,7 @@ export class CategoryFormDialog {
     this.isSaving.set(true);
     const category = this.category();
     const payload: CategoryPayload = this.categoryForm.getRawValue();
-    const request$ =
-      category === null
-        ? this.categoryApiService.create(payload)
-        : this.categoryApiService.update(category.id, payload);
+    const request$ = category === null ? this.categoryApiService.create(payload) : this.categoryApiService.update(category.id, payload);
 
     request$
       .pipe(
@@ -81,17 +71,10 @@ export class CategoryFormDialog {
       )
       .subscribe({
         next: () => {
-          this.notificationService.success(
-            category === null
-              ? 'Categoría creada correctamente.'
-              : 'Categoría actualizada correctamente.',
-          );
+          this.notificationService.success(category === null ? 'Categoría creada correctamente.' : 'Categoría actualizada correctamente.');
           this.saved.emit();
         },
-        error: (error: unknown) =>
-          this.notificationService.errorApi(
-            resolveApiErrorMessage(error, 'No fue posible guardar la categoría.'),
-          ),
+        error: (error: unknown) => this.notificationService.errorApi(resolveApiErrorMessage(error, 'No fue posible guardar la categoría.')),
       });
   }
 

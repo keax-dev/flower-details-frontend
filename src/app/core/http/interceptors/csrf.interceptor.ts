@@ -28,9 +28,7 @@ export const csrfInterceptor: HttpInterceptorFn = (request, next) => {
         return throwError(() => error);
       }
 
-      return csrfService
-        .refreshToken()
-        .pipe(switchMap((csrfToken) => next(withCsrfToken(request, csrfToken))));
+      return csrfService.refreshToken().pipe(switchMap((csrfToken) => next(withCsrfToken(request, csrfToken))));
     }),
   );
 };
@@ -54,10 +52,7 @@ function isCsrfEndpoint(url: string, apiBaseUrl: string): boolean {
 }
 
 function isSessionEndpoint(url: string, apiBaseUrl: string): boolean {
-  return (
-    isApiEndpoint(url, apiBaseUrl, '/auth/login') ||
-    isApiEndpoint(url, apiBaseUrl, '/auth/register')
-  );
+  return isApiEndpoint(url, apiBaseUrl, '/auth/login') || isApiEndpoint(url, apiBaseUrl, '/auth/register');
 }
 
 function isInvalidCsrfError(error: unknown): boolean {

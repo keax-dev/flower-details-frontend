@@ -1,22 +1,7 @@
-import {
-  Component,
-  DestroyRef,
-  computed,
-  effect,
-  inject,
-  input,
-  output,
-  signal,
-} from '@angular/core';
+import { Component, DestroyRef, computed, effect, inject, input, output, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import {
-  faArrowLeft,
-  faArrowRight,
-  faPen,
-  faPowerOff,
-  faTrash,
-} from '@fortawesome/free-solid-svg-icons';
+import { faArrowLeft, faArrowRight, faPen, faPowerOff, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 import { finalize } from 'rxjs';
 
@@ -67,9 +52,7 @@ export class OperatorList {
 
   protected updateStatus(operator: Operator): void {
     this.pendingActionId.set(operator.id);
-    const request$ = operator.active
-      ? this.operatorApiService.deactivate(operator.id)
-      : this.operatorApiService.activate(operator.id);
+    const request$ = operator.active ? this.operatorApiService.deactivate(operator.id) : this.operatorApiService.activate(operator.id);
     request$
       .pipe(
         finalize(() => this.pendingActionId.set(null)),
@@ -77,17 +60,11 @@ export class OperatorList {
       )
       .subscribe({
         next: () => {
-          this.notificationService.success(
-            operator.active
-              ? 'Operador desactivado correctamente.'
-              : 'Operador activado correctamente.',
-          );
+          this.notificationService.success(operator.active ? 'Operador desactivado correctamente.' : 'Operador activado correctamente.');
           this.loadOperators(this.currentPage());
         },
         error: (error: unknown) =>
-          this.notificationService.errorApi(
-            resolveApiErrorMessage(error, 'No fue posible actualizar el estado del operador.'),
-          ),
+          this.notificationService.errorApi(resolveApiErrorMessage(error, 'No fue posible actualizar el estado del operador.')),
       });
   }
 
@@ -102,16 +79,9 @@ export class OperatorList {
       .subscribe({
         next: () => {
           this.notificationService.success('Operador eliminado correctamente.');
-          this.loadOperators(
-            this.operators().length === 1
-              ? Math.max(0, this.currentPage() - 1)
-              : this.currentPage(),
-          );
+          this.loadOperators(this.operators().length === 1 ? Math.max(0, this.currentPage() - 1) : this.currentPage());
         },
-        error: (error: unknown) =>
-          this.notificationService.errorApi(
-            resolveApiErrorMessage(error, 'No fue posible eliminar el operador.'),
-          ),
+        error: (error: unknown) => this.notificationService.errorApi(resolveApiErrorMessage(error, 'No fue posible eliminar el operador.')),
       });
   }
 
@@ -140,10 +110,7 @@ export class OperatorList {
           this.operators.set(response.items);
           this.pageResponse.set(response);
         },
-        error: (error: unknown) =>
-          this.notificationService.errorApi(
-            resolveApiErrorMessage(error, 'No fue posible cargar los operadores.'),
-          ),
+        error: (error: unknown) => this.notificationService.errorApi(resolveApiErrorMessage(error, 'No fue posible cargar los operadores.')),
       });
   }
 }

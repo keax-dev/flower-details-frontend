@@ -12,9 +12,7 @@ const ADMIN = {
 };
 
 test('lets an administrator create a category', async ({ page }) => {
-  await page.route('**/api/auth/csrf', (route) =>
-    route.fulfill({ json: { headerName: 'X-XSRF-TOKEN', token: 'test-token' } }),
-  );
+  await page.route('**/api/auth/csrf', (route) => route.fulfill({ json: { headerName: 'X-XSRF-TOKEN', token: 'test-token' } }));
   await page.route('**/api/me', (route) => route.fulfill({ json: ADMIN }));
   await page.route('**/api/categories**', async (route) => {
     if (route.request().method() === 'POST') {

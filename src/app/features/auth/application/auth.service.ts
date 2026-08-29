@@ -42,8 +42,6 @@ export class AuthService {
   }
 
   logout(): Observable<void> {
-    return this.httpClient
-      .post<void>(`${this.apiBaseUrl}/auth/logout`, {})
-      .pipe(finalize(() => this.sessionStore.clear()));
+    return this.httpClient.post<void>(`${this.apiBaseUrl}/auth/logout`, {}).pipe(finalize(() => this.sessionStore.clear()));
   }
 }

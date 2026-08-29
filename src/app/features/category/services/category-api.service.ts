@@ -16,21 +16,14 @@ export class CategoryApiService {
 
   listForAdministration(page: number, size: number): Observable<PageResponse<Category>> {
     const params = new HttpParams().set('page', page).set('size', size);
-    return this.httpClient.get<PageResponse<Category>>(
-      `${this.apiBaseUrl}/categories/administration`,
-      {
-        params,
-      },
-    );
+    return this.httpClient.get<PageResponse<Category>>(`${this.apiBaseUrl}/categories/administration`, {
+      params,
+    });
   }
 
   listAll(): Observable<Category[]> {
     return this.listActive(0, MAX_PAGE_SIZE).pipe(
-      expand((response) =>
-        response.page + 1 < response.totalPages
-          ? this.listActive(response.page + 1, MAX_PAGE_SIZE)
-          : EMPTY,
-      ),
+      expand((response) => (response.page + 1 < response.totalPages ? this.listActive(response.page + 1, MAX_PAGE_SIZE) : EMPTY)),
       reduce((categories: Category[], response) => [...categories, ...response.items], []),
     );
   }

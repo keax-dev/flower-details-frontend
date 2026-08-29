@@ -3,18 +3,14 @@
     <div class="container-fluid application-navigation__container">
       <div class="row align-items-center g-0">
         <div class="col">
-          <a (click)="closeMenu()" class="application-navigation__brand" routerLink="/home">
-            Flower Details
-          </a>
+          <a (click)="closeMenu()" class="application-navigation__brand" routerLink="/home"> Flower Details </a>
         </div>
 
         <div class="col-auto d-md-none">
           <button
             (click)="toggleMenu()"
             [attr.aria-expanded]="isMenuOpen()"
-            [attr.aria-label]="
-              isMenuOpen() ? 'Cerrar menú de navegación' : 'Abrir menú de navegación'
-            "
+            [attr.aria-label]="isMenuOpen() ? 'Cerrar menú de navegación' : 'Abrir menú de navegación'"
             class="application-navigation__icon-button"
             nz-button
             nzShape="circle"
@@ -56,14 +52,7 @@
                   <fa-icon [icon]="faRightFromBracket" aria-hidden="true" />
                 </button>
               } @else {
-                <a
-                  (click)="closeMenu()"
-                  class="application-navigation__login"
-                  nz-button
-                  routerLink="/auth/login"
-                >
-                  Iniciar sesión
-                </a>
+                <a (click)="closeMenu()" class="application-navigation__login" nz-button routerLink="/auth/login"> Iniciar sesión </a>
               }
             </div>
           </div>

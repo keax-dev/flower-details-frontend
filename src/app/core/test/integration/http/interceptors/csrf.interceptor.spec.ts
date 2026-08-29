@@ -9,10 +9,7 @@ describe('csrfInterceptor', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [
-        provideHttpClient(withInterceptors([csrfInterceptor])),
-        provideHttpClientTesting(),
-      ],
+      providers: [provideHttpClient(withInterceptors([csrfInterceptor])), provideHttpClientTesting()],
     });
 
     httpClient = TestBed.inject(HttpClient);

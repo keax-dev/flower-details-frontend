@@ -9,10 +9,7 @@ describe('credentialsInterceptor', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [
-        provideHttpClient(withInterceptors([credentialsInterceptor])),
-        provideHttpClientTesting(),
-      ],
+      providers: [provideHttpClient(withInterceptors([credentialsInterceptor])), provideHttpClientTesting()],
     });
 
     httpClient = TestBed.inject(HttpClient);

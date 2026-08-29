@@ -9,17 +9,11 @@ export const ADMIN_ROUTES: Routes = [
     children: [
       {
         path: 'categories',
-        loadChildren: () =>
-          import('@app/features/category/routes/category.routes').then(
-            (module) => module.CATEGORY_ROUTES,
-          ),
+        loadChildren: () => import('@app/features/category/routes/category.routes').then((module) => module.CATEGORY_ROUTES),
       },
       {
         path: 'products',
-        loadChildren: () =>
-          import('@app/features/product/route/product.routes').then(
-            (module) => module.PRODUCT_ROUTES,
-          ),
+        loadChildren: () => import('@app/features/product/route/product.routes').then((module) => module.PRODUCT_ROUTES),
       },
       {
         path: 'operators',
@@ -28,10 +22,7 @@ export const ADMIN_ROUTES: Routes = [
       },
       {
         path: 'staff',
-        loadChildren: () =>
-          import('@app/features/operator/route/operator.routes').then(
-            (module) => module.OPERATOR_ROUTES,
-          ),
+        loadChildren: () => import('@app/features/operator/route/operator.routes').then((module) => module.OPERATOR_ROUTES),
       },
       { path: '', pathMatch: 'full', redirectTo: 'categories' },
     ],

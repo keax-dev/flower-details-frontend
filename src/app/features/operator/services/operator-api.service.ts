@@ -4,10 +4,7 @@ import { Observable } from 'rxjs';
 
 import { API_BASE_URL } from '@core/http/config/api.config';
 import { Operator } from '@features/operator/models/operator.model';
-import {
-  CreateOperatorPayload,
-  UpdateOperatorPayload,
-} from '@features/operator/models/operator-payload.model';
+import { CreateOperatorPayload, UpdateOperatorPayload } from '@features/operator/models/operator-payload.model';
 import { PageResponse } from '@shared/domain/pagination/page-response.model';
 
 @Service()

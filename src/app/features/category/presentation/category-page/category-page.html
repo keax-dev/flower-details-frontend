@@ -19,11 +19,6 @@
       </div>
     </div>
 
-    <app-category-form-dialog
-      (closed)="closeForm()"
-      (saved)="refreshList()"
-      [category]="editingCategory()"
-      [isOpen]="isFormVisible()"
-    />
+    <app-category-form-dialog (closed)="closeForm()" (saved)="refreshList()" [category]="editingCategory()" [isOpen]="isFormVisible()" />
   </div>
 </main>

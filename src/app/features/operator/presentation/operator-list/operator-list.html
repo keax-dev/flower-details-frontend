@@ -63,11 +63,7 @@
                   <button
                     (nzOnConfirm)="updateStatus(operator)"
                     [disabled]="pendingActionId() === operator.id"
-                    [nzPopconfirmTitle]="
-                      operator.active
-                        ? 'Desactivar a ' + operator.names + '?'
-                        : 'Activar a ' + operator.names + '?'
-                    "
+                    [nzPopconfirmTitle]="operator.active ? 'Desactivar a ' + operator.names + '?' : 'Activar a ' + operator.names + '?'"
                     [attr.aria-label]="operator.active ? 'Desactivar operador' : 'Activar operador'"
                     class="btn btn-outline-dark btn-sm operator-list__action-button"
                     nz-popconfirm
@@ -106,26 +102,14 @@
   @if (pageResponse(); as response) {
     <nav aria-label="Paginacion de operadores" class="row align-items-center gy-3 mt-4">
       <div class="col-12 col-md">
-        <p class="operator-list__summary mb-0">
-          Pagina {{ response.page + 1 }} de {{ response.totalPages || 1 }}
-        </p>
+        <p class="operator-list__summary mb-0">Pagina {{ response.page + 1 }} de {{ response.totalPages || 1 }}</p>
       </div>
       <div class="col-12 col-md-auto">
         <div class="d-flex gap-2">
-          <button
-            (click)="previousPage()"
-            [disabled]="!hasPreviousPage() || isLoading()"
-            class="btn btn-sm btn-outline-dark"
-            type="button"
-          >
+          <button (click)="previousPage()" [disabled]="!hasPreviousPage() || isLoading()" class="btn btn-sm btn-outline-dark" type="button">
             <fa-icon [icon]="faArrowLeft" aria-hidden="true" /> Anterior
           </button>
-          <button
-            (click)="nextPage()"
-            [disabled]="!hasNextPage() || isLoading()"
-            class="btn btn-sm btn-outline-dark"
-            type="button"
-          >
+          <button (click)="nextPage()" [disabled]="!hasNextPage() || isLoading()" class="btn btn-sm btn-outline-dark" type="button">
             Siguiente <fa-icon [icon]="faArrowRight" aria-hidden="true" />
           </button>
         </div>

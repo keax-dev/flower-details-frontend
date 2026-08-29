@@ -19,11 +19,6 @@
       </div>
     </div>
 
-    <app-operator-form-dialog
-      (closed)="closeForm()"
-      (saved)="refreshList()"
-      [isOpen]="isFormVisible()"
-      [operator]="editingOperator()"
-    />
+    <app-operator-form-dialog (closed)="closeForm()" (saved)="refreshList()" [isOpen]="isFormVisible()" [operator]="editingOperator()" />
   </div>
 </main>

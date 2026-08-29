@@ -19,15 +19,7 @@ import { QuillEditorComponent } from 'ngx-quill';
 
 @Component({
   selector: 'app-product-form-dialog',
-  imports: [
-    NzCheckboxModule,
-    NzInputModule,
-    NzModalModule,
-    NzSelectModule,
-    FontAwesomeModule,
-    QuillEditorComponent,
-    ReactiveFormsModule,
-  ],
+  imports: [NzCheckboxModule, NzInputModule, NzModalModule, NzSelectModule, FontAwesomeModule, QuillEditorComponent, ReactiveFormsModule],
   templateUrl: './product-form-dialog.html',
 })
 export class ProductFormDialog {
@@ -76,18 +68,13 @@ export class ProductFormDialog {
     this.isSaving.set(true);
     const product = this.product();
     const payload: ProductPayload = this.productForm.getRawValue();
-    const request$ =
-      product === null
-        ? this.productApiService.create(payload)
-        : this.productApiService.update(product.id, payload);
+    const request$ = product === null ? this.productApiService.create(payload) : this.productApiService.update(product.id, payload);
 
     request$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: (savedProduct) => this.completeSave(savedProduct, product === null),
       error: (error: unknown) => {
         this.isSaving.set(false);
-        this.notificationService.errorApi(
-          resolveApiErrorMessage(error, 'No fue posible guardar el producto.'),
-        );
+        this.notificationService.errorApi(resolveApiErrorMessage(error, 'No fue posible guardar el producto.'));
       },
     });
   }
@@ -99,9 +86,7 @@ export class ProductFormDialog {
 
   private completeSave(product: Product, isNewProduct: boolean): void {
     this.isSaving.set(false);
-    this.notificationService.success(
-      isNewProduct ? 'Producto creado correctamente.' : 'Producto actualizado correctamente.',
-    );
+    this.notificationService.success(isNewProduct ? 'Producto creado correctamente.' : 'Producto actualizado correctamente.');
     this.saved.emit(product);
   }
 
@@ -111,17 +96,11 @@ export class ProductFormDialog {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: (categories) => this.categories.set(this.includeCurrentCategory(categories, product)),
-        error: (error: unknown) =>
-          this.notificationService.errorApi(
-            resolveApiErrorMessage(error, 'No fue posible cargar las categorías.'),
-          ),
+        error: (error: unknown) => this.notificationService.errorApi(resolveApiErrorMessage(error, 'No fue posible cargar las categorías.')),
       });
   }
 
-  private includeCurrentCategory(
-    categories: readonly ProductCategory[],
-    product: Product | null,
-  ): ProductCategory[] {
+  private includeCurrentCategory(categories: readonly ProductCategory[], product: Product | null): ProductCategory[] {
     if (product === null || categories.some((category) => category.id === product.category.id)) {
       return [...categories];
     }

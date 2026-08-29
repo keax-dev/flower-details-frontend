@@ -81,17 +81,12 @@ describe('AuthService', () => {
 
   it('clears the local session when logout cannot reach the server', () => {
     authService.login({ email: USER.email, password: 'correct-password' }).subscribe();
-    httpTestingController
-      .expectOne('/api/auth/login')
-      .flush({ expiresInSeconds: 3600, user: USER });
+    httpTestingController.expectOne('/api/auth/login').flush({ expiresInSeconds: 3600, user: USER });
 
     authService.logout().subscribe({ error: () => undefined });
     httpTestingController
       .expectOne('/api/auth/logout')
-      .flush(
-        { message: 'Servicio no disponible' },
-        { status: 503, statusText: 'Service Unavailable' },
-      );
+      .flush({ message: 'Servicio no disponible' }, { status: 503, statusText: 'Service Unavailable' });
 
     expect(authService.user()).toBeNull();
     expect(authService.isAuthenticated()).toBe(false);

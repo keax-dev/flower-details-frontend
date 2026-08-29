@@ -1,56 +1,29 @@
-<nz-modal
-  (nzOnCancel)="closed.emit()"
-  [nzFooter]="footer"
-  [nzTitle]="product() ? 'Actualizar producto' : 'Crear producto'"
-  [nzVisible]="isOpen()"
->
+<nz-modal (nzOnCancel)="closed.emit()" [nzFooter]="footer" [nzTitle]="product() ? 'Actualizar producto' : 'Crear producto'" [nzVisible]="isOpen()">
   <ng-container *nzModalContent>
     <form [formGroup]="productForm" novalidate>
       <div class="container-fluid px-0">
         <div class="row g-3">
           <div class="col-12 col-md-6">
             <label class="form-label" for="product-category">Categoría</label>
-            <nz-select
-              class="w-100"
-              formControlName="categoryId"
-              id="product-category"
-              nzPlaceHolder="Selecciona una categoría"
-            >
+            <nz-select class="w-100" formControlName="categoryId" id="product-category" nzPlaceHolder="Selecciona una categoría">
               @for (category of categories(); track category.id) {
                 <nz-option [nzLabel]="category.title" [nzValue]="category.id" />
               }
             </nz-select>
             @if (hasError('categoryId')) {
-              <div class="form-validation-message text-danger small mt-1">
-                Selecciona una categoría.
-              </div>
+              <div class="form-validation-message text-danger small mt-1">Selecciona una categoría.</div>
             }
           </div>
           <div class="col-12 col-md-6">
             <label class="form-label" for="product-price">Precio</label>
-            <input
-              [class.is-invalid]="hasError('price')"
-              formControlName="price"
-              id="product-price"
-              min="0.01"
-              nz-input
-              step="0.01"
-              type="number"
-            />
+            <input [class.is-invalid]="hasError('price')" formControlName="price" id="product-price" min="0.01" nz-input step="0.01" type="number" />
             @if (hasError('price')) {
               <div class="invalid-feedback">Ingresa un precio mayor a cero.</div>
             }
           </div>
           <div class="col-12">
             <label class="form-label" for="product-title">Título</label>
-            <input
-              [class.is-invalid]="hasError('title')"
-              formControlName="title"
-              id="product-title"
-              maxlength="160"
-              nz-input
-              type="text"
-            />
+            <input [class.is-invalid]="hasError('title')" formControlName="title" id="product-title" maxlength="160" nz-input type="text" />
             @if (hasError('title')) {
               <div class="invalid-feedback">El título es obligatorio.</div>
             }
@@ -69,9 +42,7 @@
               placeholder="Describe el producto"
             />
             @if (hasError('description')) {
-              <div class="form-validation-message text-danger small mt-1">
-                La descripción es obligatoria y no puede superar 1000 caracteres.
-              </div>
+              <div class="form-validation-message text-danger small mt-1">La descripción es obligatoria y no puede superar 1000 caracteres.</div>
             }
           </div>
           <div class="col-12">
@@ -86,21 +57,11 @@
 
 <ng-template #footer>
   <div class="d-flex justify-content-end gap-2">
-    <button
-      (click)="closed.emit()"
-      [disabled]="isSaving()"
-      class="btn btn-sm btn-outline-dark px-3"
-      type="button"
-    >
+    <button (click)="closed.emit()" [disabled]="isSaving()" class="btn btn-sm btn-outline-dark px-3" type="button">
       <fa-icon [icon]="faXmark" aria-hidden="true" />
       Cancelar
     </button>
-    <button
-      (click)="submit()"
-      [disabled]="isSaving()"
-      class="btn btn-sm btn-success px-4"
-      type="button"
-    >
+    <button (click)="submit()" [disabled]="isSaving()" class="btn btn-sm btn-success px-4" type="button">
       <fa-icon [icon]="faFloppyDisk" aria-hidden="true" />
       {{ isSaving() ? 'Guardando...' : 'Guardar' }}
     </button>

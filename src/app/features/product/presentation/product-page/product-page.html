@@ -15,20 +15,11 @@
 
     <div class="row mt-4 mt-md-5">
       <div class="col-12">
-        <app-product-list
-          [refreshVersion]="listRefreshVersion()"
-          (edit)="openEditForm($event)"
-          (manageImages)="openImageManager($event)"
-        />
+        <app-product-list [refreshVersion]="listRefreshVersion()" (edit)="openEditForm($event)" (manageImages)="openImageManager($event)" />
       </div>
     </div>
 
-    <app-product-form-dialog
-      (closed)="closeForm()"
-      (saved)="handleProductSaved($event)"
-      [product]="editingProduct()"
-      [isOpen]="isFormVisible()"
-    />
+    <app-product-form-dialog (closed)="closeForm()" (saved)="handleProductSaved($event)" [product]="editingProduct()" [isOpen]="isFormVisible()" />
 
     @if (imageProduct(); as product) {
       <app-product-image-dialog

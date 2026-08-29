@@ -2,16 +2,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 import { faArrowLeft, faArrowRight, faPen, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import {
-  Component,
-  DestroyRef,
-  computed,
-  effect,
-  inject,
-  input,
-  output,
-  signal,
-} from '@angular/core';
+import { Component, DestroyRef, computed, effect, inject, input, output, signal } from '@angular/core';
 import { finalize } from 'rxjs';
 
 import { Category } from '@app/features/category/models/category.model';
@@ -69,16 +60,9 @@ export class CategoryList {
       .subscribe({
         next: () => {
           this.notificationService.success('Categoría eliminada correctamente.');
-          this.loadCategories(
-            this.categories().length === 1
-              ? Math.max(0, this.currentPage() - 1)
-              : this.currentPage(),
-          );
+          this.loadCategories(this.categories().length === 1 ? Math.max(0, this.currentPage() - 1) : this.currentPage());
         },
-        error: (error: unknown) =>
-          this.notificationService.errorApi(
-            resolveApiErrorMessage(error, 'No fue posible eliminar la categoría.'),
-          ),
+        error: (error: unknown) => this.notificationService.errorApi(resolveApiErrorMessage(error, 'No fue posible eliminar la categoría.')),
       });
   }
 
@@ -107,10 +91,7 @@ export class CategoryList {
           this.categories.set(response.items);
           this.pageResponse.set(response);
         },
-        error: (error: unknown) =>
-          this.notificationService.errorApi(
-            resolveApiErrorMessage(error, 'No fue posible cargar las categorías.'),
-          ),
+        error: (error: unknown) => this.notificationService.errorApi(resolveApiErrorMessage(error, 'No fue posible cargar las categorías.')),
       });
   }
 }

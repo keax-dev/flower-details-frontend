@@ -1,16 +1,9 @@
-<nz-modal
-  (nzOnCancel)="closed.emit()"
-  [nzFooter]="footer"
-  [nzTitle]="'Imágenes de ' + product().title"
-  [nzVisible]="isOpen()"
->
+<nz-modal (nzOnCancel)="closed.emit()" [nzFooter]="footer" [nzTitle]="'Imágenes de ' + product().title" [nzVisible]="isOpen()">
   <ng-container *nzModalContent>
     <div class="container-fluid px-0">
       <div class="row g-4">
         <div class="col-12">
-          <p class="product-image-dialog__description mb-3">
-            Selecciona imágenes JPG, PNG o WEBP. Podrás revisar la selección antes de guardarla.
-          </p>
+          <p class="product-image-dialog__description mb-3">Selecciona imágenes JPG, PNG o WEBP. Podrás revisar la selección antes de guardarla.</p>
           <nz-upload
             [nzBeforeUpload]="queueImage"
             [nzAccept]="acceptedImageTypes"
@@ -42,31 +35,17 @@
               <h3 class="product-image-dialog__title mb-0">Imágenes actuales</h3>
               @if (isChangingPositions()) {
                 <div class="d-flex flex-wrap gap-2">
-                  <button
-                    (click)="cancelChangingPositions()"
-                    [disabled]="isSavingPositions()"
-                    class="btn btn-sm btn-dark"
-                    type="button"
-                  >
+                  <button (click)="cancelChangingPositions()" [disabled]="isSavingPositions()" class="btn btn-sm btn-dark" type="button">
                     <fa-icon [icon]="faXmark" aria-hidden="true" />
                     Cancelar
                   </button>
-                  <button
-                    (click)="savePositions()"
-                    [disabled]="isSavingPositions()"
-                    class="btn btn-sm btn-success"
-                    type="button"
-                  >
+                  <button (click)="savePositions()" [disabled]="isSavingPositions()" class="btn btn-sm btn-success" type="button">
                     <fa-icon [icon]="faFloppyDisk" aria-hidden="true" />
                     {{ isSavingPositions() ? 'Guardando...' : 'Posiciones' }}
                   </button>
                 </div>
               } @else {
-                <button
-                  (click)="startChangingPositions()"
-                  class="btn btn-sm btn-dark"
-                  type="button"
-                >
+                <button (click)="startChangingPositions()" class="btn btn-sm btn-dark" type="button">
                   <fa-icon [icon]="faPenToSquare" aria-hidden="true" />
                   Posiciones
                 </button>
@@ -76,16 +55,10 @@
               @for (image of managedImages(); track image.id) {
                 <div class="col-6 col-md-4">
                   <article class="product-image-dialog__card">
-                    <img
-                      [alt]="image.originalFileName"
-                      [src]="image.url"
-                      class="product-image-dialog__image"
-                    />
+                    <img [alt]="image.originalFileName" [src]="image.url" class="product-image-dialog__image" />
                     @if (isChangingPositions()) {
                       <div class="product-image-dialog__position-editor">
-                        <label [for]="'image-position-' + image.id" class="visually-hidden"
-                          >Posición</label
-                        >
+                        <label [for]="'image-position-' + image.id" class="visually-hidden">Posición</label>
                         <input
                           disabled
                           [id]="'image-position-' + image.id"
@@ -116,15 +89,11 @@
                       </div>
                     } @else {
                       <div class="product-image-dialog__image-actions">
-                        <span class="product-image-dialog__position">{{
-                          image.sortOrder + 1
-                        }}</span>
+                        <span class="product-image-dialog__position">{{ image.sortOrder + 1 }}</span>
                         <button
                           (nzOnConfirm)="deleteImage(image)"
                           [disabled]="deletingImageId() !== null"
-                          [nzPopconfirmTitle]="
-                            '¿Eliminar la imagen ' + image.originalFileName + '?'
-                          "
+                          [nzPopconfirmTitle]="'¿Eliminar la imagen ' + image.originalFileName + '?'"
                           aria-label="Eliminar imagen"
                           class="btn btn-sm btn-danger product-image-dialog__icon-button"
                           nz-popconfirm
@@ -172,9 +141,7 @@
     </button>
     <button
       (click)="saveImages()"
-      [disabled]="
-        isUploading() || isSavingPositions() || deletingImageId() !== null || fileList.length === 0
-      "
+      [disabled]="isUploading() || isSavingPositions() || deletingImageId() !== null || fileList.length === 0"
       class="btn btn-sm btn-success px-4"
       type="button"
     >

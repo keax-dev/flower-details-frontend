@@ -26,9 +26,7 @@ async function executeGuard(
   const currentUser = signal(user);
   const authService = {
     user: currentUser.asReadonly(),
-    restoreSession: vi.fn(() =>
-      restoreError ? throwError(() => new Error('Offline')) : of(restoredUser),
-    ),
+    restoreSession: vi.fn(() => (restoreError ? throwError(() => new Error('Offline')) : of(restoredUser))),
   };
   const router = {
     createUrlTree: vi.fn((commands: unknown[], extras?: unknown) => ({ commands, extras })),
@@ -42,10 +40,7 @@ async function executeGuard(
   });
 
   const result = TestBed.runInInjectionContext(() =>
-    roleGuard(
-      { data: { roles } } as unknown as ActivatedRouteSnapshot,
-      { url: '/admin/categories' } as RouterStateSnapshot,
-    ),
+    roleGuard({ data: { roles } } as unknown as ActivatedRouteSnapshot, { url: '/admin/categories' } as RouterStateSnapshot),
   );
 
   return {

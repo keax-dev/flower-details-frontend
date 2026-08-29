@@ -1,23 +1,8 @@
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import {
-  Component,
-  DestroyRef,
-  computed,
-  effect,
-  inject,
-  input,
-  output,
-  signal,
-} from '@angular/core';
+import { Component, DestroyRef, computed, effect, inject, input, output, signal } from '@angular/core';
 import { Product } from '@features/product/models/product.model';
 import { ProductApiService } from '@features/product/services/product-api.service';
-import {
-  faArrowLeft,
-  faArrowRight,
-  faImages,
-  faPen,
-  faTrash,
-} from '@fortawesome/free-solid-svg-icons';
+import { faArrowLeft, faArrowRight, faImages, faPen, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 import { resolveApiErrorMessage } from '@core/http/utils/api-error';
@@ -80,14 +65,9 @@ export class ProductList {
       .subscribe({
         next: () => {
           this.notificationService.success('Producto eliminado correctamente.');
-          this.loadProducts(
-            this.products().length === 1 ? Math.max(0, this.currentPage() - 1) : this.currentPage(),
-          );
+          this.loadProducts(this.products().length === 1 ? Math.max(0, this.currentPage() - 1) : this.currentPage());
         },
-        error: (error: unknown) =>
-          this.notificationService.errorApi(
-            resolveApiErrorMessage(error, 'No fue posible eliminar el producto.'),
-          ),
+        error: (error: unknown) => this.notificationService.errorApi(resolveApiErrorMessage(error, 'No fue posible eliminar el producto.')),
       });
   }
 
@@ -120,10 +100,7 @@ export class ProductList {
           this.products.set(response.items);
           this.pageResponse.set(response);
         },
-        error: (error: unknown) =>
-          this.notificationService.errorApi(
-            resolveApiErrorMessage(error, 'No fue posible cargar los productos.'),
-          ),
+        error: (error: unknown) => this.notificationService.errorApi(resolveApiErrorMessage(error, 'No fue posible cargar los productos.')),
       });
   }
 }

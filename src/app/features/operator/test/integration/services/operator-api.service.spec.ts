@@ -12,12 +12,7 @@ describe('OperatorApiService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [
-        OperatorApiService,
-        provideHttpClient(),
-        provideHttpClientTesting(),
-        { provide: API_BASE_URL, useValue: '/api' },
-      ],
+      providers: [OperatorApiService, provideHttpClient(), provideHttpClientTesting(), { provide: API_BASE_URL, useValue: '/api' }],
     });
     service = TestBed.inject(OperatorApiService);
     httpTestingController = TestBed.inject(HttpTestingController);
