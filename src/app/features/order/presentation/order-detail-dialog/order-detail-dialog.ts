@@ -1,5 +1,5 @@
 import { CurrencyPipe, DatePipe } from '@angular/common';
-import { Component, DestroyRef, effect, inject, input, output, signal } from '@angular/core';
+import { Component, DestroyRef, effect, inject, input, output, signal, untracked } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -59,8 +59,10 @@ export class OrderDetailDialog {
     effect(() => {
       const id = this.orderId();
       if (this.isOpen() && id !== null) {
-        this.loadOrder(id);
-        this.loadOperators();
+        untracked(() => {
+          this.loadOrder(id);
+          this.loadOperators();
+        });
       } else if (!this.isOpen()) {
         this.order.set(null);
         this.auditTrail.set([]);
