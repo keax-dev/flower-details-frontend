@@ -1,0 +1,109 @@
+.order-detail-dialog__section-title {
+  color: #1f2933;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.order-detail-dialog dt {
+  color: #667085;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0;
+  margin-bottom: 0.2rem;
+  text-transform: uppercase;
+}
+
+.order-detail-dialog dd {
+  color: #1f2933;
+  margin-bottom: 0;
+}
+
+.order-detail-dialog__panel {
+  background: #f7faf8;
+  border: 1px solid #d8e0dc;
+  padding: 1rem;
+}
+
+.order-detail-dialog__item {
+  border-bottom: 1px solid #e5ebe7;
+  padding: 0.75rem 0;
+}
+
+.order-detail-dialog__item-image,
+.order-detail-dialog__item-image-placeholder {
+  height: 4rem;
+  width: 4rem;
+}
+
+.order-detail-dialog__item-image {
+  object-fit: cover;
+}
+
+.order-detail-dialog__item-image-placeholder {
+  align-items: center;
+  background: #e8f1e9;
+  color: #527060;
+  display: flex;
+  font-size: 0.6875rem;
+  justify-content: center;
+  text-align: center;
+}
+
+.order-detail-dialog__item small,
+.order-detail-dialog__audit small,
+.order-detail-dialog__empty {
+  color: #667085;
+}
+
+.order-detail-dialog__audit {
+  border-left: 2px solid #c9d9cf;
+  display: grid;
+  gap: 1rem;
+  margin-left: 0.35rem;
+  padding-left: 1rem;
+}
+
+.order-detail-dialog__audit li {
+  position: relative;
+}
+
+.order-detail-dialog__audit li::before {
+  background: var(--color-primary);
+  border-radius: 50%;
+  content: '';
+  height: 0.55rem;
+  left: -1.32rem;
+  position: absolute;
+  top: 0.3rem;
+  width: 0.55rem;
+}
+
+.order-detail-dialog__status {
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.3rem 0.5rem;
+}
+
+.order-detail-dialog__status--generated,
+.order-detail-dialog__status--assigned {
+  background: #fff4cc;
+  color: #765900;
+}
+
+.order-detail-dialog__status--in_preparation,
+.order-detail-dialog__status--on_the_way {
+  background: #dbeafe;
+  color: #1d4e89;
+}
+
+.order-detail-dialog__status--ready_for_delivery,
+.order-detail-dialog__status--delivered {
+  background: #dcefe2;
+  color: #17663a;
+}
+
+.order-detail-dialog__status--cancelled {
+  background: #fde2e1;
+  color: #a12727;
+}

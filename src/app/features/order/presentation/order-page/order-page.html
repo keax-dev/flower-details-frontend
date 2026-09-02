@@ -1,0 +1,21 @@
+<main class="order-page py-4 py-md-5">
+  <div class="container-fluid order-page__container">
+    <header class="row align-items-center gy-3 order-page__header">
+      <div class="col-12">
+        <p class="order-page__eyebrow mb-2">Operación</p>
+        <h1 class="order-page__title mb-0">
+          <fa-icon [icon]="faClipboardList" aria-hidden="true" />
+          Pedidos
+        </h1>
+      </div>
+    </header>
+
+    <div class="row mt-4 mt-md-5">
+      <div class="col-12">
+        <app-order-list [refreshVersion]="refreshVersion()" (details)="openDetail($event)" />
+      </div>
+    </div>
+
+    <app-order-detail-dialog (changed)="refreshOrders()" (closed)="closeDetail()" [isOpen]="isDetailVisible()" [orderId]="selectedOrderId()" />
+  </div>
+</main>

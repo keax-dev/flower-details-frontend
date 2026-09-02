@@ -19,8 +19,12 @@ const NAVIGATION_BY_ROLE: Readonly<Record<UserRole, readonly NavigationItem[]>> 
     { label: 'Categorías', route: '/admin/categories' },
     { label: 'Productos', route: '/admin/products' },
     { label: 'Personal', route: '/admin/staff' },
+    { label: 'Pedidos', route: '/orders' },
   ],
-  OPERATOR: [{ label: 'Inicio', route: '/home' }],
+  OPERATOR: [
+    { label: 'Inicio', route: '/home' },
+    { label: 'Pedidos', route: '/orders' },
+  ],
   CUSTOMER: [{ label: 'Inicio', route: '/home' }],
 };
 

@@ -1,0 +1,172 @@
+<nz-modal
+  (nzOnCancel)="closed.emit()"
+  [nzFooter]="null"
+  [nzTitle]="order() ? 'Pedido ' + order()!.orderNumber : 'Detalle del pedido'"
+  [nzVisible]="isOpen()"
+  [nzWidth]="1000"
+>
+  <ng-container *nzModalContent>
+    @if (isLoading()) {
+      <p class="order-detail-dialog__empty mb-0">Cargando pedido...</p>
+    } @else if (order(); as currentOrder) {
+      <div class="container-fluid px-0">
+        <div class="row g-4">
+          <div class="col-12 col-lg-7">
+            <section aria-labelledby="order-details-title">
+              <div class="d-flex align-items-center justify-content-between gap-3 mb-3">
+                <h2 id="order-details-title" class="order-detail-dialog__section-title mb-0">Detalle</h2>
+                <span [class]="'order-detail-dialog__status order-detail-dialog__status--' + currentOrder.status.toLowerCase()">
+                  {{ orderStatusLabel(currentOrder.status) }}
+                </span>
+              </div>
+              <dl class="row gy-3 mb-0">
+                <div class="col-12 col-sm-6">
+                  <dt>Contacto</dt>
+                  <dd>{{ currentOrder.contactName }}</dd>
+                </div>
+                <div class="col-12 col-sm-6">
+                  <dt>Teléfono</dt>
+                  <dd>{{ currentOrder.contactPhone }}</dd>
+                </div>
+                <div class="col-12 col-sm-6">
+                  <dt>Entrega</dt>
+                  <dd>{{ fulfillmentTypeLabel(currentOrder.fulfillmentType) }}</dd>
+                </div>
+                <div class="col-12 col-sm-6">
+                  <dt>Operador</dt>
+                  <dd>{{ assignedOperatorName(currentOrder.assignedOperatorId) }}</dd>
+                </div>
+                @if (currentOrder.deliveryAddress) {
+                  <div class="col-12">
+                    <dt>Dirección</dt>
+                    <dd>{{ currentOrder.deliveryAddress }}</dd>
+                  </div>
+                }
+                @if (currentOrder.additionalInstructions) {
+                  <div class="col-12">
+                    <dt>Instrucciones adicionales</dt>
+                    <dd>{{ currentOrder.additionalInstructions }}</dd>
+                  </div>
+                }
+                @if (currentOrder.cancellationReason) {
+                  <div class="col-12">
+                    <dt>Motivo de cancelación</dt>
+                    <dd>{{ currentOrder.cancellationReason }}</dd>
+                  </div>
+                }
+              </dl>
+            </section>
+
+            <section aria-labelledby="order-items-title" class="mt-4">
+              <h2 id="order-items-title" class="order-detail-dialog__section-title mb-3">Productos</h2>
+              <div class="order-detail-dialog__items">
+                @for (item of currentOrder.items; track item.id) {
+                  <div class="row align-items-center gy-2 order-detail-dialog__item">
+                    <div class="col-auto">
+                      @if (item.productImageUrl) {
+                        <img [alt]="item.productTitle" [src]="item.productImageUrl" class="order-detail-dialog__item-image" />
+                      } @else {
+                        <div aria-label="Producto sin imagen" class="order-detail-dialog__item-image-placeholder" role="img">Sin imagen</div>
+                      }
+                    </div>
+                    <div class="col">
+                      <p class="fw-semibold mb-0">{{ item.productTitle }}</p>
+                      <small>{{ item.quantity }} × {{ item.unitPrice | currency: 'USD' }}</small>
+                    </div>
+                    <div class="col-12 col-sm-auto fw-semibold">{{ item.subtotal | currency: 'USD' }}</div>
+                  </div>
+                } @empty {
+                  <p class="order-detail-dialog__empty mb-0">Este pedido no tiene productos.</p>
+                }
+              </div>
+              <div class="d-flex justify-content-between fw-bold mt-3 pt-3 border-top">
+                <span>Total</span>
+                <span>{{ currentOrder.total | currency: 'USD' }}</span>
+              </div>
+            </section>
+          </div>
+
+          <div class="col-12 col-lg-5">
+            <section aria-labelledby="order-actions-title" class="order-detail-dialog__panel">
+              <h2 id="order-actions-title" class="order-detail-dialog__section-title mb-3">Gestión</h2>
+              <form [formGroup]="actionForm" class="d-grid gap-3">
+                @if (canAssign()) {
+                  @if (user()?.role === 'ADMIN') {
+                    <div>
+                      <label class="form-label" for="assigned-operator">Operador responsable</label>
+                      <nz-select class="w-100" formControlName="operatorId" id="assigned-operator" nzPlaceHolder="Selecciona un operador">
+                        @for (operator of operators(); track operator.id) {
+                          <nz-option [nzLabel]="operator.names + ' ' + operator.lastNames" [nzValue]="operator.id" />
+                        }
+                      </nz-select>
+                      @if (actionForm.controls.operatorId.invalid && actionForm.controls.operatorId.touched) {
+                        <div class="form-validation-message text-danger small mt-1">Selecciona un operador.</div>
+                      }
+                    </div>
+                  }
+                  <button (click)="assign()" [disabled]="isAssigning()" class="btn btn-success" type="button">
+                    <fa-icon [icon]="faUserPlus" aria-hidden="true" />
+                    {{ isAssigning() ? 'Asignando...' : user()?.role === 'ADMIN' ? 'Asignar pedido' : 'Tomar pedido' }}
+                  </button>
+                }
+
+                @if (canChangeStatus() && nextStatusLabel(); as statusLabel) {
+                  <button (click)="advanceStatus()" [disabled]="isChangingStatus()" class="btn btn-outline-dark" type="button">
+                    <fa-icon [icon]="faPaperPlane" aria-hidden="true" />
+                    {{ isChangingStatus() ? 'Actualizando...' : 'Marcar como ' + statusLabel }}
+                  </button>
+                }
+
+                @if (canCancel()) {
+                  <div>
+                    <label class="form-label" for="cancellation-reason">Motivo de cancelación</label>
+                    <textarea
+                      [class.is-invalid]="actionForm.controls.cancellationReason.invalid && actionForm.controls.cancellationReason.touched"
+                      formControlName="cancellationReason"
+                      id="cancellation-reason"
+                      maxlength="500"
+                      nz-input
+                      placeholder="Indica el motivo de la cancelación"
+                      rows="3"
+                    ></textarea>
+                    @if (actionForm.controls.cancellationReason.invalid && actionForm.controls.cancellationReason.touched) {
+                      <div class="invalid-feedback">El motivo es obligatorio y no puede superar 500 caracteres.</div>
+                    }
+                  </div>
+                  <button
+                    (nzOnConfirm)="cancel()"
+                    [disabled]="isCancelling()"
+                    [nzPopconfirmTitle]="'¿Cancelar el pedido ' + currentOrder.orderNumber + '?'"
+                    class="btn btn-outline-danger"
+                    nz-popconfirm
+                    type="button"
+                  >
+                    <fa-icon [icon]="faXmark" aria-hidden="true" />
+                    {{ isCancelling() ? 'Cancelando...' : 'Cancelar pedido' }}
+                  </button>
+                }
+              </form>
+            </section>
+
+            <section aria-labelledby="order-audit-title" class="mt-4">
+              <h2 id="order-audit-title" class="order-detail-dialog__section-title mb-3">Historial</h2>
+              <ol class="order-detail-dialog__audit list-unstyled mb-0">
+                @for (audit of auditTrail(); track audit.id) {
+                  <li>
+                    <p class="fw-semibold mb-1">{{ auditActionLabel(audit) }}</p>
+                    <small>{{ audit.createdAt | date: 'dd/MM/yyyy, HH:mm' }}</small>
+                    @if (audit.details) {
+                      <p class="mb-0 mt-1">{{ audit.details }}</p>
+                    }
+                  </li>
+                } @empty {
+                  <li class="order-detail-dialog__empty">No hay movimientos registrados.</li>
+                }
+              </ol>
+            </section>
+          </div>
+        </div>
+      </div>
+    }
+  </ng-container>
+</nz-modal>

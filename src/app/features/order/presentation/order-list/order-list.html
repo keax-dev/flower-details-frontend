@@ -1,0 +1,126 @@
+<section class="container-fluid" aria-labelledby="orders-title">
+  <div class="row">
+    <div class="col-12 col-md-4">
+      <h2 id="orders-title" class="order-list__title mb-1">Seguimiento de pedidos</h2>
+      @if (pageResponse(); as response) {
+        <p class="order-list__summary mb-0">{{ response.totalElements }} pedidos registrados</p>
+      }
+    </div>
+
+    <div class="col-12 col-md-8">
+      <form (ngSubmit)="applyFilters()" class="row justify-content-end g-2" role="search">
+        <div class="col-12 col-md-3">
+          <input [(ngModel)]="searchQuery" name="orderSearch" nz-input placeholder="Buscar por número, contacto o teléfono" type="search" />
+        </div>
+        <div class="col-12 col-md-3">
+          <nz-select [(ngModel)]="selectedStatus" class="w-100 order-list__filter-select" name="orderStatus" nzAllowClear nzPlaceHolder="Estado">
+            @for (status of statusOptions; track status.value) {
+              <nz-option [nzLabel]="status.label" [nzValue]="status.value" />
+            }
+          </nz-select>
+        </div>
+        <div class="col-12 col-md-3">
+          <nz-select
+            [(ngModel)]="selectedFulfillmentType"
+            class="w-100 order-list__filter-select"
+            name="fulfillmentType"
+            nzAllowClear
+            nzPlaceHolder="Entrega"
+          >
+            @for (type of fulfillmentTypeOptions; track type.value) {
+              <nz-option [nzLabel]="type.label" [nzValue]="type.value" />
+            }
+          </nz-select>
+        </div>
+        <div class="col-auto">
+          <button aria-label="Aplicar filtros" class="btn btn-success btn-sm" title="Aplicar filtros" type="submit">
+            <fa-icon [icon]="faFilter" aria-hidden="true" />
+          </button>
+        </div>
+        <div class="col-auto">
+          <button (click)="clearFilters()" aria-label="Limpiar filtros" class="btn btn-outline-dark btn-sm" title="Limpiar filtros" type="button">
+            <fa-icon [icon]="faRotateLeft" aria-hidden="true" />
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="order-list__table-container mt-4">
+    <table class="table table-hover align-middle mb-0">
+      <caption class="visually-hidden">
+        Listado de pedidos
+      </caption>
+      <thead>
+        <tr>
+          <th scope="col">Pedido</th>
+          <th scope="col">Contacto</th>
+          <th scope="col">Entrega</th>
+          <th scope="col">Estado</th>
+          <th class="text-end" scope="col">Total</th>
+          <th class="text-end" scope="col">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        @if (isLoading()) {
+          <tr>
+            <td class="order-list__empty" colspan="6">Cargando pedidos...</td>
+          </tr>
+        } @else {
+          @for (order of orders(); track order.id) {
+            <tr>
+              <td>
+                <p class="fw-semibold mb-1">{{ order.orderNumber }}</p>
+                <small class="order-list__secondary">{{ order.createdAt | date: 'dd/MM/yyyy, HH:mm' }}</small>
+              </td>
+              <td>
+                <p class="mb-1">{{ order.contactName }}</p>
+                <small class="order-list__secondary">{{ order.contactPhone }}</small>
+              </td>
+              <td>{{ fulfillmentTypeLabel(order.fulfillmentType) }}</td>
+              <td>
+                <span [class]="'order-list__status order-list__status--' + order.status.toLowerCase()">
+                  {{ orderStatusLabel(order.status) }}
+                </span>
+              </td>
+              <td class="text-end fw-semibold">{{ order.total | currency: 'USD' }}</td>
+              <td class="text-end">
+                <button
+                  (click)="details.emit(order.id)"
+                  [attr.aria-label]="'Ver pedido ' + order.orderNumber"
+                  class="btn btn-outline-dark btn-sm"
+                  title="Ver pedido"
+                  type="button"
+                >
+                  <fa-icon [icon]="faEye" aria-hidden="true" />
+                </button>
+              </td>
+            </tr>
+          } @empty {
+            <tr>
+              <td class="order-list__empty" colspan="6">No hay pedidos que coincidan con los filtros.</td>
+            </tr>
+          }
+        }
+      </tbody>
+    </table>
+  </div>
+
+  @if (pageResponse(); as response) {
+    <nav aria-label="Paginación de pedidos" class="row align-items-center gy-3 mt-4">
+      <div class="col-12 col-md">
+        <p class="order-list__summary mb-0">Página {{ response.page + 1 }} de {{ response.totalPages || 1 }}</p>
+      </div>
+      <div class="col-12 col-md-auto">
+        <div class="d-flex gap-2">
+          <button (click)="previousPage()" [disabled]="!hasPreviousPage() || isLoading()" class="btn btn-sm btn-outline-dark" type="button">
+            <fa-icon [icon]="faArrowLeft" aria-hidden="true" />
+          </button>
+          <button (click)="nextPage()" [disabled]="!hasNextPage() || isLoading()" class="btn btn-sm btn-outline-dark" type="button">
+            <fa-icon [icon]="faArrowRight" aria-hidden="true" />
+          </button>
+        </div>
+      </div>
+    </nav>
+  }
+</section>

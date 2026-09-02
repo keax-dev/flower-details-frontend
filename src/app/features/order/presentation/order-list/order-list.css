@@ -1,0 +1,71 @@
+.order-list__title {
+  color: #1f2933;
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.order-list__summary,
+.order-list__secondary {
+  color: #667085;
+  font-size: 0.875rem;
+}
+
+.order-list__table-container {
+  border: 1px solid #d8e0dc;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.order-list__table-container table {
+  width: 100%;
+}
+
+.order-list__table-container th {
+  background-color: #e9f2ec;
+  color: #41604b;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.order-list__empty {
+  color: #667085;
+  padding: 2rem;
+  text-align: center;
+}
+
+.order-list__filter-select {
+  min-width: 150px;
+}
+
+.order-list__status {
+  border-radius: 4px;
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.3rem 0.5rem;
+}
+
+.order-list__status--generated,
+.order-list__status--assigned {
+  background: #fff4cc;
+  color: #765900;
+}
+
+.order-list__status--in_preparation,
+.order-list__status--on_the_way {
+  background: #dbeafe;
+  color: #1d4e89;
+}
+
+.order-list__status--ready_for_delivery,
+.order-list__status--delivered {
+  background: #dcefe2;
+  color: #17663a;
+}
+
+.order-list__status--cancelled {
+  background: #fde2e1;
+  color: #a12727;
+}

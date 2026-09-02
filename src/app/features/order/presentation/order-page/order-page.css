@@ -1,0 +1,26 @@
+.order-page {
+  min-height: 100%;
+}
+
+.order-page__container {
+  max-width: 1440px;
+}
+
+.order-page__eyebrow {
+  color: var(--color-primary);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.order-page__title {
+  color: #1f2933;
+  font-size: 1.7rem;
+  font-weight: 700;
+}
+
+.order-page__title fa-icon {
+  color: var(--color-primary);
+  margin-right: 0.45rem;
+}
