@@ -16,11 +16,12 @@ test('lets an administrator create a category', async ({ page }) => {
   await page.route('**/api/me', (route) => route.fulfill({ json: ADMIN }));
   await page.route('**/api/categories**', async (route) => {
     if (route.request().method() === 'POST') {
-      expect(route.request().postDataJSON()).toEqual({
+      const payload = route.request().postDataJSON();
+      expect(payload).toMatchObject({
         title: 'Cumpleaños',
-        description: 'Arreglos para celebrar',
         active: true,
       });
+      expect(payload.description.replaceAll('&nbsp;', ' ')).toBe('<p>Arreglos para celebrar</p>');
       await route.fulfill({
         json: {
           id: 1,
@@ -42,8 +43,8 @@ test('lets an administrator create a category', async ({ page }) => {
   await page.goto('/admin/categories');
   await page.getByRole('button', { name: 'Nueva categoría' }).click();
   await page.getByLabel('Título').fill('Cumpleaños');
-  await page.getByLabel('Descripción').fill('Arreglos para celebrar');
-  await page.getByRole('button', { name: 'Guardar categoría' }).click();
+  await page.locator('#category-description .ql-editor').fill('Arreglos para celebrar');
+  await page.getByRole('button', { name: 'Guardar' }).click();
 
   await expect(page.getByText('Categoría creada correctamente.')).toBeVisible();
 });

@@ -29,20 +29,61 @@ describe('OperatorApiService', () => {
   });
 
   it('creates an operator through the dedicated endpoint', () => {
-    service
-      .create({
-        names: 'Ana',
-        lastNames: 'Flor',
-        email: 'ana@example.com',
-        password: 'Password123',
-        phone: '0999999999',
-        role: 'OPERATOR',
-        active: true,
-      })
-      .subscribe();
+    const payload = {
+      names: 'Ana',
+      lastNames: 'Flor',
+      email: 'ana@example.com',
+      password: 'Password123',
+      phone: '0999999999',
+      role: 'ADMIN' as const,
+      active: true,
+    };
+
+    service.create(payload).subscribe();
 
     const request = httpTestingController.expectOne('/api/users/staff');
     expect(request.request.method).toBe('POST');
+    expect(request.request.body).toEqual(payload);
     request.flush({});
+  });
+
+  it('updates an administrative user with the supplied payload', () => {
+    const payload = {
+      names: 'Ana',
+      lastNames: 'Flor',
+      email: 'ana@example.com',
+      phone: '0999999999',
+      role: 'OPERATOR' as const,
+      active: false,
+    };
+
+    service.update(4, payload).subscribe();
+
+    const request = httpTestingController.expectOne('/api/users/staff/4');
+    expect(request.request.method).toBe('PUT');
+    expect(request.request.body).toEqual(payload);
+    request.flush({});
+  });
+
+  it('activates and deactivates an administrative user', () => {
+    service.activate(4).subscribe();
+    const activateRequest = httpTestingController.expectOne('/api/users/4/activate');
+    expect(activateRequest.request.method).toBe('PATCH');
+    expect(activateRequest.request.body).toEqual({});
+    activateRequest.flush({});
+
+    service.deactivate(4).subscribe();
+    const deactivateRequest = httpTestingController.expectOne('/api/users/4/deactivate');
+    expect(deactivateRequest.request.method).toBe('PATCH');
+    expect(deactivateRequest.request.body).toEqual({});
+    deactivateRequest.flush({});
+  });
+
+  it('deletes an administrative user by identifier', () => {
+    service.delete(4).subscribe();
+
+    const request = httpTestingController.expectOne('/api/users/4');
+    expect(request.request.method).toBe('DELETE');
+    request.flush(null);
   });
 });

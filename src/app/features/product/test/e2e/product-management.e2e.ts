@@ -36,13 +36,14 @@ test('lets an administrator create a product without images', async ({ page }) =
   );
   await page.route('**/api/products**', async (route) => {
     if (route.request().method() === 'POST') {
-      expect(route.request().postDataJSON()).toEqual({
+      const payload = route.request().postDataJSON();
+      expect(payload).toMatchObject({
         categoryId: 2,
         title: 'Ramo de rosas',
-        description: 'Docena de rosas rojas',
         price: 25,
         active: true,
       });
+      expect(payload.description.replaceAll('&nbsp;', ' ')).toBe('<p>Docena de rosas rojas</p>');
       await route.fulfill({
         json: {
           id: 1,
@@ -67,11 +68,11 @@ test('lets an administrator create a product without images', async ({ page }) =
   await page.goto('/admin/products');
   await page.getByRole('button', { name: 'Nuevo producto' }).click();
   await page.locator('#product-category').click();
-  await page.getByRole('option', { name: 'Cumpleaños' }).click();
+  await page.locator('.ant-select-dropdown:not(.ant-select-dropdown-hidden)').getByText('Cumpleaños', { exact: true }).click();
   await page.getByLabel('Título').fill('Ramo de rosas');
-  await page.getByLabel('Descripción').fill('Docena de rosas rojas');
+  await page.locator('#product-description .ql-editor').fill('Docena de rosas rojas');
   await page.getByLabel('Precio').fill('25');
-  await page.getByRole('button', { name: 'Guardar producto' }).click();
+  await page.getByRole('button', { name: 'Guardar' }).click();
 
   await expect(page.getByText('Producto creado correctamente.')).toBeVisible();
 });

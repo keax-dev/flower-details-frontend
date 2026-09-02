@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test';
+import { expect, Page, test } from '@playwright/test';
 
 const USER = {
   id: 1,
@@ -11,7 +11,12 @@ const USER = {
   role: 'ADMIN',
 };
 
+async function mockCsrfToken(page: Page): Promise<void> {
+  await page.route('**/api/auth/csrf', (route) => route.fulfill({ json: { headerName: 'X-XSRF-TOKEN', token: 'test-token' } }));
+}
+
 test('redirects an administrator to the requested page after login', async ({ page }) => {
+  await mockCsrfToken(page);
   await page.route('**/api/auth/login', async (route) => {
     expect(route.request().postDataJSON()).toEqual({
       email: USER.email,
@@ -29,6 +34,7 @@ test('redirects an administrator to the requested page after login', async ({ pa
 });
 
 test('shows the server validation error when credentials are rejected', async ({ page }) => {
+  await mockCsrfToken(page);
   await page.route('**/api/auth/login', async (route) => {
     await route.fulfill({
       status: 401,
