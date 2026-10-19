@@ -13,6 +13,7 @@ import { DashboardOverview } from '@features/dashboard/models/dashboard-overview
 import { DashboardApiService } from '@features/dashboard/services/dashboard-api.service';
 import { orderStatusLabel } from '@features/order/models/order-status.config';
 import { OrderStatus } from '@features/order/models/order-status.model';
+import { todayInBusinessTimeZone } from '@features/dashboard/config/business-time-zone';
 
 @Component({
   selector: 'app-dashboard-page',
@@ -26,7 +27,7 @@ export class DashboardPage {
   private readonly destroyRef = inject(DestroyRef);
   protected readonly overview = signal<DashboardOverview | null>(null);
   protected readonly isLoading = signal(true);
-  protected period: [Date, Date] = [this.startOfCurrentMonth(), new Date()];
+  protected period: [Date, Date] = this.initialPeriod();
   protected readonly faArrowRight = faArrowRight;
   protected readonly faCalendarDay = faCalendarDay;
   protected readonly faChartLine = faChartLine;
@@ -72,9 +73,9 @@ export class DashboardPage {
     return this.overview()?.ordersByStatus.find((item) => item.status === status)?.total ?? 0;
   }
 
-  private startOfCurrentMonth(): Date {
-    const now = new Date();
-    return new Date(now.getFullYear(), now.getMonth(), 1);
+  private initialPeriod(): [Date, Date] {
+    const today = todayInBusinessTimeZone();
+    return [new Date(today.getFullYear(), today.getMonth(), 1), today];
   }
 
   private toIsoDate(date: Date): string {
