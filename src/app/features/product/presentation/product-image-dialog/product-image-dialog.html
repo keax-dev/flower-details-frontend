@@ -55,7 +55,7 @@
               @for (image of managedImages(); track image.id) {
                 <div class="col-6 col-md-4">
                   <article class="product-image-dialog__card">
-                    <img [alt]="image.originalFileName" [src]="image.url" class="product-image-dialog__image" />
+                    <img [alt]="image.originalFileName" [ngSrc]="image.url" class="product-image-dialog__image" height="320" width="320" />
                     @if (isChangingPositions()) {
                       <div class="product-image-dialog__position-editor">
                         <label [for]="'image-position-' + image.id" class="visually-hidden">Posición</label>

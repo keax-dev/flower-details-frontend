@@ -64,7 +64,13 @@
                   <div class="row align-items-center gy-2 order-detail-dialog__item">
                     <div class="col-auto">
                       @if (item.productImageUrl) {
-                        <img [alt]="item.productTitle" [src]="item.productImageUrl" class="order-detail-dialog__item-image" />
+                        <img
+                          [alt]="item.productTitle"
+                          [ngSrc]="item.productImageUrl"
+                          class="order-detail-dialog__item-image"
+                          height="64"
+                          width="64"
+                        />
                       } @else {
                         <div aria-label="Producto sin imagen" class="order-detail-dialog__item-image-placeholder" role="img">Sin imagen</div>
                       }

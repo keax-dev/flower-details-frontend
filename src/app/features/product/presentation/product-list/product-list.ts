@@ -9,12 +9,13 @@ import { resolveApiErrorMessage } from '@core/http/utils/api-error';
 import { NotificationService } from '@core/notification/notification.service';
 import { PageResponse } from '@shared/domain/pagination/page-response.model';
 import { finalize } from 'rxjs';
+import { NgOptimizedImage } from '@angular/common';
 
 const PAGE_SIZE = 10;
 
 @Component({
   selector: 'app-product-list',
-  imports: [NzPopconfirmModule, FontAwesomeModule],
+  imports: [NzPopconfirmModule, FontAwesomeModule, NgOptimizedImage],
   templateUrl: './product-list.html',
   styleUrl: './product-list.css',
 })

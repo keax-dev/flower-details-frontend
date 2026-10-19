@@ -1,4 +1,5 @@
 import { Component, DestroyRef, effect, inject, input, output, signal } from '@angular/core';
+import { NgOptimizedImage } from '@angular/common';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import {
@@ -26,7 +27,7 @@ const ACCEPTED_IMAGE_TYPES = 'image/jpeg,image/png,image/webp';
 
 @Component({
   selector: 'app-product-image-dialog',
-  imports: [FontAwesomeModule, NzModalModule, NzPopconfirmModule, NzUploadModule],
+  imports: [FontAwesomeModule, NgOptimizedImage, NzModalModule, NzPopconfirmModule, NzUploadModule],
   templateUrl: './product-image-dialog.html',
   styleUrl: './product-image-dialog.css',
 })

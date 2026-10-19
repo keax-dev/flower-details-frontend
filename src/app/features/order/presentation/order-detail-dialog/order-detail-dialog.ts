@@ -1,4 +1,4 @@
-import { CurrencyPipe, DatePipe } from '@angular/common';
+import { CurrencyPipe, DatePipe, NgOptimizedImage } from '@angular/common';
 import { Component, DestroyRef, effect, inject, input, output, signal, untracked } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -22,7 +22,17 @@ import { OrderApiService } from '@features/order/services/order-api.service';
 
 @Component({
   selector: 'app-order-detail-dialog',
-  imports: [CurrencyPipe, DatePipe, FontAwesomeModule, NzInputModule, NzModalModule, NzPopconfirmModule, NzSelectModule, ReactiveFormsModule],
+  imports: [
+    CurrencyPipe,
+    DatePipe,
+    NgOptimizedImage,
+    FontAwesomeModule,
+    NzInputModule,
+    NzModalModule,
+    NzPopconfirmModule,
+    NzSelectModule,
+    ReactiveFormsModule,
+  ],
   templateUrl: './order-detail-dialog.html',
   styleUrl: './order-detail-dialog.css',
 })
