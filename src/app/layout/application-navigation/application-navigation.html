@@ -6,7 +6,7 @@
           <a (click)="closeMenu()" class="application-navigation__brand" routerLink="/home"> Flower Details </a>
         </div>
 
-        <div class="col-auto d-md-none">
+        <div class="col-auto d-xl-none">
           <button
             (click)="toggleMenu()"
             [attr.aria-expanded]="isMenuOpen()"
@@ -21,7 +21,7 @@
           </button>
         </div>
 
-        <div [class.d-none]="!isMenuOpen()" class="col-12 col-md-auto d-md-flex">
+        <div [class.d-none]="!isMenuOpen()" class="col-12 col-xl-auto d-xl-flex">
           <div class="application-navigation__content">
             <div class="application-navigation__links">
               @for (item of navigationItems(); track item.route) {

@@ -1,0 +1,119 @@
+:host {
+  display: block;
+}
+
+.customer-page {
+  min-height: calc(100vh - 4rem);
+}
+
+.customer-page__container {
+  max-width: 90rem;
+  padding-right: clamp(1.5rem, 5vw, 6rem);
+  padding-left: clamp(1.5rem, 5vw, 6rem);
+}
+
+.customer-page__header {
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid #c8d7cc;
+}
+
+.customer-page__eyebrow {
+  color: var(--color-primary);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.customer-page__title,
+.customer-page__list-title {
+  color: #173427;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-weight: 600;
+}
+
+.customer-page__title {
+  font-size: clamp(2rem, 4vw, 2.5rem);
+}
+
+.customer-page__list-title {
+  font-size: 1.75rem;
+}
+
+.customer-page__summary,
+.customer-page__secondary,
+.customer-page__empty {
+  color: #527060;
+}
+
+.customer-page__table-container {
+  width: 100%;
+  border: 1px solid #c8d7cc;
+}
+
+.customer-page__table-container table {
+  width: 100%;
+}
+
+.customer-page__table-container thead th {
+  padding: 1rem;
+  border-bottom-color: #c8d7cc;
+  background-color: #e8f1e9;
+  color: #527060;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.customer-page__table-container tbody td {
+  padding: 1rem;
+  border-bottom-color: #dbe6de;
+}
+
+.customer-page__empty {
+  padding: 2.5rem !important;
+  text-align: center;
+}
+
+.customer-page__status {
+  display: inline-block;
+  padding: 0.25rem 0.625rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.customer-page__status--active {
+  background-color: #d1e7dd;
+  color: #146c43;
+}
+
+.customer-page__status--inactive {
+  background-color: #e9ecef;
+  color: #52615a;
+}
+
+.customer-page__action-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+}
+
+@media (max-width: 575.98px) {
+  .customer-page__table-container table {
+    table-layout: fixed;
+  }
+
+  .customer-page__contact-column {
+    display: none;
+  }
+
+  .customer-page__table-container thead th,
+  .customer-page__table-container tbody td {
+    padding: 0.75rem 0.5rem;
+  }
+}

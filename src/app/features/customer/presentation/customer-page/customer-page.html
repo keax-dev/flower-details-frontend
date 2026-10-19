@@ -1,0 +1,147 @@
+<main class="customer-page py-4 py-md-5">
+  <div class="container-fluid customer-page__container">
+    <header class="customer-page__header">
+      <p class="customer-page__eyebrow mb-2">Administración</p>
+      <h1 class="customer-page__title mb-0">Clientes</h1>
+    </header>
+
+    <section aria-labelledby="customers-title" class="mt-4 mt-md-5">
+      <h2 class="customer-page__list-title mb-1" id="customers-title">Cuentas de clientes</h2>
+      @if (pageResponse(); as response) {
+        <p class="customer-page__summary mb-0">{{ response.totalElements }} clientes registrados</p>
+      }
+
+      <div class="customer-page__table-container mt-4">
+        <table class="table table-hover align-middle mb-0">
+          <caption class="visually-hidden">
+            Listado de clientes
+          </caption>
+          <thead>
+            <tr>
+              <th scope="col">Cliente</th>
+              <th class="customer-page__contact-column" scope="col">Contacto</th>
+              <th scope="col">Estado</th>
+              <th class="text-end" scope="col">Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            @if (isLoading()) {
+              <tr>
+                <td class="customer-page__empty" colspan="4">Cargando clientes...</td>
+              </tr>
+            } @else {
+              @for (customer of customers(); track customer.id) {
+                <tr>
+                  <td class="fw-semibold">{{ customer.names }} {{ customer.lastNames }}</td>
+                  <td class="customer-page__contact-column">
+                    <p class="mb-1">{{ customer.email }}</p>
+                    <small class="customer-page__secondary">{{ customer.phone || 'Sin teléfono' }}</small>
+                  </td>
+                  <td>
+                    <span
+                      [class.customer-page__status--active]="customer.active"
+                      [class.customer-page__status--inactive]="!customer.active"
+                      class="customer-page__status"
+                    >
+                      {{ customer.active ? 'Activo' : 'Inactivo' }}
+                    </span>
+                  </td>
+                  <td>
+                    <div class="d-flex flex-wrap justify-content-end gap-2">
+                      <button
+                        (click)="openDetail(customer)"
+                        [attr.aria-label]="'Ver detalle de ' + customer.names + ' ' + customer.lastNames"
+                        class="btn btn-outline-secondary btn-sm customer-page__action-button"
+                        title="Ver detalle"
+                        type="button"
+                      >
+                        <fa-icon [icon]="faEye" aria-hidden="true" />
+                      </button>
+                      <button
+                        (nzOnConfirm)="updateStatus(customer)"
+                        [attr.aria-label]="(customer.active ? 'Desactivar a ' : 'Activar a ') + customer.names + ' ' + customer.lastNames"
+                        [disabled]="pendingActionId() !== null"
+                        [nzPopconfirmTitle]="(customer.active ? '¿Desactivar a ' : '¿Activar a ') + customer.names + ' ' + customer.lastNames + '?'"
+                        class="btn btn-outline-dark btn-sm customer-page__action-button"
+                        nz-popconfirm
+                        nzPopconfirmPlacement="topRight"
+                        type="button"
+                      >
+                        <fa-icon [icon]="faPowerOff" aria-hidden="true" />
+                      </button>
+                      <button
+                        (nzOnConfirm)="deleteCustomer(customer)"
+                        [attr.aria-label]="'Eliminar a ' + customer.names + ' ' + customer.lastNames"
+                        [disabled]="pendingActionId() !== null"
+                        [nzPopconfirmTitle]="
+                          '¿Eliminar a ' + customer.names + ' ' + customer.lastNames + '? Esta acción quitará su acceso al sistema.'
+                        "
+                        class="btn btn-outline-danger btn-sm customer-page__action-button"
+                        nz-popconfirm
+                        nzPopconfirmPlacement="topRight"
+                        type="button"
+                      >
+                        <fa-icon [icon]="faTrash" aria-hidden="true" />
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              } @empty {
+                <tr>
+                  <td class="customer-page__empty" colspan="4">Todavía no hay clientes registrados.</td>
+                </tr>
+              }
+            }
+          </tbody>
+        </table>
+      </div>
+
+      @if (pageResponse(); as response) {
+        <nav aria-label="Paginación de clientes" class="row align-items-center gy-3 mt-4">
+          <div class="col-12 col-md">
+            <p class="customer-page__summary mb-0">Página {{ response.page + 1 }} de {{ response.totalPages || 1 }}</p>
+          </div>
+          <div class="col-12 col-md-auto">
+            <div class="d-flex gap-2">
+              <button (click)="previousPage()" [disabled]="!hasPreviousPage() || isLoading()" class="btn btn-sm btn-outline-dark" type="button">
+                <fa-icon [icon]="faArrowLeft" aria-hidden="true" /> Anterior
+              </button>
+              <button (click)="nextPage()" [disabled]="!hasNextPage() || isLoading()" class="btn btn-sm btn-outline-dark" type="button">
+                Siguiente <fa-icon [icon]="faArrowRight" aria-hidden="true" />
+              </button>
+            </div>
+          </div>
+        </nav>
+      }
+    </section>
+  </div>
+</main>
+
+@if (selectedCustomer(); as customer) {
+  <nz-modal (nzOnCancel)="closeDetail()" [nzFooter]="null" [nzTitle]="'Cliente ' + customer.names + ' ' + customer.lastNames" [nzVisible]="true">
+    <ng-container *nzModalContent>
+      <dl class="row gy-3 mb-0">
+        <div class="col-12">
+          <dt>Correo electrónico</dt>
+          <dd>{{ customer.email }}</dd>
+        </div>
+        <div class="col-12 col-sm-6">
+          <dt>Teléfono</dt>
+          <dd>{{ customer.phone || 'No registrado' }}</dd>
+        </div>
+        <div class="col-12 col-sm-6">
+          <dt>Documento</dt>
+          <dd>{{ customer.documentNumber || 'No registrado' }}</dd>
+        </div>
+        <div class="col-12 col-sm-6">
+          <dt>Estado</dt>
+          <dd>{{ customer.active ? 'Activo' : 'Inactivo' }}</dd>
+        </div>
+        <div class="col-12 col-sm-6">
+          <dt>Registro</dt>
+          <dd>{{ customer.createdAt | date: 'dd/MM/yyyy, HH:mm' }}</dd>
+        </div>
+      </dl>
+    </ng-container>
+  </nz-modal>
+}

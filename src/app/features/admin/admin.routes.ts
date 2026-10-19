@@ -24,6 +24,10 @@ export const ADMIN_ROUTES: Routes = [
         path: 'staff',
         loadChildren: () => import('@app/features/operator/route/operator.routes').then((module) => module.OPERATOR_ROUTES),
       },
+      {
+        path: 'customers',
+        loadChildren: () => import('@features/customer/route/customer.routes').then((module) => module.CUSTOMER_ROUTES),
+      },
       { path: '', pathMatch: 'full', redirectTo: 'categories' },
     ],
   },
