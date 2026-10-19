@@ -1,0 +1,104 @@
+<main class="dashboard-page py-4 py-md-5">
+  <div class="container-fluid dashboard-page__container">
+    <header class="row align-items-end gy-3">
+      <div class="col-12 col-md">
+        <p class="dashboard-page__eyebrow mb-2">Administración</p>
+        <h1 class="dashboard-page__title mb-1">Resumen del día</h1>
+        <p class="dashboard-page__subtitle mb-0">Ventas, pedidos y trabajo pendiente.</p>
+      </div>
+      <div class="col-12 col-md-auto">
+        <a class="btn btn-success" routerLink="/orders">Ver pedidos <fa-icon [icon]="faArrowRight" /></a>
+      </div>
+    </header>
+    <form (ngSubmit)="applyPeriod()" class="row align-items-end g-3 dashboard-page__filters" role="search">
+      <div class="col-12 col-sm-8 col-md-5">
+        <span class="form-label d-block">Período</span>
+        <nz-range-picker [(ngModel)]="period" [nzPlaceHolder]="['Desde', 'Hasta']" class="w-100" name="dashboardPeriod" nzFormat="yyyy-MM-dd" />
+      </div>
+      <div class="col-12 col-sm-4 col-md-auto">
+        <button class="btn btn-outline-dark w-100" type="submit">Aplicar</button>
+      </div>
+    </form>
+    @if (isLoading()) {
+      <p class="dashboard-page__subtitle mt-5">Cargando resumen...</p>
+    } @else if (overview(); as data) {
+      <section class="row g-3 mt-3">
+        <div class="col-12 col-sm-6 col-xl-3">
+          <article class="dashboard-page__metric">
+            <fa-icon [icon]="faCalendarDay" />
+            <p>Pedidos en el período</p>
+            <strong>{{ data.ordersInPeriod }}</strong>
+          </article>
+        </div>
+        <div class="col-12 col-sm-6 col-xl-3">
+          <article class="dashboard-page__metric">
+            <fa-icon [icon]="faChartLine" />
+            <p>Ventas entregadas</p>
+            <strong>{{ data.salesInPeriod | currency: 'USD' }}</strong>
+          </article>
+        </div>
+        <div class="col-12 col-sm-6 col-xl-3">
+          <article class="dashboard-page__metric">
+            <fa-icon [icon]="faClock" />
+            <p>Pedidos pendientes</p>
+            <strong>{{ data.pendingOrders }}</strong>
+          </article>
+        </div>
+        <div class="col-12 col-sm-6 col-xl-3">
+          <article class="dashboard-page__metric">
+            <fa-icon [icon]="faXmark" />
+            <p>Cancelados</p>
+            <strong>{{ data.cancelledInPeriod }}</strong>
+          </article>
+        </div>
+      </section>
+      <section class="row g-4 mt-1">
+        <div class="col-12 col-xl-4">
+          <article class="dashboard-page__section h-100">
+            <h2>Pedidos por estado</h2>
+            @for (status of statuses; track status) {
+              <div class="dashboard-page__status-row">
+                <span>{{ orderStatusLabel(status) }}</span
+                ><strong>{{ statusTotal(status) }}</strong>
+              </div>
+            }
+          </article>
+        </div>
+        <div class="col-12 col-xl-8">
+          <article class="dashboard-page__section h-100">
+            <h2>Últimos pedidos</h2>
+            <div class="table-responsive">
+              <table class="table align-middle mb-0">
+                <thead>
+                  <tr>
+                    <th>Pedido</th>
+                    <th>Contacto</th>
+                    <th>Estado</th>
+                    <th class="text-end">Total</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (order of data.recentOrders; track order.id) {
+                    <tr>
+                      <td>
+                        <strong>{{ order.orderNumber }}</strong
+                        ><small>{{ order.createdAt | date: 'dd/MM, HH:mm' }}</small>
+                      </td>
+                      <td>{{ order.contactName }}</td>
+                      <td>{{ orderStatusLabel(order.status) }}</td>
+                      <td class="text-end fw-semibold">{{ order.total | currency: 'USD' }}</td>
+                    </tr>
+                  } @empty {
+                    <tr>
+                      <td colspan="4" class="dashboard-page__empty">Aún no hay pedidos registrados.</td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+          </article>
+        </div>
+      </section>
+    }
+  </div>
+</main>

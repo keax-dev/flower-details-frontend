@@ -3,6 +3,12 @@ import { roleGuard } from '@features/auth/guards/role.guard';
 
 export const routes: Routes = [
   {
+    path: 'dashboard',
+    canActivate: [roleGuard],
+    data: { roles: ['ADMIN'] },
+    loadChildren: () => import('@features/dashboard/route/dashboard.routes').then((module) => module.DASHBOARD_ROUTES),
+  },
+  {
     path: 'admin',
     loadChildren: () => import('@features/admin/admin.routes').then((module) => module.ADMIN_ROUTES),
   },

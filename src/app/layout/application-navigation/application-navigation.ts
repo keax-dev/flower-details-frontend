@@ -15,7 +15,7 @@ interface NavigationItem {
 
 const NAVIGATION_BY_ROLE: Readonly<Record<UserRole, readonly NavigationItem[]>> = {
   ADMIN: [
-    { label: 'Inicio', route: '/home' },
+    { label: 'Inicio', route: '/dashboard' },
     { label: 'Categorías', route: '/admin/categories' },
     { label: 'Productos', route: '/admin/products' },
     { label: 'Personal', route: '/admin/staff' },
