@@ -71,7 +71,7 @@ test('lets an administrator create a product without images', async ({ page }) =
   await page.locator('.ant-select-dropdown:not(.ant-select-dropdown-hidden)').getByText('Cumpleaños', { exact: true }).click();
   await page.getByLabel('Título').fill('Ramo de rosas');
   await page.locator('#product-description .ql-editor').fill('Docena de rosas rojas');
-  await page.getByLabel('Precio').fill('25');
+  await page.getByRole('spinbutton', { name: 'Precio', exact: true }).fill('25');
   await page.getByRole('button', { name: 'Guardar' }).click();
 
   await expect(page.getByText('Producto creado correctamente.')).toBeVisible();

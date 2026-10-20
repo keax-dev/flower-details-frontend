@@ -16,6 +16,17 @@
   color: #527060;
 }
 
+.product-list__filters {
+  padding: 1.25rem;
+  border: 1px solid #c8d7cc;
+  background-color: #f8fbf8;
+}
+
+.product-list__filters .form-label {
+  color: #173427;
+  font-weight: 600;
+}
+
 .product-list__table-container {
   width: 100%;
   border: 1px solid #c8d7cc;

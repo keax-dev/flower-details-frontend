@@ -40,6 +40,21 @@ describe('CategoryApiService', () => {
     expect(categories.map((item) => item.title)).toEqual(['Cumpleaños', 'Aniversarios']);
   });
 
+  it('retrieves inactive categories from every administration page for management filters', () => {
+    let categories: Category[] = [];
+    categoryApiService.listAllForAdministration().subscribe((response) => (categories = response));
+
+    httpTestingController.expectOne('/api/categories/administration?page=0&size=100').flush(page([CATEGORY], 0, 2));
+    httpTestingController
+      .expectOne('/api/categories/administration?page=1&size=100')
+      .flush(page([{ ...category(2, 'Aniversarios'), active: false }], 1, 2));
+
+    expect(categories.map((item) => [item.title, item.active])).toEqual([
+      [CATEGORY.title, true],
+      ['Aniversarios', false],
+    ]);
+  });
+
   it('creates a category with its payload', () => {
     const payload = { title: 'Regalos', description: 'Detalles para regalar', active: true };
     categoryApiService.create(payload).subscribe();

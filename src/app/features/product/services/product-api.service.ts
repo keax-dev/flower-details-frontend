@@ -1,6 +1,7 @@
 import { ProductPayload } from '@features/product/models/product-payload.model';
 import { ProductImagePosition } from '@features/product/models/product-image-position.model';
 import { Product } from '@features/product/models/product.model';
+import { ProductManagementFilters } from '@features/product/models/product-management-filters.model';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Service } from '@angular/core';
 import { API_BASE_URL } from '@core/http/config/api.config';
@@ -12,8 +13,15 @@ export class ProductApiService {
   private readonly apiBaseUrl = inject(API_BASE_URL);
   private readonly httpClient = inject(HttpClient);
 
-  listForManagement(page: number, size: number): Observable<PageResponse<Product>> {
-    const params = new HttpParams().set('page', page).set('size', size);
+  listForManagement(page: number, size: number, filters: ProductManagementFilters = {}): Observable<PageResponse<Product>> {
+    let params = new HttpParams().set('page', page).set('size', size);
+    if (filters.q) params = params.set('q', filters.q);
+    if (filters.categoryId !== undefined) params = params.set('categoryId', filters.categoryId);
+    if (filters.minPrice !== undefined) params = params.set('minPrice', filters.minPrice);
+    if (filters.maxPrice !== undefined) params = params.set('maxPrice', filters.maxPrice);
+    if (filters.active !== undefined) params = params.set('active', filters.active);
+    if (filters.sortBy) params = params.set('sortBy', filters.sortBy);
+    if (filters.direction) params = params.set('direction', filters.direction);
     return this.httpClient.get<PageResponse<Product>>(`${this.apiBaseUrl}/products/manage`, {
       params,
     });

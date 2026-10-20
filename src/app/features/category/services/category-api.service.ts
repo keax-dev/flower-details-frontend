@@ -22,8 +22,16 @@ export class CategoryApiService {
   }
 
   listAll(): Observable<Category[]> {
-    return this.listActive(0, MAX_PAGE_SIZE).pipe(
-      expand((response) => (response.page + 1 < response.totalPages ? this.listActive(response.page + 1, MAX_PAGE_SIZE) : EMPTY)),
+    return this.listAllPages((page) => this.listActive(page, MAX_PAGE_SIZE));
+  }
+
+  listAllForAdministration(): Observable<Category[]> {
+    return this.listAllPages((page) => this.listForAdministration(page, MAX_PAGE_SIZE));
+  }
+
+  private listAllPages(fetchPage: (page: number) => Observable<PageResponse<Category>>): Observable<Category[]> {
+    return fetchPage(0).pipe(
+      expand((response) => (response.page + 1 < response.totalPages ? fetchPage(response.page + 1) : EMPTY)),
       reduce((categories: Category[], response) => [...categories, ...response.items], []),
     );
   }

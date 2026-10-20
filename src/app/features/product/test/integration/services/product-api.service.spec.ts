@@ -39,6 +39,26 @@ describe('ProductApiService', () => {
     request.flush({ items: [PRODUCT], page: 1, size: 10, totalElements: 11, totalPages: 2 });
   });
 
+  it('sends the selected management filters and keeps false and zero values', () => {
+    productApiService
+      .listForManagement(0, 10, {
+        q: 'rosas',
+        categoryId: 2,
+        minPrice: 0,
+        maxPrice: 50,
+        active: false,
+        sortBy: 'price',
+        direction: 'asc',
+      })
+      .subscribe();
+
+    const request = httpTestingController.expectOne(
+      '/api/products/manage?page=0&size=10&q=rosas&categoryId=2&minPrice=0&maxPrice=50&active=false&sortBy=price&direction=asc',
+    );
+    expect(request.request.method).toBe('GET');
+    request.flush({ items: [PRODUCT], page: 0, size: 10, totalElements: 1, totalPages: 1 });
+  });
+
   it('creates and updates products with their payloads', () => {
     const payload = {
       categoryId: 2,
