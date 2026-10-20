@@ -40,6 +40,28 @@ describe('AuthService', () => {
     expect(authService.isAuthenticated()).toBe(true);
   });
 
+  it('registers a customer and stores the new session', () => {
+    const customer: AuthUser = { ...USER, role: 'CUSTOMER' };
+    const registration = {
+      names: customer.names,
+      lastNames: customer.lastNames,
+      email: customer.email,
+      password: 'Password123',
+      phone: customer.phone,
+      documentNumber: customer.documentNumber,
+    };
+
+    authService.register(registration).subscribe();
+
+    const request = httpTestingController.expectOne('/api/auth/register');
+    expect(request.request.method).toBe('POST');
+    expect(request.request.body).toEqual(registration);
+    request.flush({ expiresInSeconds: 3600, user: customer });
+
+    expect(authService.user()).toEqual(customer);
+    expect(authService.isAuthenticated()).toBe(true);
+  });
+
   it('clears the session and returns null when the session is no longer authorized', () => {
     let restoredUser: AuthUser | null | undefined;
 
@@ -63,6 +85,31 @@ describe('AuthService', () => {
     request.flush(USER);
 
     expect(restoredUsers).toEqual([USER, USER]);
+  });
+
+  it('does not replace a newly registered session with a late restoration response', () => {
+    const customer: AuthUser = { ...USER, role: 'CUSTOMER' };
+    const restoredUsers: (AuthUser | null)[] = [];
+    authService.restoreSession().subscribe((user) => restoredUsers.push(user));
+    const restoreRequest = httpTestingController.expectOne('/api/me');
+
+    authService.register({ names: 'Ana', lastNames: 'Pérez', email: USER.email, password: 'Password123', phone: '', documentNumber: '' }).subscribe();
+    httpTestingController.expectOne('/api/auth/register').flush({ expiresInSeconds: 3600, user: customer });
+    restoreRequest.flush(USER);
+
+    expect(authService.user()).toEqual(customer);
+    expect(restoredUsers).toEqual([customer]);
+  });
+
+  it('does not clear a newly logged-in session when an older restoration gets 401', () => {
+    authService.restoreSession().subscribe();
+    const restoreRequest = httpTestingController.expectOne('/api/me');
+
+    authService.login({ email: USER.email, password: 'Password123' }).subscribe();
+    httpTestingController.expectOne('/api/auth/login').flush({ expiresInSeconds: 3600, user: USER });
+    restoreRequest.flush({ message: 'No autorizado' }, { status: 401, statusText: 'Unauthorized' });
+
+    expect(authService.user()).toEqual(USER);
   });
 
   it('preserves a server error so the application can distinguish it from a logged out session', () => {

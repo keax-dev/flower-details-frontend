@@ -17,6 +17,9 @@ async function mockCsrfToken(page: Page): Promise<void> {
 
 test('redirects an administrator to the requested page after login', async ({ page }) => {
   await mockCsrfToken(page);
+  await page.route('**/api/categories/administration?**', (route) =>
+    route.fulfill({ json: { items: [], page: 0, size: 10, totalElements: 0, totalPages: 0 } }),
+  );
   await page.route('**/api/auth/login', async (route) => {
     expect(route.request().postDataJSON()).toEqual({
       email: USER.email,

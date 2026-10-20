@@ -1,0 +1,133 @@
+<main class="login-page">
+  <div class="container-fluid px-0">
+    <div class="row g-0 login-page__row">
+      <section aria-labelledby="brand-title" class="col-12 col-lg-6 login-page__brand-panel">
+        <div class="login-page__brand-content">
+          <div aria-hidden="true" class="login-page__flower-mark"><span></span><span></span><span></span><span></span><i></i></div>
+          <p class="login-page__eyebrow mb-3">Flower Details</p>
+          <h1 class="login-page__brand-title mb-4" id="brand-title">Haz florecer cada ocasión.</h1>
+          <p class="login-page__brand-description mb-0">Crea tu cuenta para elegir arreglos y seguir tus pedidos.</p>
+        </div>
+      </section>
+
+      <section aria-labelledby="register-title" class="col-12 col-lg-6 login-page__form-panel">
+        <div class="login-page__form-content register-page__form-content py-3">
+          <a class="login-page__back-link mb-4" routerLink="/home">Volver al inicio</a>
+          <p class="login-page__eyebrow mb-2">Nueva cuenta</p>
+          <h2 class="login-page__form-title mb-2" id="register-title">Regístrate</h2>
+          <p class="login-page__form-description mb-0">Los campos marcados con * son obligatorios.</p>
+
+          @if (errorMessage()) {
+            <div class="alert alert-danger mt-4 mb-0" role="alert">
+              @for (message of errorMessages(); track message) {
+                <p class="mb-0">{{ message }}</p>
+              }
+            </div>
+          }
+
+          <form #registrationForm (ngSubmit)="submit()" [formGroup]="registerForm" class="login-page__form mt-4">
+            <div class="row g-3">
+              <div class="col-12 col-sm-6">
+                <label class="form-label" for="register-names">Nombres *</label>
+                <input
+                  [attr.aria-invalid]="hasError('names')"
+                  [attr.aria-describedby]="hasError('names') ? 'register-names-error' : null"
+                  autocomplete="given-name"
+                  formControlName="names"
+                  id="register-names"
+                  maxlength="80"
+                  nz-input
+                  type="text"
+                />
+                @if (hasError('names')) {
+                  <p class="invalid-feedback d-block mb-0" id="register-names-error">Ingresa tus nombres (máximo 80 caracteres).</p>
+                }
+              </div>
+              <div class="col-12 col-sm-6">
+                <label class="form-label" for="register-last-names">Apellidos *</label>
+                <input
+                  [attr.aria-invalid]="hasError('lastNames')"
+                  [attr.aria-describedby]="hasError('lastNames') ? 'register-last-names-error' : null"
+                  autocomplete="family-name"
+                  formControlName="lastNames"
+                  id="register-last-names"
+                  maxlength="80"
+                  nz-input
+                  type="text"
+                />
+                @if (hasError('lastNames')) {
+                  <p class="invalid-feedback d-block mb-0" id="register-last-names-error">Ingresa tus apellidos (máximo 80 caracteres).</p>
+                }
+              </div>
+              <div class="col-12">
+                <label class="form-label" for="register-email">Correo electrónico *</label>
+                <input
+                  [attr.aria-invalid]="hasError('email')"
+                  [attr.aria-describedby]="hasError('email') ? 'register-email-error' : null"
+                  autocomplete="email"
+                  formControlName="email"
+                  id="register-email"
+                  maxlength="160"
+                  nz-input
+                  type="email"
+                />
+                @if (hasError('email')) {
+                  <p class="invalid-feedback d-block mb-0" id="register-email-error">Ingresa un correo electrónico válido.</p>
+                }
+              </div>
+              <div class="col-12 col-sm-6">
+                <label class="form-label" for="register-phone">Teléfono (opcional)</label>
+                <input autocomplete="tel" formControlName="phone" id="register-phone" maxlength="30" nz-input type="tel" />
+              </div>
+              <div class="col-12 col-sm-6">
+                <label class="form-label" for="register-document">Documento (opcional)</label>
+                <input formControlName="documentNumber" id="register-document" maxlength="30" nz-input type="text" />
+              </div>
+              <div class="col-12">
+                <label class="form-label" for="register-password">Contraseña *</label>
+                <input
+                  [attr.aria-invalid]="hasError('password')"
+                  [attr.aria-describedby]="hasError('password') ? 'register-password-help register-password-error' : 'register-password-help'"
+                  autocomplete="new-password"
+                  formControlName="password"
+                  id="register-password"
+                  nz-input
+                  type="password"
+                />
+                <p class="register-page__help mb-0" id="register-password-help">
+                  Mínimo 10 caracteres, con mayúscula, minúscula y número; máximo 72 bytes.
+                </p>
+                @if (hasError('password')) {
+                  <p class="invalid-feedback d-block mb-0" id="register-password-error">La contraseña no cumple los requisitos indicados.</p>
+                }
+              </div>
+              <div class="col-12">
+                <label class="form-label" for="register-confirm-password">Confirmar contraseña *</label>
+                <input
+                  [attr.aria-invalid]="hasError('confirmPassword') || hasPasswordMismatch()"
+                  [attr.aria-describedby]="hasError('confirmPassword') || hasPasswordMismatch() ? 'register-confirm-error' : null"
+                  autocomplete="new-password"
+                  formControlName="confirmPassword"
+                  id="register-confirm-password"
+                  nz-input
+                  type="password"
+                />
+                @if (hasError('confirmPassword') || hasPasswordMismatch()) {
+                  <p class="invalid-feedback d-block mb-0" id="register-confirm-error">
+                    {{ hasError('confirmPassword') ? 'Confirma tu contraseña.' : 'Las contraseñas no coinciden.' }}
+                  </p>
+                }
+              </div>
+            </div>
+
+            <button [disabled]="isSubmitting()" class="w-100 mt-4" nz-button nzType="primary" type="submit">
+              {{ isSubmitting() ? 'Creando cuenta...' : 'Crear cuenta' }}
+            </button>
+          </form>
+
+          <p class="register-page__login-link mb-0 mt-4">¿Ya tienes cuenta? <a routerLink="/auth/login">Inicia sesión</a></p>
+        </div>
+      </section>
+    </div>
+  </div>
+</main>

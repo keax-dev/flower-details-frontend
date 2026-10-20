@@ -50,6 +50,23 @@ describe('authSessionInterceptor', () => {
     expect(router.navigate).not.toHaveBeenCalled();
   });
 
+  it('does not redirect when registration itself is rejected', () => {
+    httpClient.post('/api/auth/register', {}).subscribe({ error: () => undefined });
+
+    httpTestingController.expectOne('/api/auth/register').flush({ message: 'No autorizado' }, { status: 401, statusText: 'Unauthorized' });
+
+    expect(router.navigate).not.toHaveBeenCalled();
+  });
+
+  it('lets the session service handle a failed restoration without clearing a newer session', () => {
+    httpClient.get('/api/me').subscribe({ error: () => undefined });
+
+    httpTestingController.expectOne('/api/me').flush({ message: 'No autorizado' }, { status: 401, statusText: 'Unauthorized' });
+
+    expect(sessionStore.clear).not.toHaveBeenCalled();
+    expect(router.navigate).not.toHaveBeenCalled();
+  });
+
   it('does not alter failed requests to external resources', () => {
     const externalUrl = 'https://cdn.example.com/product.png';
     httpClient.get(externalUrl).subscribe({ error: () => undefined });

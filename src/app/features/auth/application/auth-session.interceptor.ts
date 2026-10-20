@@ -19,9 +19,15 @@ export const authSessionInterceptor: HttpInterceptorFn = (request, next) => {
   return next(request).pipe(
     catchError((error: unknown) => {
       if (error instanceof HttpErrorResponse && error.status === 401) {
-        sessionStore.clear();
+        if (!isApiEndpoint(request.url, apiBaseUrl, '/me')) {
+          sessionStore.clear();
+        }
 
-        if (!isApiEndpoint(request.url, apiBaseUrl, '/auth/login') && !isApiEndpoint(request.url, apiBaseUrl, '/me')) {
+        if (
+          !isApiEndpoint(request.url, apiBaseUrl, '/auth/login') &&
+          !isApiEndpoint(request.url, apiBaseUrl, '/auth/register') &&
+          !isApiEndpoint(request.url, apiBaseUrl, '/me')
+        ) {
           void router.navigate(['/auth/login'], {
             queryParams: { returnUrl: router.url },
           });

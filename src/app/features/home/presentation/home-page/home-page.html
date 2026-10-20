@@ -6,6 +6,7 @@
         <h1 id="home-title" class="home-page__title mb-4">Cada detalle, bien cuidado.</h1>
         <p class="home-page__description mb-0">La administración de catálogo, pedidos y clientes irá tomando forma desde aquí.</p>
         @if (!user()) {
+          <a class="mt-4 me-2" nz-button nzType="primary" routerLink="/auth/register"> Crear cuenta </a>
           <a class="mt-4" nz-button nzType="primary" routerLink="/auth/login"> Acceder al sistema </a>
         } @else if (user()?.role === 'ADMIN') {
           <a class="mt-4" nz-button nzType="primary" routerLink="/admin/categories"> Administrar catálogo </a>
