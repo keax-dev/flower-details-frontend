@@ -1,0 +1,116 @@
+:host {
+  display: block;
+}
+
+.catalog-detail {
+  min-height: calc(100vh - 4rem);
+  background: #fbfdfb;
+}
+
+.catalog-detail__container {
+  max-width: 90rem;
+  padding-right: clamp(1.5rem, 5vw, 6rem);
+  padding-left: clamp(1.5rem, 5vw, 6rem);
+}
+
+.catalog-detail__back {
+  color: #146c43;
+  font-weight: 700;
+}
+
+.catalog-detail__back:hover,
+.catalog-detail__back:focus-visible {
+  color: #0f5132;
+}
+
+.catalog-detail__state {
+  padding: 3rem 1.5rem;
+  border: 1px dashed #c8d7cc;
+  color: #527060;
+  text-align: center;
+}
+
+.catalog-detail__media {
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background: #e8f1e9;
+}
+
+.catalog-detail__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.catalog-detail__placeholder {
+  display: grid;
+  width: 100%;
+  height: 100%;
+  place-items: center;
+  color: #527060;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 1.5rem;
+}
+
+.catalog-detail__thumbnails {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.catalog-detail__thumbnail {
+  width: 7.5rem;
+  height: 5.625rem;
+  overflow: hidden;
+  padding: 0;
+  border: 2px solid transparent;
+  background: #e8f1e9;
+  cursor: pointer;
+}
+
+.catalog-detail__thumbnail[aria-pressed='true'],
+.catalog-detail__thumbnail:focus-visible {
+  border-color: #146c43;
+  outline: 2px solid #fff;
+  outline-offset: -4px;
+}
+
+.catalog-detail__thumbnail img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.catalog-detail__category {
+  color: #41664e;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.catalog-detail__title,
+.catalog-detail__section-title {
+  color: #173427;
+  font-family: Georgia, 'Times New Roman', serif;
+}
+
+.catalog-detail__title {
+  font-size: clamp(2.5rem, 5vw, 4rem);
+}
+
+.catalog-detail__section-title {
+  font-size: 1.5rem;
+}
+
+.catalog-detail__price {
+  color: #173427;
+  font-size: 1.75rem;
+  font-weight: 700;
+}
+
+.catalog-detail__description {
+  color: #34483b;
+  line-height: 1.7;
+  overflow-wrap: anywhere;
+}

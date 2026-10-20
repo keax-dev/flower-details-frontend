@@ -26,7 +26,10 @@ const NAVIGATION_BY_ROLE: Readonly<Record<UserRole, readonly NavigationItem[]>> 
     { label: 'Inicio', route: '/home' },
     { label: 'Pedidos', route: '/orders' },
   ],
-  CUSTOMER: [{ label: 'Inicio', route: '/home' }],
+  CUSTOMER: [
+    { label: 'Inicio', route: '/home' },
+    { label: 'Catálogo', route: '/catalog' },
+  ],
 };
 
 @Component({
@@ -58,7 +61,12 @@ export class ApplicationNavigation {
   protected readonly user = this.authService.user;
   protected readonly navigationItems = computed(() => {
     const user = this.user();
-    return user === null ? [{ label: 'Inicio', route: '/home' }] : NAVIGATION_BY_ROLE[user.role];
+    return user === null
+      ? [
+          { label: 'Inicio', route: '/home' },
+          { label: 'Catálogo', route: '/catalog' },
+        ]
+      : NAVIGATION_BY_ROLE[user.role];
   });
   protected readonly isVisible = computed(() => !this.currentUrl().startsWith('/auth'));
 

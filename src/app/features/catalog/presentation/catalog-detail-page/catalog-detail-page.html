@@ -1,0 +1,57 @@
+<main class="catalog-detail py-4 py-md-5">
+  <div class="container-fluid catalog-detail__container">
+    <a class="catalog-detail__back" routerLink="/catalog">← Volver al catálogo</a>
+
+    @if (isLoading()) {
+      <p class="catalog-detail__state mt-4" role="status">Cargando producto...</p>
+    } @else if (errorMessage(); as message) {
+      <div class="catalog-detail__state mt-4" role="alert">
+        <p>{{ message }}</p>
+        @if (canRetry()) {
+          <button (click)="retry()" class="btn btn-outline-dark" type="button">Reintentar</button>
+        }
+      </div>
+    } @else if (product(); as item) {
+      <div class="row g-4 g-lg-5 mt-2">
+        <div class="col-12 col-lg-7">
+          <div class="catalog-detail__media">
+            @if (selectedImage(); as image) {
+              <img
+                [alt]="item.title + ', imagen ' + (selectedImageIndex() + 1)"
+                [ngSrc]="image.url"
+                class="catalog-detail__image"
+                height="720"
+                priority
+                width="960"
+              />
+            } @else {
+              <div aria-hidden="true" class="catalog-detail__placeholder">Flower Details</div>
+            }
+          </div>
+          @if (item.images.length > 1) {
+            <div aria-label="Imágenes del producto" class="catalog-detail__thumbnails mt-3" role="group">
+              @for (image of item.images; track image.id; let index = $index) {
+                <button
+                  (click)="selectImage(index)"
+                  [attr.aria-label]="'Ver imagen ' + (index + 1) + ' de ' + item.images.length"
+                  [attr.aria-pressed]="selectedImageIndex() === index"
+                  class="catalog-detail__thumbnail"
+                  type="button"
+                >
+                  <img [alt]="''" [ngSrc]="image.url" height="90" width="120" />
+                </button>
+              }
+            </div>
+          }
+        </div>
+        <div class="col-12 col-lg-5">
+          <p class="catalog-detail__category mb-2">{{ item.category.title }}</p>
+          <h1 class="catalog-detail__title mb-3">{{ item.title }}</h1>
+          <p class="catalog-detail__price mb-4">{{ item.price | currency: 'USD' }}</p>
+          <h2 class="catalog-detail__section-title mb-3">Descripción</h2>
+          <div [innerHTML]="item.description" class="catalog-detail__description"></div>
+        </div>
+      </div>
+    }
+  </div>
+</main>

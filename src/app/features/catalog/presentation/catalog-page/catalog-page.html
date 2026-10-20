@@ -1,0 +1,158 @@
+<main class="catalog-page py-4 py-md-5">
+  <div class="container-fluid catalog-page__container">
+    <header class="catalog-page__header">
+      <p class="catalog-page__eyebrow mb-2">Flower Details</p>
+      <h1 class="catalog-page__title mb-2">Catálogo floral</h1>
+      <p class="catalog-page__intro mb-0">Encuentra el arreglo ideal para cada ocasión.</p>
+    </header>
+
+    <section aria-labelledby="catalog-filters-title" class="catalog-page__filters mt-4 mt-md-5">
+      <h2 class="catalog-page__section-title mb-3" id="catalog-filters-title">Encuentra tu detalle</h2>
+      @if (categoryError()) {
+        <p class="catalog-page__notice" role="alert">
+          No se pudieron cargar las categorías.
+          <button (click)="retryCategories()" class="catalog-page__text-button" type="button">Reintentar</button>
+        </p>
+      }
+      <form (ngSubmit)="applyFilters()" [formGroup]="filterForm" aria-label="Filtros del catálogo">
+        <div class="row g-3 align-items-end">
+          <div class="col-12 col-md-6 col-xl-4">
+            <label class="form-label" for="catalog-search">Buscar</label>
+            <input
+              class="form-control"
+              formControlName="q"
+              id="catalog-search"
+              maxlength="120"
+              placeholder="Flores, ocasiones o arreglos"
+              type="search"
+            />
+          </div>
+          <div class="col-12 col-md-6 col-xl-4">
+            <label class="form-label" for="catalog-category">Categoría</label>
+            <select class="form-select" formControlName="categoryId" id="catalog-category">
+              <option value="">Todas las categorías</option>
+              @for (category of categories(); track category.id) {
+                <option [value]="category.id">{{ category.title }}</option>
+              }
+            </select>
+          </div>
+          <div class="col-12 col-sm-6 col-xl-2">
+            <label class="form-label" for="catalog-min-price">Precio mínimo</label>
+            <input
+              [attr.aria-invalid]="filterForm.controls.minPrice.invalid && filterForm.controls.minPrice.touched"
+              [attr.aria-describedby]="
+                filterForm.controls.minPrice.invalid && filterForm.controls.minPrice.touched ? 'catalog-min-price-error' : null
+              "
+              class="form-control"
+              formControlName="minPrice"
+              id="catalog-min-price"
+              min="0"
+              step="0.01"
+              type="number"
+            />
+            @if (filterForm.controls.minPrice.invalid && filterForm.controls.minPrice.touched) {
+              <p class="invalid-feedback d-block mb-0" id="catalog-min-price-error">Ingresa un precio no negativo.</p>
+            }
+          </div>
+          <div class="col-12 col-sm-6 col-xl-2">
+            <label class="form-label" for="catalog-max-price">Precio máximo</label>
+            <input
+              [attr.aria-invalid]="
+                (filterForm.controls.maxPrice.invalid || filterForm.hasError('priceRange')) && filterForm.controls.maxPrice.touched
+              "
+              [attr.aria-describedby]="
+                (filterForm.controls.maxPrice.invalid || filterForm.hasError('priceRange')) && filterForm.controls.maxPrice.touched
+                  ? 'catalog-max-price-error'
+                  : null
+              "
+              class="form-control"
+              formControlName="maxPrice"
+              id="catalog-max-price"
+              min="0"
+              step="0.01"
+              type="number"
+            />
+            @if ((filterForm.controls.maxPrice.invalid || filterForm.hasError('priceRange')) && filterForm.controls.maxPrice.touched) {
+              <p class="invalid-feedback d-block mb-0" id="catalog-max-price-error">El máximo debe ser mayor o igual al mínimo.</p>
+            }
+          </div>
+          <div class="col-12 col-sm-6 col-xl-3">
+            <label class="form-label" for="catalog-sort">Ordenar por</label>
+            <select class="form-select" formControlName="sortBy" id="catalog-sort">
+              <option value="createdAt">Más recientes</option>
+              <option value="title">Nombre</option>
+              <option value="price">Precio</option>
+            </select>
+          </div>
+          <div class="col-12 col-sm-6 col-xl-3">
+            <label class="form-label" for="catalog-direction">Dirección</label>
+            <select class="form-select" formControlName="direction" id="catalog-direction">
+              <option value="desc">Descendente</option>
+              <option value="asc">Ascendente</option>
+            </select>
+          </div>
+          <div class="col-12 col-xl-auto d-flex flex-wrap gap-2">
+            <button [disabled]="isLoading()" class="btn btn-success" type="submit">Aplicar filtros</button>
+            <button (click)="clearFilters()" [disabled]="isLoading()" class="btn btn-outline-dark" type="button">Limpiar filtros</button>
+          </div>
+        </div>
+      </form>
+    </section>
+
+    <section aria-labelledby="catalog-results-title" class="mt-5">
+      <div class="d-flex align-items-end justify-content-between flex-wrap gap-2 mb-4">
+        <h2 class="catalog-page__section-title mb-0" id="catalog-results-title">Arreglos disponibles</h2>
+        @if (pageResponse(); as response) {
+          <p aria-live="polite" class="catalog-page__count mb-0">{{ response.totalElements }} productos</p>
+        }
+      </div>
+
+      @if (isLoading()) {
+        <p class="catalog-page__state" role="status">Cargando productos...</p>
+      } @else if (errorMessage(); as message) {
+        <div class="catalog-page__state" role="alert">
+          <p>{{ message }}</p>
+          <button (click)="retry()" class="btn btn-outline-dark" type="button">Reintentar</button>
+        </div>
+      } @else {
+        <div class="row g-4">
+          @for (product of products(); track product.id) {
+            <div class="col-12 col-sm-6 col-xl-4">
+              <article class="catalog-page__card h-100">
+                <div class="catalog-page__media">
+                  @if (product.images[0]; as image) {
+                    <img [alt]="product.title" [ngSrc]="image.url" class="catalog-page__image" height="360" width="480" />
+                  } @else {
+                    <div aria-hidden="true" class="catalog-page__placeholder">Flower Details</div>
+                  }
+                </div>
+                <div class="catalog-page__card-body">
+                  <p class="catalog-page__category mb-2">{{ product.category.title }}</p>
+                  <h3 class="catalog-page__product-title mb-2">{{ product.title }}</h3>
+                  <p class="catalog-page__price mb-3">{{ product.price | currency: 'USD' }}</p>
+                  <a [routerLink]="['/catalog', product.id]" class="catalog-page__detail-link">Ver detalle de {{ product.title }}</a>
+                </div>
+              </article>
+            </div>
+          } @empty {
+            <div class="col-12">
+              <p class="catalog-page__state">No hay productos que coincidan con los filtros.</p>
+            </div>
+          }
+        </div>
+      }
+
+      @if (pageResponse(); as response) {
+        <nav aria-label="Paginación del catálogo" class="d-flex align-items-center justify-content-between flex-wrap gap-3 mt-4">
+          <p class="catalog-page__count mb-0">Página {{ response.page + 1 }} de {{ response.totalPages || 1 }}</p>
+          <div class="d-flex gap-2">
+            <button (click)="previousPage()" [disabled]="!hasPreviousPage() || isLoading()" class="btn btn-outline-dark" type="button">
+              Anterior
+            </button>
+            <button (click)="nextPage()" [disabled]="!hasNextPage() || isLoading()" class="btn btn-outline-dark" type="button">Siguiente</button>
+          </div>
+        </nav>
+      }
+    </section>
+  </div>
+</main>

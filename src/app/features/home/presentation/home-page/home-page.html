@@ -4,12 +4,15 @@
       <div class="col-12 col-lg-9 col-xl-8">
         <p class="home-page__eyebrow mb-3">Gestión floral</p>
         <h1 id="home-title" class="home-page__title mb-4">Cada detalle, bien cuidado.</h1>
-        <p class="home-page__description mb-0">La administración de catálogo, pedidos y clientes irá tomando forma desde aquí.</p>
+        <p class="home-page__description mb-0">Descubre arreglos florales para cada ocasión y encuentra el detalle perfecto.</p>
         @if (!user()) {
+          <a class="mt-4 me-2" nz-button nzType="primary" routerLink="/catalog"> Explorar catálogo </a>
           <a class="mt-4 me-2" nz-button nzType="primary" routerLink="/auth/register"> Crear cuenta </a>
           <a class="mt-4" nz-button nzType="primary" routerLink="/auth/login"> Acceder al sistema </a>
         } @else if (user()?.role === 'ADMIN') {
           <a class="mt-4" nz-button nzType="primary" routerLink="/admin/categories"> Administrar catálogo </a>
+        } @else if (user()?.role === 'CUSTOMER') {
+          <a class="mt-4" nz-button nzType="primary" routerLink="/catalog"> Explorar catálogo </a>
         }
       </div>
     </section>
