@@ -1,12 +1,11 @@
 import { CurrencyPipe, DatePipe } from '@angular/common';
 import { Component, DestroyRef, computed, effect, inject, input, output, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { FormsModule } from '@angular/forms';
+import { AbstractControl, NonNullableFormBuilder, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faArrowLeft, faArrowRight, faEye, faFilter, faRotateLeft } from '@fortawesome/free-solid-svg-icons';
 import { NzInputModule } from 'ng-zorro-antd/input';
-import { NzSelectModule } from 'ng-zorro-antd/select';
-import { finalize } from 'rxjs';
+import { finalize, Subscription } from 'rxjs';
 
 import { resolveApiErrorMessage } from '@core/http/utils/api-error';
 import { NotificationService } from '@core/notification/notification.service';
@@ -20,9 +19,17 @@ import { PageResponse } from '@shared/domain/pagination/page-response.model';
 
 const PAGE_SIZE = 10;
 
+function validateDateRange(control: AbstractControl): ValidationErrors | null {
+  const createdFrom: unknown = control.get('createdFrom')?.value;
+  const createdTo: unknown = control.get('createdTo')?.value;
+  return typeof createdFrom === 'string' && typeof createdTo === 'string' && createdFrom !== '' && createdTo !== '' && createdFrom > createdTo
+    ? { dateRange: true }
+    : null;
+}
+
 @Component({
   selector: 'app-order-list',
-  imports: [CurrencyPipe, DatePipe, FontAwesomeModule, FormsModule, NzInputModule, NzSelectModule],
+  imports: [CurrencyPipe, DatePipe, FontAwesomeModule, ReactiveFormsModule, NzInputModule],
   templateUrl: './order-list.html',
   styleUrl: './order-list.css',
 })
@@ -30,6 +37,9 @@ export class OrderList {
   private readonly orderApiService = inject(OrderApiService);
   private readonly notificationService = inject(NotificationService);
   private readonly destroyRef = inject(DestroyRef);
+  private readonly formBuilder = inject(NonNullableFormBuilder);
+  private listSubscription?: Subscription;
+  private appliedQuery: OrderQuery = {};
 
   readonly refreshVersion = input(0);
   readonly details = output<number>();
@@ -51,9 +61,20 @@ export class OrderList {
     return page !== null && page.page + 1 < page.totalPages;
   });
 
-  protected searchQuery = '';
-  protected selectedStatus: OrderStatus | null = null;
-  protected selectedFulfillmentType: FulfillmentType | null = null;
+  protected readonly filterForm = this.formBuilder.group(
+    {
+      q: ['', [Validators.maxLength(120)]],
+      customerId: [null as number | null, [Validators.min(1), Validators.pattern(/^[1-9]\d*$/)]],
+      operatorId: [null as number | null, [Validators.min(1), Validators.pattern(/^[1-9]\d*$/)]],
+      status: ['' as OrderStatus | ''],
+      fulfillmentType: ['' as FulfillmentType | ''],
+      createdFrom: [''],
+      createdTo: [''],
+      sortBy: ['createdAt' as 'createdAt' | 'total' | 'status'],
+      direction: ['desc' as 'asc' | 'desc'],
+    },
+    { validators: validateDateRange },
+  );
 
   constructor() {
     effect(() => {
@@ -63,13 +84,38 @@ export class OrderList {
   }
 
   protected applyFilters(): void {
+    if (this.filterForm.invalid) {
+      this.filterForm.markAllAsTouched();
+      return;
+    }
+    const value = this.filterForm.getRawValue();
+    this.appliedQuery = {
+      ...(value.q.trim() && { q: value.q.trim() }),
+      ...(value.customerId !== null && { customerId: value.customerId }),
+      ...(value.operatorId !== null && { operatorId: value.operatorId }),
+      ...(value.status && { status: value.status }),
+      ...(value.fulfillmentType && { fulfillmentType: value.fulfillmentType }),
+      ...(value.createdFrom && { createdFrom: value.createdFrom }),
+      ...(value.createdTo && { createdTo: value.createdTo }),
+      sortBy: value.sortBy,
+      direction: value.direction,
+    };
     this.loadOrders();
   }
 
   protected clearFilters(): void {
-    this.searchQuery = '';
-    this.selectedStatus = null;
-    this.selectedFulfillmentType = null;
+    this.filterForm.reset({
+      q: '',
+      customerId: null,
+      operatorId: null,
+      status: '',
+      fulfillmentType: '',
+      createdFrom: '',
+      createdTo: '',
+      sortBy: 'createdAt',
+      direction: 'desc',
+    });
+    this.appliedQuery = {};
     this.loadOrders();
   }
 
@@ -89,9 +135,10 @@ export class OrderList {
   protected fulfillmentTypeLabel = fulfillmentTypeLabel;
 
   private loadOrders(page = 0): void {
+    this.listSubscription?.unsubscribe();
     this.isLoading.set(true);
-    this.orderApiService
-      .list(page, PAGE_SIZE, this.query())
+    this.listSubscription = this.orderApiService
+      .list(page, PAGE_SIZE, this.appliedQuery)
       .pipe(
         finalize(() => this.isLoading.set(false)),
         takeUntilDestroyed(this.destroyRef),
@@ -103,13 +150,5 @@ export class OrderList {
         },
         error: (error: unknown) => this.notificationService.errorApi(resolveApiErrorMessage(error, 'No fue posible cargar los pedidos.')),
       });
-  }
-
-  private query(): OrderQuery {
-    return {
-      q: this.searchQuery,
-      status: this.selectedStatus ?? undefined,
-      fulfillmentType: this.selectedFulfillmentType ?? undefined,
-    };
   }
 }

@@ -35,8 +35,15 @@
   text-align: center;
 }
 
-.order-list__filter-select {
-  min-width: 150px;
+.order-list__filters {
+  padding: 1.25rem;
+  border: 1px solid #d8e0dc;
+  background-color: #f8fbf8;
+}
+
+.order-list__filters .form-label {
+  color: #1f2933;
+  font-weight: 600;
 }
 
 .order-list__status {

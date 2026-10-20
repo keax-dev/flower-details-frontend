@@ -51,20 +51,38 @@ describe('OrderList', () => {
   it('loads the first page on initialization', async () => {
     const { fixture, orderApiService } = await createComponent();
 
-    expect(orderApiService.list).toHaveBeenCalledWith(0, 10, { q: '', status: undefined, fulfillmentType: undefined });
+    expect(orderApiService.list).toHaveBeenCalledWith(0, 10, {});
     expect(fixture.componentInstance['orders']()).toEqual([ORDER]);
   });
 
   it('applies the selected filters and resets the page', async () => {
     const { fixture, orderApiService } = await createComponent();
     orderApiService.list.mockClear();
-    fixture.componentInstance['searchQuery'] = ' Maria ';
-    fixture.componentInstance['selectedStatus'] = 'ASSIGNED';
-    fixture.componentInstance['selectedFulfillmentType'] = 'DELIVERY';
+    fixture.componentInstance['filterForm'].patchValue({
+      q: ' Maria ',
+      customerId: 3,
+      operatorId: 5,
+      status: 'ASSIGNED',
+      fulfillmentType: 'DELIVERY',
+      createdFrom: '2026-10-01',
+      createdTo: '2026-10-20',
+      sortBy: 'total',
+      direction: 'asc',
+    });
 
     fixture.componentInstance['applyFilters']();
 
-    expect(orderApiService.list).toHaveBeenCalledWith(0, 10, { q: ' Maria ', status: 'ASSIGNED', fulfillmentType: 'DELIVERY' });
+    expect(orderApiService.list).toHaveBeenCalledWith(0, 10, {
+      q: 'Maria',
+      customerId: 3,
+      operatorId: 5,
+      status: 'ASSIGNED',
+      fulfillmentType: 'DELIVERY',
+      createdFrom: '2026-10-01',
+      createdTo: '2026-10-20',
+      sortBy: 'total',
+      direction: 'asc',
+    });
   });
 
   it('loads the next page when more orders are available', async () => {
@@ -73,6 +91,29 @@ describe('OrderList', () => {
 
     fixture.componentInstance['nextPage']();
 
-    expect(orderApiService.list).toHaveBeenCalledWith(1, 10, { q: '', status: undefined, fulfillmentType: undefined });
+    expect(orderApiService.list).toHaveBeenCalledWith(1, 10, {});
+  });
+
+  it('rejects invalid IDs and date ranges before sending a request', async () => {
+    const { fixture, orderApiService } = await createComponent();
+    orderApiService.list.mockClear();
+    fixture.componentInstance['filterForm'].patchValue({ customerId: 0, createdFrom: '2026-10-20', createdTo: '2026-10-01' });
+
+    fixture.componentInstance['applyFilters']();
+
+    expect(orderApiService.list).not.toHaveBeenCalled();
+    expect(fixture.componentInstance['filterForm'].hasError('dateRange')).toBe(true);
+  });
+
+  it('keeps applied filters for pagination until the next submission', async () => {
+    const { fixture, orderApiService } = await createComponent();
+    fixture.componentInstance['filterForm'].patchValue({ customerId: 3 });
+    fixture.componentInstance['applyFilters']();
+    fixture.componentInstance['filterForm'].patchValue({ customerId: 5 });
+    orderApiService.list.mockClear();
+
+    fixture.componentInstance['nextPage']();
+
+    expect(orderApiService.list).toHaveBeenCalledWith(1, 10, { customerId: 3, sortBy: 'createdAt', direction: 'desc' });
   });
 });

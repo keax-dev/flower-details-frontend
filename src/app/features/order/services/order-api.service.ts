@@ -15,7 +15,11 @@ export class OrderApiService {
   private readonly httpClient = inject(HttpClient);
 
   list(page: number, size: number, query: OrderQuery): Observable<PageResponse<Order>> {
-    let params = new HttpParams().set('page', page).set('size', size).set('sortBy', 'createdAt').set('direction', 'desc');
+    let params = new HttpParams()
+      .set('page', page)
+      .set('size', size)
+      .set('sortBy', query.sortBy ?? 'createdAt')
+      .set('direction', query.direction ?? 'desc');
     if (query.q?.trim()) {
       params = params.set('q', query.q.trim());
     }
@@ -24,6 +28,18 @@ export class OrderApiService {
     }
     if (query.fulfillmentType) {
       params = params.set('fulfillmentType', query.fulfillmentType);
+    }
+    if (query.customerId !== undefined) {
+      params = params.set('customerId', query.customerId);
+    }
+    if (query.operatorId !== undefined) {
+      params = params.set('operatorId', query.operatorId);
+    }
+    if (query.createdFrom) {
+      params = params.set('createdFrom', query.createdFrom);
+    }
+    if (query.createdTo) {
+      params = params.set('createdTo', query.createdTo);
     }
 
     return this.httpClient.get<PageResponse<Order>>(`${this.apiBaseUrl}/orders`, { params });
