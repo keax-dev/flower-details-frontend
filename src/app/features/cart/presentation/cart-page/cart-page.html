@@ -84,6 +84,13 @@
                   <strong>{{ currentCart.total | currency: 'USD' }}</strong>
                 </div>
                 <p class="cart-page__hint mt-3 mb-3">El pedido se confirmará en el siguiente paso.</p>
+                @if (hasUnavailable()) {
+                  <p class="cart-page__unavailable">Quita los productos no disponibles para continuar.</p>
+                } @else if (isMutating()) {
+                  <button class="btn btn-success w-100 mb-2" disabled type="button">Confirmar pedido</button>
+                } @else {
+                  <a class="btn btn-success w-100 mb-2" routerLink="/cart/checkout">Confirmar pedido</a>
+                }
                 <button (click)="clear()" [disabled]="isMutating()" class="btn btn-outline-danger w-100" type="button">
                   {{ isMutating() && busyItemId() === null ? 'Vaciando carrito...' : 'Vaciar carrito' }}
                 </button>

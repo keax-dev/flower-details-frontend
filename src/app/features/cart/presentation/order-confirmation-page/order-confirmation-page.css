@@ -1,0 +1,92 @@
+:host {
+  display: block;
+}
+
+.confirmation-page {
+  min-height: calc(100vh - 4rem);
+  background: #fbfdfb;
+}
+
+.confirmation-page__container {
+  max-width: 90rem;
+  padding-right: clamp(1.5rem, 5vw, 6rem);
+  padding-left: clamp(1.5rem, 5vw, 6rem);
+}
+
+.confirmation-page__eyebrow {
+  color: #41664e;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.confirmation-page__title,
+.confirmation-page__section-title {
+  color: #173427;
+  font-family: Georgia, 'Times New Roman', serif;
+}
+
+.confirmation-page__title {
+  font-size: clamp(2.5rem, 5vw, 4rem);
+}
+
+.confirmation-page__section-title {
+  font-size: 1.65rem;
+}
+
+.confirmation-page__intro {
+  color: #34483b;
+  font-size: 1.15rem;
+}
+
+.confirmation-page__state {
+  padding: 3rem 1.5rem;
+  border: 1px dashed #c8d7cc;
+  color: #527060;
+  text-align: center;
+}
+
+.confirmation-page__panel {
+  padding: clamp(1.25rem, 3vw, 2rem);
+  border: 1px solid #d4e1d7;
+  background: #fff;
+}
+
+.confirmation-page__summary {
+  background: #f1f7f2;
+}
+
+.confirmation-page__details {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  gap: 0.75rem 1.5rem;
+  overflow-wrap: anywhere;
+}
+
+.confirmation-page__details dt {
+  color: #173427;
+}
+
+.confirmation-page__details dd {
+  margin: 0;
+  color: #34483b;
+}
+
+.confirmation-page__item,
+.confirmation-page__total {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  color: #173427;
+}
+
+.confirmation-page__item {
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #d4e1d7;
+}
+
+.confirmation-page__total {
+  padding-top: 1.25rem;
+  font-size: 1.25rem;
+}

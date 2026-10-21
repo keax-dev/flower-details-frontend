@@ -28,6 +28,7 @@ export class CartPage {
     return message === null ? [] : Array.isArray(message) ? message : [message];
   });
   protected readonly itemCount = computed(() => this.cart()?.items.reduce((sum, item) => sum + item.quantity, 0) ?? 0);
+  protected readonly hasUnavailable = computed(() => this.cart()?.items.some((item) => !item.product.available) ?? false);
 
   constructor() {
     this.loadCart();

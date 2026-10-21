@@ -1,0 +1,60 @@
+<main class="confirmation-page py-4 py-md-5">
+  <div class="container-fluid confirmation-page__container">
+    @if (isLoading()) {
+      <p class="confirmation-page__state" role="status">Cargando pedido...</p>
+    } @else if (errorMessage(); as message) {
+      <div class="confirmation-page__state" role="alert">
+        <p>{{ message }}</p>
+        @if (canRetry()) {
+          <button (click)="retry()" class="btn btn-outline-dark" type="button">Reintentar</button>
+        }
+      </div>
+    } @else if (order(); as createdOrder) {
+      <p class="confirmation-page__eyebrow mb-2">Flower Details</p>
+      <h1 class="confirmation-page__title mb-3">Pedido confirmado</h1>
+      <p class="confirmation-page__intro">
+        Tu pedido <strong>{{ createdOrder.orderNumber }}</strong> se registró correctamente.
+      </p>
+
+      <div class="row g-4 mt-2">
+        <section aria-labelledby="confirmation-details-title" class="col-12 col-lg-7">
+          <div class="confirmation-page__panel">
+            <h2 class="confirmation-page__section-title mb-3" id="confirmation-details-title">Datos de entrega</h2>
+            <dl class="confirmation-page__details mb-0">
+              <dt>Modalidad</dt>
+              <dd>{{ createdOrder.fulfillmentType === 'DELIVERY' ? 'Entrega a domicilio' : 'Retiro en local' }}</dd>
+              <dt>Contacto</dt>
+              <dd>{{ createdOrder.contactName }} · {{ createdOrder.contactPhone }}</dd>
+              @if (createdOrder.deliveryAddress) {
+                <dt>Dirección</dt>
+                <dd>{{ createdOrder.deliveryAddress }}</dd>
+              }
+              @if (createdOrder.additionalInstructions) {
+                <dt>Indicaciones</dt>
+                <dd>{{ createdOrder.additionalInstructions }}</dd>
+              }
+            </dl>
+          </div>
+        </section>
+
+        <section aria-labelledby="confirmation-summary-title" class="col-12 col-lg-5">
+          <div class="confirmation-page__panel confirmation-page__summary">
+            <h2 class="confirmation-page__section-title mb-3" id="confirmation-summary-title">Resumen del pedido</h2>
+            @for (item of createdOrder.items; track item.id) {
+              <div class="confirmation-page__item">
+                <span>{{ item.quantity }} × {{ item.productTitle }}</span>
+                <strong>{{ item.subtotal | currency: 'USD' }}</strong>
+              </div>
+            }
+            <div class="confirmation-page__total">
+              <span>Total</span>
+              <strong>{{ createdOrder.total | currency: 'USD' }}</strong>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <a class="btn btn-success mt-4" routerLink="/catalog">Volver al catálogo</a>
+    }
+  </div>
+</main>

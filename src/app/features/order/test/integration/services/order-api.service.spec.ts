@@ -20,6 +20,22 @@ describe('OrderApiService', () => {
 
   afterEach(() => httpTestingController.verify());
 
+  it('creates a customer order from the cart', () => {
+    const payload = {
+      fulfillmentType: 'DELIVERY' as const,
+      contactName: 'Ana Pérez',
+      contactPhone: '0999999999',
+      deliveryAddress: 'Calle Flores 123',
+      additionalInstructions: null,
+    };
+    service.create(payload).subscribe();
+
+    const request = httpTestingController.expectOne('/api/orders');
+    expect(request.request.method).toBe('POST');
+    expect(request.request.body).toEqual(payload);
+    request.flush({ id: 42, orderNumber: 'FD-42' });
+  });
+
   it('requests orders with pagination, sorting and supplied filters', () => {
     service.list(1, 10, { q: ' Maria ', status: 'ASSIGNED', fulfillmentType: 'DELIVERY' }).subscribe();
 

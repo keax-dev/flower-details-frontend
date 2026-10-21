@@ -3,6 +3,7 @@ import { inject, Service } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { API_BASE_URL } from '@core/http/config/api.config';
+import { CreateOrderRequest } from '@features/order/models/create-order-request.model';
 import { OrderAudit } from '@features/order/models/order-audit.model';
 import { OrderQuery } from '@features/order/models/order-query.model';
 import { OrderStatus } from '@features/order/models/order-status.model';
@@ -13,6 +14,10 @@ import { PageResponse } from '@shared/domain/pagination/page-response.model';
 export class OrderApiService {
   private readonly apiBaseUrl = inject(API_BASE_URL);
   private readonly httpClient = inject(HttpClient);
+
+  create(request: CreateOrderRequest): Observable<Order> {
+    return this.httpClient.post<Order>(`${this.apiBaseUrl}/orders`, request);
+  }
 
   list(page: number, size: number, query: OrderQuery): Observable<PageResponse<Order>> {
     let params = new HttpParams()

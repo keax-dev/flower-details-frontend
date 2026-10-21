@@ -1,0 +1,106 @@
+:host {
+  display: block;
+}
+
+.checkout-page {
+  min-height: calc(100vh - 4rem);
+  background: #fbfdfb;
+}
+
+.checkout-page__container {
+  max-width: 90rem;
+  padding-right: clamp(1.5rem, 5vw, 6rem);
+  padding-left: clamp(1.5rem, 5vw, 6rem);
+}
+
+.checkout-page__back {
+  color: #146c43;
+  font-weight: 700;
+}
+
+.checkout-page__eyebrow {
+  color: #41664e;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.checkout-page__title,
+.checkout-page__section-title {
+  color: #173427;
+  font-family: Georgia, 'Times New Roman', serif;
+}
+
+.checkout-page__title {
+  font-size: clamp(2.5rem, 5vw, 4rem);
+}
+
+.checkout-page__section-title {
+  font-size: 1.65rem;
+}
+
+.checkout-page__intro,
+.checkout-page__state {
+  color: #527060;
+}
+
+.checkout-page__state {
+  padding: 3rem 1.5rem;
+  border: 1px dashed #c8d7cc;
+  text-align: center;
+}
+
+.checkout-page__panel {
+  padding: clamp(1.25rem, 3vw, 2rem);
+  border: 1px solid #d4e1d7;
+  background: #fff;
+}
+
+.checkout-page__summary {
+  background: #f1f7f2;
+}
+
+.checkout-page__label {
+  margin-bottom: 0.5rem;
+  color: #173427;
+  font-weight: 600;
+}
+
+.checkout-page__choice {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #173427;
+  cursor: pointer;
+}
+
+.checkout-page__validation {
+  margin-top: 0.4rem;
+  color: #842029;
+}
+
+.checkout-page__alert {
+  padding: 1rem 1.25rem;
+  border: 1px solid #b94a48;
+  background: #fff4f4;
+  color: #842029;
+}
+
+.checkout-page__summary-item,
+.checkout-page__total {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  color: #173427;
+}
+
+.checkout-page__summary-item {
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #d4e1d7;
+}
+
+.checkout-page__total {
+  padding-top: 1.25rem;
+  font-size: 1.25rem;
+}
