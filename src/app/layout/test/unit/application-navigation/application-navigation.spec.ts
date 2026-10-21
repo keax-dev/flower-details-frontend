@@ -50,9 +50,9 @@ describe('ApplicationNavigation', () => {
     expect(labels).toEqual(['Inicio', 'Categorías', 'Productos', 'Personal', 'Clientes', 'Pedidos']);
   });
 
-  it('shows only public navigation to customers and guests', async () => {
+  it('shows the cart only to customers and the catalog to guests', async () => {
     const { fixture } = await createComponent({ ...adminUser, role: 'CUSTOMER' });
-    expect(fixture.componentInstance['navigationItems']().map((item) => item.label)).toEqual(['Inicio', 'Catálogo']);
+    expect(fixture.componentInstance['navigationItems']().map((item) => item.label)).toEqual(['Inicio', 'Catálogo', 'Carrito']);
 
     TestBed.resetTestingModule();
     const guest = await createComponent(null);

@@ -7,6 +7,12 @@ export const routes: Routes = [
     loadChildren: () => import('@features/catalog/route/catalog.routes').then((module) => module.CATALOG_ROUTES),
   },
   {
+    path: 'cart',
+    canActivate: [roleGuard],
+    data: { roles: ['CUSTOMER'] },
+    loadChildren: () => import('@features/cart/route/cart.routes').then((module) => module.CART_ROUTES),
+  },
+  {
     path: 'dashboard',
     canActivate: [roleGuard],
     data: { roles: ['ADMIN'] },
