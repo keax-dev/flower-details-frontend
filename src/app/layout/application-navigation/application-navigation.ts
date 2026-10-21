@@ -31,6 +31,7 @@ const NAVIGATION_BY_ROLE: Readonly<Record<UserRole, readonly NavigationItem[]>> 
     { label: 'Catálogo', route: '/catalog' },
     { label: 'Carrito', route: '/cart' },
     { label: 'Mis pedidos', route: '/my-orders' },
+    { label: 'Mi perfil', route: '/profile' },
   ],
 };
 

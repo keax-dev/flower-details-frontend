@@ -1,0 +1,90 @@
+<main class="profile-page py-4 py-md-5">
+  <div class="container-fluid profile-page__container">
+    <header class="profile-page__header">
+      <p class="profile-page__eyebrow mb-2">Flower Details</p>
+      <h1 class="profile-page__title mb-2">Mi perfil</h1>
+      <p class="profile-page__intro mb-0">Mantén actualizados tus datos para facilitar tus compras y entregas.</p>
+    </header>
+
+    <section aria-labelledby="profile-data-title" class="profile-page__panel mt-4">
+      <h2 class="profile-page__section-title mb-2" id="profile-data-title">Datos personales</h2>
+      <p class="profile-page__intro mb-0">Los campos marcados con * son obligatorios.</p>
+
+      @if (saved()) {
+        <p class="alert alert-success mt-4 mb-0" role="status">Tus datos se guardaron correctamente.</p>
+      }
+      @if (errorMessage()) {
+        <div class="alert alert-danger mt-4 mb-0" role="alert">
+          @for (message of errorMessages(); track message) {
+            <p class="mb-0">{{ message }}</p>
+          }
+        </div>
+      }
+
+      <form #profileFormElement (ngSubmit)="submit()" [formGroup]="profileForm" class="mt-4">
+        <div class="row g-3">
+          <div class="col-12 col-sm-6">
+            <label class="form-label" for="profile-names">Nombres *</label>
+            <input
+              [attr.aria-invalid]="hasError('names')"
+              [attr.aria-describedby]="hasError('names') ? 'profile-names-error' : null"
+              autocomplete="given-name"
+              formControlName="names"
+              id="profile-names"
+              maxlength="80"
+              nz-input
+              type="text"
+            />
+            @if (hasError('names')) {
+              <p class="profile-page__validation mb-0" id="profile-names-error">Ingresa tus nombres (máximo 80 caracteres).</p>
+            }
+          </div>
+          <div class="col-12 col-sm-6">
+            <label class="form-label" for="profile-last-names">Apellidos *</label>
+            <input
+              [attr.aria-invalid]="hasError('lastNames')"
+              [attr.aria-describedby]="hasError('lastNames') ? 'profile-last-names-error' : null"
+              autocomplete="family-name"
+              formControlName="lastNames"
+              id="profile-last-names"
+              maxlength="80"
+              nz-input
+              type="text"
+            />
+            @if (hasError('lastNames')) {
+              <p class="profile-page__validation mb-0" id="profile-last-names-error">Ingresa tus apellidos (máximo 80 caracteres).</p>
+            }
+          </div>
+          <div class="col-12">
+            <label class="form-label" for="profile-email">Correo electrónico *</label>
+            <input
+              [attr.aria-invalid]="hasError('email')"
+              [attr.aria-describedby]="hasError('email') ? 'profile-email-error' : null"
+              autocomplete="email"
+              formControlName="email"
+              id="profile-email"
+              maxlength="160"
+              nz-input
+              type="email"
+            />
+            @if (hasError('email')) {
+              <p class="profile-page__validation mb-0" id="profile-email-error">Ingresa un correo electrónico válido.</p>
+            }
+          </div>
+          <div class="col-12 col-sm-6">
+            <label class="form-label" for="profile-phone">Teléfono (opcional)</label>
+            <input autocomplete="tel" formControlName="phone" id="profile-phone" maxlength="30" nz-input type="tel" />
+          </div>
+          <div class="col-12 col-sm-6">
+            <label class="form-label" for="profile-document">Documento (opcional)</label>
+            <input formControlName="documentNumber" id="profile-document" maxlength="30" nz-input type="text" />
+          </div>
+        </div>
+
+        <button [disabled]="isSubmitting() || profileForm.pristine" class="mt-4" nz-button nzType="primary" type="submit">
+          {{ isSubmitting() ? 'Guardando...' : 'Guardar cambios' }}
+        </button>
+      </form>
+    </section>
+  </div>
+</main>

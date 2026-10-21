@@ -62,6 +62,37 @@ describe('AuthService', () => {
     expect(authService.isAuthenticated()).toBe(true);
   });
 
+  it('updates the customer profile and refreshes the current user', () => {
+    const customer: AuthUser = { ...USER, role: 'CUSTOMER' };
+    authService.login({ email: customer.email, password: 'Password123' }).subscribe();
+    httpTestingController.expectOne('/api/auth/login').flush({ expiresInSeconds: 3600, user: customer });
+
+    const request = { names: 'Lucía', lastNames: 'Flores', email: 'lucia@example.com', phone: '', documentNumber: '' };
+    const updated = { ...customer, ...request };
+    authService.updateProfile(request).subscribe();
+
+    const httpRequest = httpTestingController.expectOne('/api/me');
+    expect(httpRequest.request.method).toBe('PUT');
+    expect(httpRequest.request.body).toEqual(request);
+    httpRequest.flush(updated);
+
+    expect(authService.user()).toEqual(updated);
+  });
+
+  it('does not restore an old profile response after logout', () => {
+    const customer: AuthUser = { ...USER, role: 'CUSTOMER' };
+    authService.login({ email: customer.email, password: 'Password123' }).subscribe();
+    httpTestingController.expectOne('/api/auth/login').flush({ expiresInSeconds: 3600, user: customer });
+
+    authService.updateProfile({ names: 'Lucía', lastNames: customer.lastNames, email: customer.email, phone: '', documentNumber: '' }).subscribe();
+    const profileRequest = httpTestingController.expectOne('/api/me');
+    authService.logout().subscribe();
+    httpTestingController.expectOne('/api/auth/logout').flush(null);
+    profileRequest.flush({ ...customer, names: 'Lucía' });
+
+    expect(authService.user()).toBeNull();
+  });
+
   it('clears the session and returns null when the session is no longer authorized', () => {
     let restoredUser: AuthUser | null | undefined;
 

@@ -19,6 +19,12 @@ export const routes: Routes = [
     loadChildren: () => import('@features/order/route/customer-order.routes').then((module) => module.CUSTOMER_ORDER_ROUTES),
   },
   {
+    path: 'profile',
+    canActivate: [roleGuard],
+    data: { roles: ['CUSTOMER'] },
+    loadComponent: () => import('@features/auth/presentation/profile-page/profile-page').then((module) => module.ProfilePage),
+  },
+  {
     path: 'dashboard',
     canActivate: [roleGuard],
     data: { roles: ['ADMIN'] },
