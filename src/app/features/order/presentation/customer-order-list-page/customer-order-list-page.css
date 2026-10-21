@@ -1,0 +1,118 @@
+:host {
+  display: block;
+}
+
+.customer-orders {
+  min-height: calc(100vh - 4rem);
+  background: #fbfdfb;
+}
+
+.customer-orders__container {
+  max-width: 90rem;
+  padding-right: clamp(1.5rem, 5vw, 6rem);
+  padding-left: clamp(1.5rem, 5vw, 6rem);
+}
+
+.customer-orders__header {
+  padding-bottom: 2rem;
+  border-bottom: 1px solid #c8d7cc;
+}
+
+.customer-orders__eyebrow {
+  color: #41664e;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.customer-orders__title,
+.customer-orders__section-title {
+  color: #173427;
+  font-family: Georgia, 'Times New Roman', serif;
+}
+
+.customer-orders__title {
+  font-size: clamp(2.5rem, 5vw, 4rem);
+}
+
+.customer-orders__section-title {
+  font-size: clamp(1.5rem, 3vw, 2rem);
+}
+
+.customer-orders__intro,
+.customer-orders__count,
+.customer-orders__meta {
+  color: #527060;
+}
+
+.customer-orders__filters {
+  padding: clamp(1.25rem, 3vw, 2rem);
+  border: 1px solid #c8d7cc;
+  background: #f1f7f2;
+}
+
+.customer-orders__filters .form-label {
+  color: #173427;
+  font-weight: 600;
+}
+
+.customer-orders__validation {
+  margin-top: 0.4rem;
+  color: #842029;
+}
+
+.customer-orders__state {
+  padding: 3rem 1.5rem;
+  border: 1px dashed #c8d7cc;
+  color: #527060;
+  text-align: center;
+}
+
+.customer-orders__cards {
+  display: grid;
+  gap: 1rem;
+}
+
+.customer-orders__card {
+  display: flex;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding: 1.5rem;
+  border: 1px solid #d4e1d7;
+  background: #fff;
+}
+
+.customer-orders__number,
+.customer-orders__total {
+  color: #173427;
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.customer-orders__status {
+  display: inline-block;
+  padding: 0.3rem 0.7rem;
+  background: #e8f1e9;
+  color: #173427;
+  font-weight: 700;
+}
+
+.customer-orders__card-end {
+  text-align: right;
+}
+
+.customer-orders__card-end a {
+  color: #146c43;
+  font-weight: 700;
+}
+
+@media (max-width: 575.98px) {
+  .customer-orders__card {
+    flex-direction: column;
+  }
+
+  .customer-orders__card-end {
+    text-align: left;
+  }
+}

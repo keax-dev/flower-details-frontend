@@ -54,7 +54,10 @@
         </section>
       </div>
 
-      <a class="btn btn-success mt-4" routerLink="/catalog">Volver al catálogo</a>
+      <div class="d-flex flex-wrap gap-2 mt-4">
+        <a class="btn btn-success" [routerLink]="['/my-orders', createdOrder.id]">Ver seguimiento</a>
+        <a class="btn btn-outline-dark" routerLink="/catalog">Volver al catálogo</a>
+      </div>
     }
   </div>
 </main>

@@ -1,0 +1,131 @@
+<main class="customer-orders py-4 py-md-5">
+  <div class="container-fluid customer-orders__container">
+    <header class="customer-orders__header">
+      <p class="customer-orders__eyebrow mb-2">Flower Details</p>
+      <h1 class="customer-orders__title mb-2">Mis pedidos</h1>
+      <p class="customer-orders__intro mb-0">Consulta tus compras y sigue el estado de cada entrega.</p>
+    </header>
+
+    <section aria-labelledby="customer-order-filters-title" class="customer-orders__filters mt-4">
+      <h2 class="customer-orders__section-title mb-3" id="customer-order-filters-title">Buscar pedidos</h2>
+      <form (ngSubmit)="applyFilters()" [formGroup]="filterForm" aria-label="Filtros de mis pedidos" role="search">
+        <div class="row g-3 align-items-end">
+          <div class="col-12 col-md-6 col-xl-4">
+            <label class="form-label" for="my-order-search">Buscar</label>
+            <input class="form-control" formControlName="q" id="my-order-search" maxlength="120" placeholder="Número o contacto" type="search" />
+          </div>
+          <div class="col-12 col-md-6 col-xl-4">
+            <label class="form-label" for="my-order-status">Estado</label>
+            <select class="form-select" formControlName="status" id="my-order-status">
+              <option value="">Todos los estados</option>
+              @for (status of statusOptions; track status.value) {
+                <option [value]="status.value">{{ status.label }}</option>
+              }
+            </select>
+          </div>
+          <div class="col-12 col-md-6 col-xl-4">
+            <label class="form-label" for="my-order-fulfillment">Tipo de entrega</label>
+            <select class="form-select" formControlName="fulfillmentType" id="my-order-fulfillment">
+              <option value="">Todos los tipos</option>
+              @for (type of fulfillmentOptions; track type.value) {
+                <option [value]="type.value">{{ type.label }}</option>
+              }
+            </select>
+          </div>
+          <div class="col-12 col-sm-6 col-xl-3">
+            <label class="form-label" for="my-order-from">Desde</label>
+            <input class="form-control" formControlName="createdFrom" id="my-order-from" type="date" />
+          </div>
+          <div class="col-12 col-sm-6 col-xl-3">
+            <label class="form-label" for="my-order-to">Hasta</label>
+            <input
+              [attr.aria-describedby]="filterForm.hasError('dateRange') && filterForm.controls.createdTo.touched ? 'my-order-date-error' : null"
+              [attr.aria-invalid]="filterForm.hasError('dateRange') && filterForm.controls.createdTo.touched"
+              class="form-control"
+              formControlName="createdTo"
+              id="my-order-to"
+              type="date"
+            />
+            @if (filterForm.hasError('dateRange') && filterForm.controls.createdTo.touched) {
+              <p class="customer-orders__validation mb-0" id="my-order-date-error">La fecha final no puede ser anterior a la inicial.</p>
+            }
+          </div>
+          <div class="col-12 col-sm-6 col-xl-3">
+            <label class="form-label" for="my-order-sort">Ordenar por</label>
+            <select class="form-select" formControlName="sortBy" id="my-order-sort">
+              <option value="createdAt">Fecha</option>
+              <option value="total">Total</option>
+              <option value="status">Estado</option>
+            </select>
+          </div>
+          <div class="col-12 col-sm-6 col-xl-3">
+            <label class="form-label" for="my-order-direction">Dirección</label>
+            <select class="form-select" formControlName="direction" id="my-order-direction">
+              <option value="desc">Descendente</option>
+              <option value="asc">Ascendente</option>
+            </select>
+          </div>
+          <div class="col-12 d-flex flex-wrap gap-2">
+            <button [disabled]="isLoading()" class="btn btn-success" type="submit">Aplicar filtros</button>
+            <button (click)="clearFilters()" [disabled]="isLoading()" class="btn btn-outline-dark" type="button">Limpiar filtros</button>
+          </div>
+        </div>
+      </form>
+    </section>
+
+    <section aria-labelledby="customer-order-results-title" class="mt-5">
+      <div class="d-flex align-items-end justify-content-between flex-wrap gap-2 mb-4">
+        <h2 class="customer-orders__section-title mb-0" id="customer-order-results-title">Historial</h2>
+        @if (pageResponse(); as response) {
+          <p aria-live="polite" class="customer-orders__count mb-0">{{ response.totalElements }} pedidos</p>
+        }
+      </div>
+
+      @if (isLoading()) {
+        <p class="customer-orders__state" role="status">Cargando pedidos...</p>
+      } @else if (errorMessage(); as message) {
+        <div class="customer-orders__state" role="alert">
+          <p>{{ message }}</p>
+          <button (click)="retry()" class="btn btn-outline-dark" type="button">Reintentar</button>
+        </div>
+      } @else {
+        <div class="customer-orders__cards">
+          @for (order of orders(); track order.id) {
+            <article class="customer-orders__card">
+              <div>
+                <p class="customer-orders__number mb-1">{{ order.orderNumber }}</p>
+                <p class="customer-orders__meta mb-2">
+                  {{ order.createdAt | date: 'dd/MM/yyyy, HH:mm' }} · {{ fulfillmentLabel(order.fulfillmentType) }}
+                </p>
+                <span class="customer-orders__status">{{ statusLabel(order.status) }}</span>
+              </div>
+              <div class="customer-orders__card-end">
+                <p class="customer-orders__total mb-2">{{ order.total | currency: 'USD' }}</p>
+                <a [routerLink]="['/my-orders', order.id]">Ver detalle de {{ order.orderNumber }}</a>
+              </div>
+            </article>
+          } @empty {
+            <div class="customer-orders__state">
+              <p>No hay pedidos que coincidan con los filtros.</p>
+              <a class="btn btn-success" routerLink="/catalog">Explorar catálogo</a>
+            </div>
+          }
+        </div>
+      }
+
+      @if (pageResponse(); as response) {
+        @if (response.totalPages > 1) {
+          <nav aria-label="Paginación de mis pedidos" class="d-flex align-items-center justify-content-between flex-wrap gap-3 mt-4">
+            <p class="customer-orders__count mb-0">Página {{ response.page + 1 }} de {{ response.totalPages }}</p>
+            <div class="d-flex gap-2">
+              <button (click)="previousPage()" [disabled]="!hasPreviousPage() || isLoading()" class="btn btn-outline-dark" type="button">
+                Anterior
+              </button>
+              <button (click)="nextPage()" [disabled]="!hasNextPage() || isLoading()" class="btn btn-outline-dark" type="button">Siguiente</button>
+            </div>
+          </nav>
+        }
+      }
+    </section>
+  </div>
+</main>

@@ -13,6 +13,12 @@ export const routes: Routes = [
     loadChildren: () => import('@features/cart/route/cart.routes').then((module) => module.CART_ROUTES),
   },
   {
+    path: 'my-orders',
+    canActivate: [roleGuard],
+    data: { roles: ['CUSTOMER'] },
+    loadChildren: () => import('@features/order/route/customer-order.routes').then((module) => module.CUSTOMER_ORDER_ROUTES),
+  },
+  {
     path: 'dashboard',
     canActivate: [roleGuard],
     data: { roles: ['ADMIN'] },

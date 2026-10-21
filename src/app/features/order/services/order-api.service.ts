@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 
 import { API_BASE_URL } from '@core/http/config/api.config';
 import { CreateOrderRequest } from '@features/order/models/create-order-request.model';
+import { CustomerOrderQuery } from '@features/order/models/customer-order-query.model';
 import { OrderAudit } from '@features/order/models/order-audit.model';
 import { OrderQuery } from '@features/order/models/order-query.model';
 import { OrderStatus } from '@features/order/models/order-status.model';
@@ -17,6 +18,20 @@ export class OrderApiService {
 
   create(request: CreateOrderRequest): Observable<Order> {
     return this.httpClient.post<Order>(`${this.apiBaseUrl}/orders`, request);
+  }
+
+  listMine(page: number, size: number, query: CustomerOrderQuery = {}): Observable<PageResponse<Order>> {
+    let params = new HttpParams()
+      .set('page', page)
+      .set('size', size)
+      .set('sortBy', query.sortBy ?? 'createdAt')
+      .set('direction', query.direction ?? 'desc');
+    if (query.q?.trim()) params = params.set('q', query.q.trim());
+    if (query.status) params = params.set('status', query.status);
+    if (query.fulfillmentType) params = params.set('fulfillmentType', query.fulfillmentType);
+    if (query.createdFrom) params = params.set('createdFrom', query.createdFrom);
+    if (query.createdTo) params = params.set('createdTo', query.createdTo);
+    return this.httpClient.get<PageResponse<Order>>(`${this.apiBaseUrl}/orders/my`, { params });
   }
 
   list(page: number, size: number, query: OrderQuery): Observable<PageResponse<Order>> {

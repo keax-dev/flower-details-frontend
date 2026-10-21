@@ -46,6 +46,26 @@ describe('OrderApiService', () => {
     request.flush({ items: [], page: 1, size: 10, totalElements: 0, totalPages: 0 });
   });
 
+  it('requests only the authenticated customer orders with supported filters', () => {
+    service
+      .listMine(1, 10, {
+        q: ' FD-42 ',
+        status: 'GENERATED',
+        fulfillmentType: 'DELIVERY',
+        createdFrom: '2026-10-01',
+        createdTo: '2026-10-21',
+        sortBy: 'total',
+        direction: 'asc',
+      })
+      .subscribe();
+
+    const request = httpTestingController.expectOne(
+      '/api/orders/my?page=1&size=10&sortBy=total&direction=asc&q=FD-42&status=GENERATED&fulfillmentType=DELIVERY&createdFrom=2026-10-01&createdTo=2026-10-21',
+    );
+    expect(request.request.method).toBe('GET');
+    request.flush({ items: [], page: 1, size: 10, totalElements: 0, totalPages: 0 });
+  });
+
   it('sends customer, operator, date range and selected sorting', () => {
     service
       .list(0, 10, {
