@@ -36,23 +36,16 @@ ng build
 
 This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
 
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+## Testing
 
 ```bash
-ng test
+npm run test:coverage   # Vitest plus enforced coverage minimums
+npm run test:e2e        # Playwright UI flows and WCAG AA checks (mocked API)
+npm run test:full-stack # Playwright against the real Spring API and an in-memory H2 database
+npm run validate        # All checks above, formatting, lint and production build
 ```
 
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+Install Playwright Chromium with `npx playwright install chromium` before running browser tests. The full-stack test expects `flower-details-backend` beside this repository and Java 21. It starts the backend with its test configuration on port 18080 and Angular on port 14200; it does not use the development database or `application-dev.properties`. On Windows, the backend Maven wrapper is launched through Git Bash (`C:\Program Files\Git\bin\bash.exe` by default); set `FLOWER_DETAILS_BASH` if Git Bash is elsewhere.
 
 ## Additional Resources
 

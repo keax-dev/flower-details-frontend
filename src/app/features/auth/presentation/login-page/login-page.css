@@ -132,6 +132,12 @@
   text-decoration: underline;
 }
 
+.login-page__form-description a {
+  color: var(--color-primary-hover);
+  font-weight: 600;
+  text-decoration: underline;
+}
+
 .login-page__form-title {
   font-size: 2.25rem;
 }

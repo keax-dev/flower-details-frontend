@@ -57,7 +57,7 @@
 .application-navigation__link:hover,
 .application-navigation__link:focus-visible,
 .application-navigation__link--active {
-  background-color: rgb(255 255 255 / 18%);
+  background-color: var(--color-primary-hover);
   color: var(--color-secondary);
 }
 

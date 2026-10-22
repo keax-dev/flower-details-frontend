@@ -27,7 +27,9 @@ async function createComponent() {
       { provide: CategoryApiService, useValue: categoryApiService },
       { provide: NotificationService, useValue: notificationService },
     ],
-  }).compileComponents();
+  })
+    .overrideComponent(CategoryFormDialog, { set: { template: '', imports: [] } })
+    .compileComponents();
 
   const fixture = TestBed.createComponent(CategoryFormDialog);
   return { fixture, categoryApiService, notificationService };

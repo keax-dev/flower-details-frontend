@@ -15,9 +15,15 @@ const PRODUCT: Product = {
 };
 
 describe('ProductPage', () => {
+  async function createComponent() {
+    await TestBed.configureTestingModule({ imports: [ProductPage] })
+      .overrideComponent(ProductPage, { set: { template: '', imports: [] } })
+      .compileComponents();
+    return TestBed.createComponent(ProductPage).componentInstance;
+  }
+
   it('opens the form for a new product', async () => {
-    await TestBed.configureTestingModule({ imports: [ProductPage] }).compileComponents();
-    const component = TestBed.createComponent(ProductPage).componentInstance;
+    const component = await createComponent();
 
     component['openCreateForm']();
 
@@ -26,8 +32,7 @@ describe('ProductPage', () => {
   });
 
   it('refreshes the list and opens image management after creating a product', async () => {
-    await TestBed.configureTestingModule({ imports: [ProductPage] }).compileComponents();
-    const component = TestBed.createComponent(ProductPage).componentInstance;
+    const component = await createComponent();
 
     component['openCreateForm']();
     component['handleProductSaved'](PRODUCT);

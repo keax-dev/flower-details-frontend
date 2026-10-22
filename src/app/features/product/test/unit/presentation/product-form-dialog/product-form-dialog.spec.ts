@@ -33,7 +33,9 @@ async function createComponent(activeCategories = [PRODUCT.category]) {
       { provide: ProductApiService, useValue: productApiService },
       { provide: NotificationService, useValue: notificationService },
     ],
-  }).compileComponents();
+  })
+    .overrideComponent(ProductFormDialog, { set: { template: '', imports: [] } })
+    .compileComponents();
 
   const fixture = TestBed.createComponent(ProductFormDialog);
   return { fixture, productApiService, notificationService };

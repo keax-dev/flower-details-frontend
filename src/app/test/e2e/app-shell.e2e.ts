@@ -1,6 +1,8 @@
 import { expect, test } from '@playwright/test';
 
 test('lets a guest navigate from the public shell to the login page', async ({ page }) => {
+  await page.route('**/api/auth/csrf', (route) => route.fulfill({ json: { headerName: 'X-XSRF-TOKEN', token: 'test-token' } }));
+  await page.route('**/api/me', (route) => route.fulfill({ status: 401, json: { message: 'No autorizado' } }));
   await page.goto('/home');
 
   await expect(page.getByRole('navigation', { name: 'Navegación principal' })).toBeVisible();
