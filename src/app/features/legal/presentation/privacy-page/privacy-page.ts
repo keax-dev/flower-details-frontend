@@ -1,0 +1,8 @@
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-privacy-page',
+  templateUrl: './privacy-page.html',
+  styleUrl: '../legal-page.css',
+})
+export class PrivacyPage {}

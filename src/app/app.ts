@@ -5,13 +5,15 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RouterOutlet } from '@angular/router';
 import { AuthService } from '@features/auth/application/auth.service';
 import { CsrfService } from '@core/http/security/csrf.service';
+import { LegalFooter } from '@features/legal/presentation/legal-footer/legal-footer';
 
 @Component({
   selector: 'app-root',
-  imports: [ApplicationNavigation, RouterOutlet],
+  imports: [ApplicationNavigation, LegalFooter, RouterOutlet],
   template: `
     <app-application-navigation />
     <router-outlet />
+    <app-legal-footer />
   `,
 })
 export class App {

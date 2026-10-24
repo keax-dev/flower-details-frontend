@@ -118,6 +118,11 @@
                     }
                   </div>
 
+                  <p class="checkout-page__legal-note">
+                    Revisa los <a routerLink="/legal/terms">Términos y condiciones</a> y la
+                    <a routerLink="/legal/privacy">Política de privacidad</a> antes de confirmar. El pago se realiza en efectivo o por transferencia
+                    al entregar o retirar el pedido.
+                  </p>
                   <button [disabled]="isSubmitting()" class="btn btn-success" type="submit">
                     {{ isSubmitting() ? 'Confirmando...' : 'Confirmar pedido' }}
                   </button>

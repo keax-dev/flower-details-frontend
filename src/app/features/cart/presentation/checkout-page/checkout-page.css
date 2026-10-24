@@ -80,6 +80,16 @@
   color: #842029;
 }
 
+.checkout-page__legal-note {
+  color: #274536;
+}
+
+.checkout-page__legal-note a {
+  color: #14532d;
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
 .checkout-page__alert {
   padding: 1rem 1.25rem;
   border: 1px solid #b94a48;

@@ -3,7 +3,8 @@
 }
 
 .register-page__help,
-.register-page__login-link {
+.register-page__login-link,
+.register-page__legal-note {
   color: #527060;
   font-size: 0.875rem;
 }
@@ -12,7 +13,10 @@
   margin-top: 0.375rem;
 }
 
-.register-page__login-link a {
+.register-page__login-link a,
+.register-page__legal-note a {
   color: #146c43;
   font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
 }

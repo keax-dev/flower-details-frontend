@@ -2,6 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { AuthService } from '@features/auth/application/auth.service';
 import { CsrfService } from '@core/http/security/csrf.service';
 import { EMPTY, of, throwError } from 'rxjs';
+import { provideRouter } from '@angular/router';
 
 import { App } from '../../app';
 
@@ -12,10 +13,7 @@ describe('App bootstrap', () => {
 
     await TestBed.configureTestingModule({
       imports: [App],
-      providers: [
-        { provide: CsrfService, useValue: csrfService },
-        { provide: AuthService, useValue: authService },
-      ],
+      providers: [provideRouter([]), { provide: CsrfService, useValue: csrfService }, { provide: AuthService, useValue: authService }],
     }).compileComponents();
 
     TestBed.createComponent(App);
@@ -30,10 +28,7 @@ describe('App bootstrap', () => {
 
     await TestBed.configureTestingModule({
       imports: [App],
-      providers: [
-        { provide: CsrfService, useValue: csrfService },
-        { provide: AuthService, useValue: authService },
-      ],
+      providers: [provideRouter([]), { provide: CsrfService, useValue: csrfService }, { provide: AuthService, useValue: authService }],
     }).compileComponents();
 
     const fixture = TestBed.createComponent(App);

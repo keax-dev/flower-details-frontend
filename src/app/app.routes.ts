@@ -48,6 +48,10 @@ export const routes: Routes = [
     path: 'home',
     loadChildren: () => import('@app/features/home/route/home.routes').then((module) => module.HOME_ROUTES),
   },
+  {
+    path: 'legal',
+    loadChildren: () => import('@features/legal/route/legal.routes').then((module) => module.LEGAL_ROUTES),
+  },
   { path: '', pathMatch: 'full', redirectTo: 'home' },
   { path: '**', redirectTo: 'home' },
 ];

@@ -120,7 +120,11 @@
               </div>
             </div>
 
-            <button [disabled]="isSubmitting()" class="w-100 mt-4" nz-button nzType="primary" type="submit">
+            <p class="register-page__legal-note mt-4 mb-0">
+              Antes de crear tu cuenta, consulta los <a routerLink="/legal/terms">Términos y condiciones</a> y la
+              <a routerLink="/legal/privacy">Política de privacidad</a>. Allí explicamos el servicio y el uso de tus datos.
+            </p>
+            <button [disabled]="isSubmitting()" class="w-100 mt-3" nz-button nzType="primary" type="submit">
               {{ isSubmitting() ? 'Creando cuenta...' : 'Crear cuenta' }}
             </button>
           </form>

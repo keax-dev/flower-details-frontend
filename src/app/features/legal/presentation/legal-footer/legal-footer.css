@@ -1,0 +1,33 @@
+.legal-footer {
+  border-top: 1px solid #d7e4d9;
+  background: #f4f8f5;
+  color: #274536;
+}
+
+.legal-footer__content {
+  max-width: 80rem;
+  margin-inline: auto;
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem 2rem;
+}
+
+.legal-footer__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.5rem;
+}
+
+.legal-footer a {
+  color: #14532d;
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
+.legal-footer a:focus-visible {
+  outline: 3px solid #14532d;
+  outline-offset: 3px;
+}
