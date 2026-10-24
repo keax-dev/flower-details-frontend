@@ -25,6 +25,31 @@ test('login page passes automated WCAG AA checks', async ({ page }) => {
   await expectWcagAa(page);
 });
 
+test('registration terms choice passes automated WCAG AA checks', async ({ page }) => {
+  await page.route('**/api/auth/csrf', (route) => route.fulfill({ json: { headerName: 'X-XSRF-TOKEN', token: 'test-token' } }));
+  await page.route('**/api/me', (route) => route.fulfill({ status: 401, json: { message: 'No autorizado' } }));
+  await page.goto('/auth/register');
+  await expect(page.getByLabel(/He leído y acepto los Términos/)).toBeVisible();
+  await expectWcagAa(page);
+});
+
+test('checkout terms choice passes automated WCAG AA checks', async ({ page }) => {
+  await page.route('**/api/auth/csrf', (route) => route.fulfill({ json: { headerName: 'X-XSRF-TOKEN', token: 'test-token' } }));
+  await page.route('**/api/me', (route) => route.fulfill({ json: CUSTOMER }));
+  await page.route('**/api/cart', (route) =>
+    route.fulfill({
+      json: {
+        id: 1,
+        items: [{ id: 1, product: { id: 1, title: 'Ramo', imageUrl: null, available: true }, quantity: 1, unitPrice: 25, subtotal: 25 }],
+        total: 25,
+      },
+    }),
+  );
+  await page.goto('/cart/checkout');
+  await expect(page.getByLabel(/He leído y acepto los Términos/)).toBeVisible();
+  await expectWcagAa(page);
+});
+
 test('customer profile passes automated WCAG AA checks', async ({ page }) => {
   await page.route('**/api/auth/csrf', (route) => route.fulfill({ json: { headerName: 'X-XSRF-TOKEN', token: 'test-token' } }));
   await page.route('**/api/me', (route) => route.fulfill({ json: CUSTOMER }));

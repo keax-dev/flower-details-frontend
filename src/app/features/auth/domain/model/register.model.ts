@@ -5,4 +5,6 @@ export interface RegisterRequest {
   password: string;
   phone: string;
   documentNumber: string;
+  termsAccepted: boolean;
+  termsVersion: string;
 }

@@ -27,6 +27,8 @@ describe('OrderApiService', () => {
       contactPhone: '0999999999',
       deliveryAddress: 'Calle Flores 123',
       additionalInstructions: null,
+      termsAccepted: true,
+      termsVersion: '2026-10-22',
     };
     service.create(payload).subscribe();
 

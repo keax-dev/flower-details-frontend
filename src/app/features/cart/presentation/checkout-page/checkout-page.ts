@@ -9,6 +9,7 @@ import { resolveApiErrorMessage } from '@core/http/utils/api-error';
 import { AuthService } from '@features/auth/application/auth.service';
 import { Cart } from '@features/cart/models/cart.model';
 import { CartApiService } from '@features/cart/services/cart-api.service';
+import { CURRENT_TERMS_VERSION } from '@features/legal/terms-version';
 import { CreateOrderRequest } from '@features/order/models/create-order-request.model';
 import { FulfillmentType } from '@features/order/models/fulfillment-type.model';
 import { OrderApiService } from '@features/order/services/order-api.service';
@@ -55,6 +56,7 @@ export class CheckoutPage {
       contactPhone: [this.user?.phone ?? '', [Validators.required, Validators.maxLength(30), notBlank]],
       deliveryAddress: ['', [Validators.maxLength(500)]],
       additionalInstructions: ['', [Validators.maxLength(1000)]],
+      termsAccepted: [false, [Validators.requiredTrue]],
     },
     { validators: deliveryAddressRequired },
   );
@@ -70,7 +72,7 @@ export class CheckoutPage {
     this.loadCart();
   }
 
-  protected hasError(name: 'contactName' | 'contactPhone' | 'deliveryAddress' | 'additionalInstructions'): boolean {
+  protected hasError(name: 'contactName' | 'contactPhone' | 'deliveryAddress' | 'additionalInstructions' | 'termsAccepted'): boolean {
     const control = this.checkoutForm.controls[name];
     return control.invalid && control.touched;
   }
@@ -95,6 +97,8 @@ export class CheckoutPage {
       contactPhone: value.contactPhone.trim(),
       deliveryAddress: value.fulfillmentType === 'DELIVERY' ? value.deliveryAddress.trim() : null,
       additionalInstructions: value.additionalInstructions.trim() || null,
+      termsAccepted: value.termsAccepted,
+      termsVersion: CURRENT_TERMS_VERSION,
     };
     this.errorMessage.set(null);
     this.isSubmitting.set(true);

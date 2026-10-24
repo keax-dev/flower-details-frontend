@@ -123,6 +123,20 @@
                     <a routerLink="/legal/privacy">Política de privacidad</a> antes de confirmar. El pago se realiza en efectivo o por transferencia
                     al entregar o retirar el pedido.
                   </p>
+                  <div class="form-check mb-3">
+                    <input
+                      [attr.aria-describedby]="hasError('termsAccepted') ? 'checkout-terms-error' : null"
+                      [attr.aria-invalid]="hasError('termsAccepted')"
+                      class="form-check-input"
+                      formControlName="termsAccepted"
+                      id="checkout-terms"
+                      type="checkbox"
+                    />
+                    <label class="form-check-label" for="checkout-terms">He leído y acepto los Términos y condiciones para este pedido *</label>
+                    @if (hasError('termsAccepted')) {
+                      <p class="checkout-page__validation" id="checkout-terms-error">Debes aceptar los términos para confirmar el pedido.</p>
+                    }
+                  </div>
                   <button [disabled]="isSubmitting()" class="btn btn-success" type="submit">
                     {{ isSubmitting() ? 'Confirmando...' : 'Confirmar pedido' }}
                   </button>

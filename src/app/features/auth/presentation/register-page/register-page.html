@@ -124,6 +124,20 @@
               Antes de crear tu cuenta, consulta los <a routerLink="/legal/terms">Términos y condiciones</a> y la
               <a routerLink="/legal/privacy">Política de privacidad</a>. Allí explicamos el servicio y el uso de tus datos.
             </p>
+            <div class="form-check mt-3">
+              <input
+                [attr.aria-describedby]="hasError('termsAccepted') ? 'register-terms-error' : null"
+                [attr.aria-invalid]="hasError('termsAccepted')"
+                class="form-check-input"
+                formControlName="termsAccepted"
+                id="register-terms"
+                type="checkbox"
+              />
+              <label class="form-check-label" for="register-terms">He leído y acepto los Términos y condiciones *</label>
+              @if (hasError('termsAccepted')) {
+                <p class="invalid-feedback d-block" id="register-terms-error">Debes aceptar los términos para crear la cuenta.</p>
+              }
+            </div>
             <button [disabled]="isSubmitting()" class="w-100 mt-3" nz-button nzType="primary" type="submit">
               {{ isSubmitting() ? 'Creando cuenta...' : 'Crear cuenta' }}
             </button>

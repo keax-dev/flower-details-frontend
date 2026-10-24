@@ -49,6 +49,8 @@ describe('AuthService', () => {
       password: 'Password123',
       phone: customer.phone,
       documentNumber: customer.documentNumber,
+      termsAccepted: true,
+      termsVersion: '2026-10-22',
     };
 
     authService.register(registration).subscribe();
@@ -124,7 +126,18 @@ describe('AuthService', () => {
     authService.restoreSession().subscribe((user) => restoredUsers.push(user));
     const restoreRequest = httpTestingController.expectOne('/api/me');
 
-    authService.register({ names: 'Ana', lastNames: 'Pérez', email: USER.email, password: 'Password123', phone: '', documentNumber: '' }).subscribe();
+    authService
+      .register({
+        names: 'Ana',
+        lastNames: 'Pérez',
+        email: USER.email,
+        password: 'Password123',
+        phone: '',
+        documentNumber: '',
+        termsAccepted: true,
+        termsVersion: '2026-10-22',
+      })
+      .subscribe();
     httpTestingController.expectOne('/api/auth/register').flush({ expiresInSeconds: 3600, user: customer });
     restoreRequest.flush(USER);
 

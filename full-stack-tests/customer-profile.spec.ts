@@ -11,6 +11,7 @@ test('registers and updates a customer through the real API', async ({ page }) =
   await page.getByLabel('Correo electrónico *').fill(email);
   await page.getByLabel('Contraseña *', { exact: true }).fill('Password123');
   await page.getByLabel('Confirmar contraseña *').fill('Password123');
+  await page.getByLabel(/He leído y acepto los Términos/).check();
   const registerResponse = page.waitForResponse((response) => response.url().endsWith('/api/auth/register'));
   await page.getByRole('button', { name: 'Crear cuenta' }).click();
   expect((await registerResponse).status()).toBe(201);

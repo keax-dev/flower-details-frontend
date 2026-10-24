@@ -43,10 +43,22 @@ function fillValidForm(component: RegisterPage): void {
     confirmPassword: 'Password123',
     phone: ' 0999999999 ',
     documentNumber: '',
+    termsAccepted: true,
   });
 }
 
 describe('RegisterPage', () => {
+  it('requires an explicit terms choice before registration', async () => {
+    const { component, authService } = await createComponent();
+    fillValidForm(component);
+    component['registerForm'].controls.termsAccepted.setValue(false);
+
+    component['submit']();
+
+    expect(authService.register).not.toHaveBeenCalled();
+    expect(component['hasError']('termsAccepted')).toBe(true);
+  });
+
   it('rejects weak passwords and mismatched confirmation', async () => {
     const { component, authService } = await createComponent();
     fillValidForm(component);
@@ -74,6 +86,8 @@ describe('RegisterPage', () => {
       password: 'Password123',
       phone: '0999999999',
       documentNumber: '',
+      termsAccepted: true,
+      termsVersion: '2026-10-22',
     });
     expect(router.navigate).toHaveBeenCalledWith(['/home']);
   });

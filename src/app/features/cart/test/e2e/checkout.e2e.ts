@@ -65,6 +65,7 @@ test('a customer confirms a delivery order and can reopen its confirmation', asy
   await page.getByLabel('Indicaciones adicionales (opcional)').fill(' Tocar el timbre ');
 
   const createRequest = page.waitForRequest((request) => new URL(request.url()).pathname === '/api/orders' && request.method() === 'POST');
+  await page.getByLabel(/He leído y acepto los Términos/).check();
   await page.getByRole('button', { name: 'Confirmar pedido' }).click();
   expect((await createRequest).postDataJSON()).toEqual({
     fulfillmentType: 'DELIVERY',
@@ -72,6 +73,8 @@ test('a customer confirms a delivery order and can reopen its confirmation', asy
     contactPhone: CUSTOMER.phone,
     deliveryAddress: 'Calle Flores 123',
     additionalInstructions: 'Tocar el timbre',
+    termsAccepted: true,
+    termsVersion: '2026-10-22',
   });
   await expect(page).toHaveURL(/\/cart\/confirmation\/42$/);
   await expect(page.getByRole('heading', { name: 'Pedido confirmado' })).toBeVisible();
@@ -123,6 +126,9 @@ test('pickup confirmation does not send a delivery address', async ({ page }) =>
   await page.goto('/cart/checkout');
   await expect(page.getByLabel('Retiro en local')).toBeChecked();
   await expect(page.getByLabel('Dirección de entrega')).toHaveCount(0);
+  await page.getByRole('button', { name: 'Confirmar pedido' }).click();
+  await expect(page.getByText('Debes aceptar los términos para confirmar el pedido.')).toBeVisible();
+  await page.getByLabel(/He leído y acepto los Términos/).check();
   const createRequest = page.waitForRequest((request) => new URL(request.url()).pathname === '/api/orders' && request.method() === 'POST');
   await page.getByRole('button', { name: 'Confirmar pedido' }).click();
   expect((await createRequest).postDataJSON()).toEqual({
@@ -131,6 +137,8 @@ test('pickup confirmation does not send a delivery address', async ({ page }) =>
     contactPhone: CUSTOMER.phone,
     deliveryAddress: null,
     additionalInstructions: null,
+    termsAccepted: true,
+    termsVersion: '2026-10-22',
   });
   await expect(page.getByText('FD-43')).toBeVisible();
 });

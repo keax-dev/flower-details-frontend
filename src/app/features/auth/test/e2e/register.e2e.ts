@@ -18,6 +18,7 @@ async function fillRegistration(page: Page): Promise<void> {
   await page.getByLabel('Teléfono (opcional)').fill(CUSTOMER.phone);
   await page.getByLabel('Contraseña *', { exact: true }).fill('Password123');
   await page.getByLabel('Confirmar contraseña *').fill('Password123');
+  await page.getByLabel(/He leído y acepto los Términos/).check();
 }
 
 test('registers a customer and keeps the new session active', async ({ page }) => {
@@ -30,6 +31,8 @@ test('registers a customer and keeps the new session active', async ({ page }) =
       password: 'Password123',
       phone: CUSTOMER.phone,
       documentNumber: '',
+      termsAccepted: true,
+      termsVersion: '2026-10-22',
     });
     await route.fulfill({ status: 201, json: { expiresInSeconds: 3600, user: CUSTOMER } });
   });

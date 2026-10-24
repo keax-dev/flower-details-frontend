@@ -6,4 +6,6 @@ export interface CreateOrderRequest {
   contactPhone: string;
   deliveryAddress: string | null;
   additionalInstructions: string | null;
+  termsAccepted: boolean;
+  termsVersion: string;
 }

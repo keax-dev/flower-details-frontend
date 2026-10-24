@@ -9,6 +9,7 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 import { resolveApiErrorMessage } from '@core/http/utils/api-error';
 import { AuthService } from '@features/auth/application/auth.service';
 import { RegisterRequest } from '@features/auth/domain/model/register.model';
+import { CURRENT_TERMS_VERSION } from '@features/legal/terms-version';
 import { maxUtf8Bytes } from '@features/auth/presentation/validation/max-utf8-bytes.validator';
 import { strongPassword } from '@features/auth/presentation/validation/strong-password.validator';
 
@@ -44,6 +45,7 @@ export class RegisterPage {
       confirmPassword: ['', [Validators.required]],
       phone: ['', [Validators.maxLength(30)]],
       documentNumber: ['', [Validators.maxLength(30)]],
+      termsAccepted: [false, [Validators.requiredTrue]],
     },
     { validators: passwordsMatch },
   );
@@ -66,6 +68,8 @@ export class RegisterPage {
       password: value.password,
       phone: value.phone.trim(),
       documentNumber: value.documentNumber.trim(),
+      termsAccepted: value.termsAccepted,
+      termsVersion: CURRENT_TERMS_VERSION,
     };
 
     this.authService
