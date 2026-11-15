@@ -35,7 +35,7 @@
         } @else {
           <div class="row g-4">
             <section aria-labelledby="checkout-data-title" class="col-12 col-lg-7">
-              <div class="checkout-page__panel">
+              <div class="checkout-page__panel rounded-4 shadow-sm">
                 <h2 class="checkout-page__section-title mb-4" id="checkout-data-title">Datos del pedido</h2>
                 <form #checkoutFormElement (ngSubmit)="submit()" [formGroup]="checkoutForm" novalidate>
                   <fieldset class="mb-4">
@@ -145,7 +145,7 @@
             </section>
 
             <aside aria-labelledby="checkout-summary-title" class="col-12 col-lg-5">
-              <div class="checkout-page__panel checkout-page__summary">
+              <div class="checkout-page__panel checkout-page__summary rounded-4 shadow-sm">
                 <h2 class="checkout-page__section-title mb-3" id="checkout-summary-title">Resumen</h2>
                 @for (item of currentCart.items; track item.id) {
                   <div class="checkout-page__summary-item">

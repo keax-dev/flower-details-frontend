@@ -6,7 +6,7 @@
       <p class="customer-orders__intro mb-0">Consulta tus compras y sigue el estado de cada entrega.</p>
     </header>
 
-    <section aria-labelledby="customer-order-filters-title" class="customer-orders__filters mt-4">
+    <section aria-labelledby="customer-order-filters-title" class="customer-orders__filters mt-4 rounded-4">
       <h2 class="customer-orders__section-title mb-3" id="customer-order-filters-title">Buscar pedidos</h2>
       <form (ngSubmit)="applyFilters()" [formGroup]="filterForm" aria-label="Filtros de mis pedidos" role="search">
         <div class="row g-3 align-items-end">
@@ -91,7 +91,7 @@
       } @else {
         <div class="customer-orders__cards">
           @for (order of orders(); track order.id) {
-            <article class="customer-orders__card">
+            <article class="customer-orders__card rounded-4 shadow-sm">
               <div>
                 <p class="customer-orders__number mb-1">{{ order.orderNumber }}</p>
                 <p class="customer-orders__meta mb-2">

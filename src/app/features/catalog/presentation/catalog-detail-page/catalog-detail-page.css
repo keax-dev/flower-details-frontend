@@ -62,6 +62,7 @@
   width: 7.5rem;
   height: 5.625rem;
   overflow: hidden;
+  border-radius: var(--bs-border-radius);
   padding: 0;
   border: 2px solid transparent;
   background: #e8f1e9;

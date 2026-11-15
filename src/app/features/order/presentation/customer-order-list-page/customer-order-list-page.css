@@ -93,6 +93,7 @@
 .customer-orders__status {
   display: inline-block;
   padding: 0.3rem 0.7rem;
+  border-radius: var(--bs-border-radius-pill);
   background: #e8f1e9;
   color: #173427;
   font-weight: 700;

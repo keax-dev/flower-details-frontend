@@ -4,7 +4,7 @@
 
 .application-navigation {
   background-color: var(--color-primary);
-  border-bottom: 1px solid var(--color-primary-hover);
+  box-shadow: 0 0.375rem 1.25rem rgb(23 52 39 / 12%);
   color: var(--color-secondary);
 }
 
@@ -49,7 +49,7 @@
 
 .application-navigation__link {
   padding: 0.625rem 0.75rem;
-  border-radius: 0.25rem;
+  border-radius: var(--bs-border-radius-pill);
   font-size: 0.9375rem;
   font-weight: 500;
 }

@@ -14,7 +14,7 @@
 
 .home-page__eyebrow,
 .home-page__module-number {
-  color: var(--color-primary);
+  color: var(--color-primary-hover);
   font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.12em;
@@ -41,14 +41,21 @@
   line-height: 1.75;
 }
 
-.home-page__modules {
-  border-top: 1px solid #c8d7cc;
+.home-page__hero {
+  margin-inline: 0;
+  padding: clamp(2rem, 5vw, 5rem);
+  border: 1px solid #d9e9dc;
+  background: radial-gradient(circle at 95% 10%, rgb(211 235 216 / 80%), transparent 38%), linear-gradient(135deg, #f5fbf5, #ebf5ed);
 }
 
 .home-page__module {
-  min-height: 14rem;
-  padding: 2rem 0;
-  border-bottom: 1px solid #c8d7cc;
+  min-height: 12rem;
+}
+
+.home-page__module-inner {
+  padding: clamp(1.5rem, 3vw, 2rem);
+  border: 1px solid #e1ebe3;
+  background: #fff;
 }
 
 .home-page__module-title {
@@ -61,19 +68,8 @@
   color: #527060;
 }
 
-@media (min-width: 768px) {
-  .home-page__module {
-    padding: 2rem;
-    border-bottom: 0;
-    border-right: 1px solid #c8d7cc;
-  }
-
-  .home-page__module:first-child {
-    padding-left: 0;
-  }
-
-  .home-page__module:last-child {
-    border-right: 0;
-    padding-right: 0;
+@media (max-width: 575.98px) {
+  .home-page__hero {
+    padding: 2rem 1.25rem;
   }
 }

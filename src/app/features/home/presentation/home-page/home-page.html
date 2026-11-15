@@ -1,38 +1,46 @@
 <main class="home-page py-4 py-md-5">
   <div class="container-fluid home-page__container">
-    <section aria-labelledby="home-title" class="row">
+    <section aria-labelledby="home-title" class="row home-page__hero align-items-center g-4 rounded-5 shadow-sm">
       <div class="col-12 col-lg-9 col-xl-8">
         <p class="home-page__eyebrow mb-3">Gestión floral</p>
         <h1 id="home-title" class="home-page__title mb-4">Cada detalle, bien cuidado.</h1>
         <p class="home-page__description mb-0">Descubre arreglos florales para cada ocasión y encuentra el detalle perfecto.</p>
-        @if (!user()) {
-          <a class="mt-4 me-2" nz-button nzType="primary" routerLink="/catalog"> Explorar catálogo </a>
-          <a class="mt-4 me-2" nz-button nzType="primary" routerLink="/auth/register"> Crear cuenta </a>
-          <a class="mt-4" nz-button nzType="primary" routerLink="/auth/login"> Acceder al sistema </a>
-        } @else if (user()?.role === 'ADMIN') {
-          <a class="mt-4" nz-button nzType="primary" routerLink="/admin/categories"> Administrar catálogo </a>
-        } @else if (user()?.role === 'CUSTOMER') {
-          <a class="mt-4" nz-button nzType="primary" routerLink="/catalog"> Explorar catálogo </a>
-        }
+        <div class="d-flex flex-wrap gap-2 mt-4">
+          @if (!user()) {
+            <a class="btn btn-success rounded-pill px-4 py-2" routerLink="/catalog">Explorar catálogo</a>
+            <a class="btn btn-outline-success rounded-pill px-4 py-2" routerLink="/auth/register">Crear cuenta</a>
+            <a class="btn btn-outline-dark rounded-pill px-4 py-2" routerLink="/auth/login">Acceder al sistema</a>
+          } @else if (user()?.role === 'ADMIN') {
+            <a class="btn btn-success rounded-pill px-4 py-2" routerLink="/admin/categories">Administrar catálogo</a>
+          } @else if (user()?.role === 'CUSTOMER') {
+            <a class="btn btn-success rounded-pill px-4 py-2" routerLink="/catalog">Explorar catálogo</a>
+          }
+        </div>
       </div>
     </section>
 
-    <section aria-label="Módulos principales" class="home-page__modules mt-5">
-      <div class="row g-0">
+    <section aria-label="Módulos principales" class="home-page__modules mt-4 mt-md-5">
+      <div class="row g-3">
         <article class="col-12 col-md-4 home-page__module">
-          <span class="home-page__module-number">01</span>
-          <h2 class="home-page__module-title">Catálogo</h2>
-          <p class="home-page__module-description mb-0">Productos y arreglos florales.</p>
+          <div class="home-page__module-inner h-100 rounded-4 shadow-sm">
+            <span class="home-page__module-number">01</span>
+            <h2 class="home-page__module-title">Catálogo</h2>
+            <p class="home-page__module-description mb-0">Productos y arreglos florales.</p>
+          </div>
         </article>
         <article class="col-12 col-md-4 home-page__module">
-          <span class="home-page__module-number">02</span>
-          <h2 class="home-page__module-title">Pedidos</h2>
-          <p class="home-page__module-description mb-0">Seguimiento de cada entrega.</p>
+          <div class="home-page__module-inner h-100 rounded-4 shadow-sm">
+            <span class="home-page__module-number">02</span>
+            <h2 class="home-page__module-title">Pedidos</h2>
+            <p class="home-page__module-description mb-0">Seguimiento de cada entrega.</p>
+          </div>
         </article>
         <article class="col-12 col-md-4 home-page__module">
-          <span class="home-page__module-number">03</span>
-          <h2 class="home-page__module-title">Clientes</h2>
-          <p class="home-page__module-description mb-0">Historias que vuelven a florecer.</p>
+          <div class="home-page__module-inner h-100 rounded-4 shadow-sm">
+            <span class="home-page__module-number">03</span>
+            <h2 class="home-page__module-title">Clientes</h2>
+            <p class="home-page__module-description mb-0">Historias que vuelven a florecer.</p>
+          </div>
         </article>
       </div>
     </section>

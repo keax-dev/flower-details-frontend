@@ -1,12 +1,16 @@
 .legal-page {
   min-height: 60vh;
   padding: clamp(2rem, 5vw, 4rem) 1.5rem;
-  background: #ffffff;
+  background: var(--bs-body-bg);
 }
 
 .legal-page__content {
   max-width: 52rem;
   margin-inline: auto;
+  padding: clamp(1.5rem, 4vw, 3rem);
+  border: 1px solid #e0eae2;
+  background: #fff;
+  box-shadow: var(--surface-shadow);
 }
 
 .legal-page__eyebrow {

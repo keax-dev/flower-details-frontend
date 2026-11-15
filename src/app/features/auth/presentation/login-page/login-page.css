@@ -11,7 +11,7 @@
   align-items: center;
   min-height: 20rem;
   padding: 3rem clamp(1.5rem, 8vw, 9rem);
-  background-color: #e8f1e9;
+  background: radial-gradient(circle at 15% 85%, rgb(188 224 197 / 70%), transparent 42%), linear-gradient(155deg, #eff8f0, #dfeee2);
 }
 
 .login-page__brand-content,
@@ -110,12 +110,17 @@
   display: flex;
   align-items: center;
   padding: 3rem clamp(1.5rem, 5vw, 5rem);
-  background-color: var(--color-secondary);
+  background-color: var(--bs-body-bg);
 }
 
 .login-page__form-content {
   max-width: 28rem;
   margin: 0 auto;
+  padding: clamp(1.5rem, 3vw, 2.5rem);
+  border: 1px solid #e0eae2;
+  border-radius: var(--bs-border-radius-xl);
+  background: #fff;
+  box-shadow: var(--surface-shadow);
 }
 
 .login-page__back-link {
@@ -144,6 +149,8 @@
 
 .login-page__form input[nz-input] {
   width: 100%;
+  min-height: 2.75rem;
+  border-color: #cbdccf;
 }
 
 @media (min-width: 992px) {

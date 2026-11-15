@@ -6,7 +6,7 @@
       <p class="catalog-page__intro mb-0">Encuentra el arreglo ideal para cada ocasión.</p>
     </header>
 
-    <section aria-labelledby="catalog-filters-title" class="catalog-page__filters mt-4 mt-md-5">
+    <section aria-labelledby="catalog-filters-title" class="catalog-page__filters mt-4 mt-md-5 rounded-4">
       <h2 class="catalog-page__section-title mb-3" id="catalog-filters-title">Encuentra tu detalle</h2>
       @if (categoryError()) {
         <p class="catalog-page__notice" role="alert">
@@ -118,7 +118,7 @@
         <div class="row g-4">
           @for (product of products(); track product.id) {
             <div class="col-12 col-sm-6 col-xl-4">
-              <article class="catalog-page__card h-100">
+              <article class="catalog-page__card h-100 rounded-4 shadow-sm">
                 <div class="catalog-page__media">
                   @if (product.images[0]; as image) {
                     <img [alt]="product.title" [ngSrc]="image.url" class="catalog-page__image" height="360" width="480" />

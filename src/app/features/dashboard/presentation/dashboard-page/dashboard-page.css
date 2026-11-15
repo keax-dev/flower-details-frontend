@@ -5,7 +5,7 @@
   max-width: 1440px;
 }
 .dashboard-page__eyebrow {
-  color: var(--color-primary);
+  color: var(--color-primary-hover);
   font-size: 0.75rem;
   font-weight: 700;
   text-transform: uppercase;
@@ -22,9 +22,10 @@
 }
 
 .dashboard-page__filters {
-  border-bottom: 1px solid #dbe6de;
   margin-top: 1.5rem;
-  padding-bottom: 1.25rem;
+  padding: 1.25rem;
+  border: 1px solid #dbe6de;
+  background: #f1f7f2;
 }
 .dashboard-page__metric,
 .dashboard-page__section {

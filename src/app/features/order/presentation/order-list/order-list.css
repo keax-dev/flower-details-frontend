@@ -47,7 +47,7 @@
 }
 
 .order-list__status {
-  border-radius: 4px;
+  border-radius: var(--bs-border-radius-pill);
   display: inline-block;
   font-size: 0.75rem;
   font-weight: 700;

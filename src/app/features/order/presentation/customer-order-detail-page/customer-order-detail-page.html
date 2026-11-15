@@ -37,7 +37,7 @@
 
       <div class="row g-4 mt-1">
         <div class="col-12 col-lg-7">
-          <section aria-labelledby="customer-order-items-title" class="customer-order__panel">
+          <section aria-labelledby="customer-order-items-title" class="customer-order__panel rounded-4 shadow-sm">
             <h2 class="customer-order__section-title mb-3" id="customer-order-items-title">Productos</h2>
             @for (item of currentOrder.items; track item.id) {
               <div class="customer-order__item">
@@ -58,7 +58,7 @@
             </div>
           </section>
 
-          <section aria-labelledby="customer-order-contact-title" class="customer-order__panel mt-4">
+          <section aria-labelledby="customer-order-contact-title" class="customer-order__panel mt-4 rounded-4 shadow-sm">
             <h2 class="customer-order__section-title mb-3" id="customer-order-contact-title">Entrega y contacto</h2>
             <dl class="customer-order__details mb-0">
               <dt>Modalidad</dt>
@@ -82,7 +82,7 @@
         </div>
 
         <div class="col-12 col-lg-5">
-          <section aria-labelledby="customer-order-tracking-title" class="customer-order__panel customer-order__tracking">
+          <section aria-labelledby="customer-order-tracking-title" class="customer-order__panel customer-order__tracking rounded-4 shadow-sm">
             <h2 class="customer-order__section-title mb-3" id="customer-order-tracking-title">Seguimiento</h2>
             @if (isAuditLoading()) {
               <p role="status">Cargando movimientos...</p>
@@ -109,7 +109,7 @@
           </section>
 
           @if (currentOrder.status === 'GENERATED') {
-            <section aria-labelledby="customer-order-cancel-title" class="customer-order__panel mt-4">
+            <section aria-labelledby="customer-order-cancel-title" class="customer-order__panel mt-4 rounded-4 shadow-sm">
               <h2 class="customer-order__section-title mb-2" id="customer-order-cancel-title">Cancelar pedido</h2>
               <p class="customer-order__meta">Puedes cancelarlo antes de que cambie de estado.</p>
               @if (isCancellationOpen()) {

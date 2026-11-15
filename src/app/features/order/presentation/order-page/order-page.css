@@ -7,7 +7,7 @@
 }
 
 .order-page__eyebrow {
-  color: var(--color-primary);
+  color: var(--color-primary-hover);
   font-size: 0.8rem;
   font-weight: 700;
   letter-spacing: 0;

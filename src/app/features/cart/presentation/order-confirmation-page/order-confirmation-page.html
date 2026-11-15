@@ -18,7 +18,7 @@
 
       <div class="row g-4 mt-2">
         <section aria-labelledby="confirmation-details-title" class="col-12 col-lg-7">
-          <div class="confirmation-page__panel">
+          <div class="confirmation-page__panel rounded-4 shadow-sm">
             <h2 class="confirmation-page__section-title mb-3" id="confirmation-details-title">Datos de entrega</h2>
             <dl class="confirmation-page__details mb-0">
               <dt>Modalidad</dt>
@@ -38,7 +38,7 @@
         </section>
 
         <section aria-labelledby="confirmation-summary-title" class="col-12 col-lg-5">
-          <div class="confirmation-page__panel confirmation-page__summary">
+          <div class="confirmation-page__panel confirmation-page__summary rounded-4 shadow-sm">
             <h2 class="confirmation-page__section-title mb-3" id="confirmation-summary-title">Resumen del pedido</h2>
             @for (item of createdOrder.items; track item.id) {
               <div class="confirmation-page__item">

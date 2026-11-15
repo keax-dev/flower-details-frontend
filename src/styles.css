@@ -2,6 +2,15 @@
   --color-primary: #198754;
   --color-primary-hover: #146c43;
   --color-secondary: #ffffff;
+  --bs-body-bg: #f8fbf8;
+  --bs-body-color: #173427;
+  --bs-border-color: #dce8de;
+  --bs-border-radius: 0.75rem;
+  --bs-border-radius-sm: 0.5rem;
+  --bs-border-radius-lg: 1rem;
+  --bs-border-radius-xl: 1.5rem;
+  --bs-border-radius-xxl: 2rem;
+  --surface-shadow: 0 0.5rem 1.75rem rgb(23 52 39 / 6%);
   --ant-primary-color: var(--color-primary);
   --ant-primary-color-hover: var(--color-primary-hover);
   --ant-primary-color-active: var(--color-primary-hover);
@@ -33,13 +42,150 @@ html {
 
 body {
   min-width: 20rem;
-  background: var(--color-secondary);
+  background: var(--bs-body-bg);
   color: #173427;
 }
 
 button,
 input {
   font: inherit;
+}
+
+.btn,
+.form-control,
+.form-select,
+.input-group-text,
+.alert,
+.modal-content,
+.dropdown-menu,
+.page-link {
+  border-radius: var(--bs-border-radius);
+}
+
+.btn {
+  font-weight: 600;
+  transition:
+    background-color 180ms ease,
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease;
+}
+
+.btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.btn:focus-visible,
+.form-control:focus-visible,
+.form-select:focus-visible,
+button[nz-button]:focus-visible,
+a[nz-button]:focus-visible {
+  outline: 3px solid #0f5132;
+  outline-offset: 3px;
+}
+
+.form-control,
+.form-select {
+  min-height: 2.65rem;
+  border-color: #cbdccf;
+  background-color: #fff;
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 0.2rem rgb(25 135 84 / 16%);
+}
+
+.form-check-input {
+  border-radius: var(--bs-border-radius-sm);
+}
+
+button[nz-button],
+a[nz-button],
+.ant-btn,
+.ant-input,
+.ant-picker,
+.ant-modal-content,
+.ant-select:not(.ant-select-customize-input) .ant-select-selector {
+  border-radius: var(--bs-border-radius) !important;
+}
+
+:is(
+  .dashboard-page__metric,
+  .dashboard-page__section,
+  .catalog-page__filters,
+  .catalog-page__card,
+  .catalog-page__state,
+  .catalog-detail__state,
+  .catalog-detail__media,
+  .catalog-detail__thumbnail,
+  .cart-page__state,
+  .cart-page__item,
+  .cart-page__summary,
+  .checkout-page__state,
+  .checkout-page__panel,
+  .confirmation-page__state,
+  .confirmation-page__panel,
+  .profile-page__panel,
+  .customer-orders__filters,
+  .customer-orders__state,
+  .customer-orders__card,
+  .customer-order__state,
+  .customer-order__panel,
+  .product-list__filters,
+  .product-list__table-container,
+  .category-list__table-container,
+  .operator-list__table-container,
+  .customer-page__table-container,
+  .order-list__filters,
+  .order-list__table-container,
+  .order-detail-dialog__panel,
+  .product-image-dialog__card,
+  .legal-page__content
+) {
+  border-radius: var(--bs-border-radius-xl);
+}
+
+:is(
+  .dashboard-page__metric,
+  .dashboard-page__section,
+  .catalog-page__card,
+  .cart-page__item,
+  .cart-page__summary,
+  .checkout-page__panel,
+  .confirmation-page__panel,
+  .profile-page__panel,
+  .customer-orders__card,
+  .customer-order__panel,
+  .product-list__table-container,
+  .category-list__table-container,
+  .operator-list__table-container,
+  .customer-page__table-container,
+  .order-list__table-container
+) {
+  box-shadow: var(--surface-shadow);
+}
+
+:is(
+  .dashboard-page__metric,
+  .dashboard-page__section,
+  .catalog-page__card,
+  .product-list__table-container,
+  .category-list__table-container,
+  .operator-list__table-container,
+  .customer-page__table-container
+) {
+  background-color: #fff;
+}
+
+.catalog-page__card {
+  overflow: hidden;
+}
+
+:is(.product-list__table-container, .category-list__table-container, .operator-list__table-container, .customer-page__table-container) {
+  overflow-x: auto;
+  overflow-y: hidden;
 }
 
 .ant-modal .ant-btn:not(.ant-btn-primary) {
@@ -57,13 +203,13 @@ input {
 
 quill-editor .ql-toolbar.ql-snow {
   border-color: #c8d7cc;
-  border-radius: 0.25rem 0.25rem 0 0;
+  border-radius: var(--bs-border-radius) var(--bs-border-radius) 0 0;
 }
 
 quill-editor .ql-container.ql-snow {
   min-height: 10rem;
   border-color: #c8d7cc;
-  border-radius: 0 0 0.25rem 0.25rem;
+  border-radius: 0 0 var(--bs-border-radius) var(--bs-border-radius);
   font: inherit;
 }
 
@@ -112,6 +258,14 @@ quill-editor.is-invalid .ql-container.ql-snow {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .btn {
+    transition: none;
+  }
+
+  .btn:hover:not(:disabled) {
+    transform: none;
+  }
+
   .invalid-feedback,
   .form-validation-message {
     animation: none;
