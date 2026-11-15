@@ -1,10 +1,9 @@
 import { Component, DestroyRef, inject } from '@angular/core';
-import { catchError, EMPTY, switchMap } from 'rxjs';
+import { catchError, EMPTY } from 'rxjs';
 import { ApplicationNavigation } from '@layout/application-navigation/application-navigation';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RouterOutlet } from '@angular/router';
 import { AuthService } from '@features/auth/application/auth.service';
-import { CsrfService } from '@core/http/security/csrf.service';
 import { LegalFooter } from '@features/legal/presentation/legal-footer/legal-footer';
 
 @Component({
@@ -17,15 +16,13 @@ import { LegalFooter } from '@features/legal/presentation/legal-footer/legal-foo
   `,
 })
 export class App {
-  private readonly csrfService = inject(CsrfService);
   private readonly authService = inject(AuthService);
   private readonly destroyRef = inject(DestroyRef);
 
   constructor() {
-    this.csrfService
-      .initialize()
+    this.authService
+      .restoreSession()
       .pipe(
-        switchMap(() => this.authService.restoreSession()),
         catchError(() => EMPTY),
         takeUntilDestroyed(this.destroyRef),
       )

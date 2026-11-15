@@ -1,39 +1,35 @@
 import { TestBed } from '@angular/core/testing';
 import { AuthService } from '@features/auth/application/auth.service';
-import { CsrfService } from '@core/http/security/csrf.service';
-import { EMPTY, of, throwError } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import { provideRouter } from '@angular/router';
 
 import { App } from '../../app';
 
 describe('App bootstrap', () => {
-  it('initializes CSRF protection before restoring the session', async () => {
-    const csrfService = { initialize: vi.fn(() => of(undefined)) };
-    const authService = { restoreSession: vi.fn(() => EMPTY) };
+  it('restores the session when the application starts', async () => {
+    const authService = { restoreSession: vi.fn(() => of(null)) };
 
     await TestBed.configureTestingModule({
       imports: [App],
-      providers: [provideRouter([]), { provide: CsrfService, useValue: csrfService }, { provide: AuthService, useValue: authService }],
+      providers: [provideRouter([]), { provide: AuthService, useValue: authService }],
     }).compileComponents();
 
     TestBed.createComponent(App);
 
-    expect(csrfService.initialize).toHaveBeenCalledOnce();
     expect(authService.restoreSession).toHaveBeenCalledOnce();
   });
 
-  it('keeps the public shell available when initialization fails', async () => {
-    const csrfService = { initialize: vi.fn(() => throwError(() => new Error('Offline'))) };
-    const authService = { restoreSession: vi.fn(() => EMPTY) };
+  it('keeps the public shell available when session restoration fails', async () => {
+    const authService = { restoreSession: vi.fn(() => throwError(() => new Error('Offline'))) };
 
     await TestBed.configureTestingModule({
       imports: [App],
-      providers: [provideRouter([]), { provide: CsrfService, useValue: csrfService }, { provide: AuthService, useValue: authService }],
+      providers: [provideRouter([]), { provide: AuthService, useValue: authService }],
     }).compileComponents();
 
     const fixture = TestBed.createComponent(App);
 
     expect(fixture.componentInstance).toBeTruthy();
-    expect(authService.restoreSession).not.toHaveBeenCalled();
+    expect(authService.restoreSession).toHaveBeenCalledOnce();
   });
 });

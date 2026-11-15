@@ -1,4 +1,4 @@
-import { catchError, map, Observable, of, shareReplay, tap, throwError } from 'rxjs';
+import { catchError, Observable, shareReplay, tap, throwError } from 'rxjs';
 import { inject, Service } from '@angular/core';
 import { API_BASE_URL } from '@core/http/config/api.config';
 import { HttpClient } from '@angular/common/http';
@@ -14,13 +14,6 @@ export class CsrfService {
   private readonly httpClient = inject(HttpClient);
 
   private tokenRequest$?: Observable<CsrfTokenResponse>;
-
-  initialize(): Observable<void> {
-    return this.token().pipe(
-      map(() => undefined),
-      catchError(() => of(undefined)),
-    );
-  }
 
   token(): Observable<CsrfTokenResponse> {
     this.tokenRequest$ ??= this.httpClient.get<CsrfTokenResponse>(`${this.apiBaseUrl}/auth/csrf`).pipe(
