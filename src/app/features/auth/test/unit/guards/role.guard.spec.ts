@@ -72,6 +72,13 @@ describe('roleGuard', () => {
     expect(authService.restoreSession).toHaveBeenCalledOnce();
   });
 
+  it('redirects a restored user without permission to the home page', async () => {
+    const { result, router } = await executeGuard(null, { ...USER, role: 'CUSTOMER' });
+
+    expect(result).toEqual({ commands: ['/home'], extras: undefined });
+    expect(router.createUrlTree).toHaveBeenCalledWith(['/home']);
+  });
+
   it('redirects an anonymous user to login with the original URL', async () => {
     const { result, router } = await executeGuard(null);
 

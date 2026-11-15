@@ -16,11 +16,12 @@ export const roleGuard: CanActivateFn = (route: ActivatedRouteSnapshot, state: R
   }
 
   return authService.restoreSession().pipe(
-    map((restoredUser) =>
-      restoredUser !== null && hasAllowedRole(restoredUser.role, allowedRoles)
-        ? true
-        : router.createUrlTree(['/auth/login'], { queryParams: { returnUrl: state.url } }),
-    ),
+    map((restoredUser) => {
+      if (restoredUser === null) {
+        return router.createUrlTree(['/auth/login'], { queryParams: { returnUrl: state.url } });
+      }
+      return hasAllowedRole(restoredUser.role, allowedRoles) ? true : router.createUrlTree(['/home']);
+    }),
     catchError(() => of(router.createUrlTree(['/home']))),
   );
 };
