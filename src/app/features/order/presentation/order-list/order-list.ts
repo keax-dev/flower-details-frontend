@@ -1,7 +1,7 @@
 import { CurrencyPipe, DatePipe } from '@angular/common';
 import { Component, DestroyRef, computed, effect, inject, input, output, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { AbstractControl, NonNullableFormBuilder, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
+import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faArrowLeft, faArrowRight, faEye, faFilter, faRotateLeft } from '@fortawesome/free-solid-svg-icons';
 import { NzInputModule } from 'ng-zorro-antd/input';
@@ -16,16 +16,9 @@ import { OrderStatus } from '@features/order/models/order-status.model';
 import { Order } from '@features/order/models/order.model';
 import { OrderApiService } from '@features/order/services/order-api.service';
 import { PageResponse } from '@shared/domain/pagination/page-response.model';
+import { validateDateRange } from '@shared/validation/range-validators';
 
 const PAGE_SIZE = 10;
-
-function validateDateRange(control: AbstractControl): ValidationErrors | null {
-  const createdFrom: unknown = control.get('createdFrom')?.value;
-  const createdTo: unknown = control.get('createdTo')?.value;
-  return typeof createdFrom === 'string' && typeof createdTo === 'string' && createdFrom !== '' && createdTo !== '' && createdFrom > createdTo
-    ? { dateRange: true }
-    : null;
-}
 
 @Component({
   selector: 'app-order-list',

@@ -11,17 +11,12 @@ import { NotificationService } from '@core/notification/notification.service';
 import { PageResponse } from '@shared/domain/pagination/page-response.model';
 import { finalize, Subscription } from 'rxjs';
 import { NgOptimizedImage } from '@angular/common';
-import { AbstractControl, NonNullableFormBuilder, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
+import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Category } from '@app/features/category/models/category.model';
 import { CategoryApiService } from '@app/features/category/services/category-api.service';
+import { validatePriceRange } from '@shared/validation/range-validators';
 
 const PAGE_SIZE = 10;
-
-function validatePriceRange(control: AbstractControl): ValidationErrors | null {
-  const minPrice: unknown = control.get('minPrice')?.value;
-  const maxPrice: unknown = control.get('maxPrice')?.value;
-  return typeof minPrice === 'number' && typeof maxPrice === 'number' && minPrice > maxPrice ? { priceRange: true } : null;
-}
 
 @Component({
   selector: 'app-product-list',

@@ -1,7 +1,7 @@
 import { CurrencyPipe, NgOptimizedImage } from '@angular/common';
 import { Component, DestroyRef, computed, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { AbstractControl, NonNullableFormBuilder, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
+import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { finalize, Subscription } from 'rxjs';
 
@@ -11,14 +11,9 @@ import { CatalogFilters } from '@features/catalog/models/catalog-filters.model';
 import { CatalogApiService } from '@features/catalog/services/catalog-api.service';
 import { Product } from '@features/product/models/product.model';
 import { PageResponse } from '@shared/domain/pagination/page-response.model';
+import { validatePriceRange } from '@shared/validation/range-validators';
 
 const PAGE_SIZE = 12;
-
-function validatePriceRange(control: AbstractControl): ValidationErrors | null {
-  const minPrice: unknown = control.get('minPrice')?.value;
-  const maxPrice: unknown = control.get('maxPrice')?.value;
-  return typeof minPrice === 'number' && typeof maxPrice === 'number' && minPrice > maxPrice ? { priceRange: true } : null;
-}
 
 @Component({
   selector: 'app-catalog-page',

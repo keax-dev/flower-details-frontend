@@ -1,7 +1,7 @@
 import { CurrencyPipe, DatePipe } from '@angular/common';
 import { Component, DestroyRef, computed, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { AbstractControl, NonNullableFormBuilder, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
+import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { finalize, Subscription } from 'rxjs';
 
@@ -12,14 +12,9 @@ import { FULFILLMENT_TYPE_OPTIONS, fulfillmentTypeLabel, ORDER_STATUS_OPTIONS, o
 import { OrderStatus } from '@features/order/models/order-status.model';
 import { OrderApiService } from '@features/order/services/order-api.service';
 import { PageResponse } from '@shared/domain/pagination/page-response.model';
+import { validateDateRange } from '@shared/validation/range-validators';
 
 const PAGE_SIZE = 10;
-
-function validateDateRange(control: AbstractControl): ValidationErrors | null {
-  const from: unknown = control.get('createdFrom')?.value;
-  const to: unknown = control.get('createdTo')?.value;
-  return typeof from === 'string' && typeof to === 'string' && from !== '' && to !== '' && from > to ? { dateRange: true } : null;
-}
 
 @Component({
   selector: 'app-customer-order-list-page',
