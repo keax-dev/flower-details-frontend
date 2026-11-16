@@ -30,7 +30,7 @@
 .cart-page__section-title,
 .cart-page__item-title {
   color: #173427;
-  font-family: Georgia, 'Times New Roman', serif;
+  font-family: var(--font-family-sans);
 }
 
 .cart-page__title {
@@ -105,7 +105,7 @@
   height: 100%;
   place-items: center;
   color: #527060;
-  font-family: Georgia, 'Times New Roman', serif;
+  font-family: var(--font-family-sans);
   font-size: 0.9rem;
 }
 

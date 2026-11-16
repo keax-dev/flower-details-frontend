@@ -3,7 +3,7 @@ import { Component, DestroyRef, computed, effect, inject, input, output, signal 
 import { Product } from '@features/product/models/product.model';
 import { ProductManagementFilters } from '@features/product/models/product-management-filters.model';
 import { ProductApiService } from '@features/product/services/product-api.service';
-import { faArrowLeft, faArrowRight, faImages, faPen, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faArrowLeft, faArrowRight, faFilter, faImages, faPen, faRotateLeft, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 import { resolveApiErrorMessage } from '@core/http/utils/api-error';
@@ -48,7 +48,9 @@ export class ProductList {
   protected readonly isDeleting = signal(false);
   protected readonly faArrowLeft = faArrowLeft;
   protected readonly faArrowRight = faArrowRight;
+  protected readonly faFilter = faFilter;
   protected readonly faImages = faImages;
+  protected readonly faRotateLeft = faRotateLeft;
   protected readonly faTrash = faTrash;
   protected readonly faPen = faPen;
   protected readonly currentPage = computed(() => this.pageResponse()?.page ?? 0);

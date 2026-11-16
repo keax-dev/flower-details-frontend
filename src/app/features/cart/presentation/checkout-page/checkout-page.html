@@ -16,7 +16,9 @@
             <p class="mb-1">{{ message }}</p>
           }
           @if (!cart()) {
-            <button (click)="retry()" class="btn btn-outline-dark mt-2" type="button">Reintentar</button>
+            <button (click)="retry()" class="btn btn-outline-dark mt-2" type="button">
+              <fa-icon [icon]="faRotateRight" aria-hidden="true" /> Reintentar
+            </button>
           }
         </div>
       }
@@ -25,12 +27,12 @@
         @if (currentCart.items.length === 0) {
           <div class="checkout-page__state">
             <p>Tu carrito está vacío. Agrega un producto antes de confirmar un pedido.</p>
-            <a class="btn btn-success" routerLink="/catalog">Explorar productos</a>
+            <a class="btn btn-success" routerLink="/catalog"><fa-icon [icon]="faBagShopping" aria-hidden="true" /> Explorar productos</a>
           </div>
         } @else if (hasUnavailable()) {
           <div class="checkout-page__state" role="alert">
             <p>Hay productos no disponibles en tu carrito. Quítalos para continuar.</p>
-            <a class="btn btn-success" routerLink="/cart">Revisar carrito</a>
+            <a class="btn btn-success" routerLink="/cart"><fa-icon [icon]="faShoppingCart" aria-hidden="true" /> Revisar carrito</a>
           </div>
         } @else {
           <div class="row g-4">
@@ -138,6 +140,7 @@
                     }
                   </div>
                   <button [disabled]="isSubmitting()" class="btn btn-success" type="submit">
+                    <fa-icon [icon]="faCheck" aria-hidden="true" />
                     {{ isSubmitting() ? 'Confirmando...' : 'Confirmar pedido' }}
                   </button>
                 </form>

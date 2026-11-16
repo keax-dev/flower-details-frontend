@@ -1,6 +1,8 @@
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Component, DestroyRef, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { faRightToBracket } from '@fortawesome/free-solid-svg-icons';
 import { resolveApiErrorMessage } from '@core/http/utils/api-error';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NzButtonModule } from 'ng-zorro-antd/button';
@@ -11,11 +13,12 @@ import { finalize } from 'rxjs';
 
 @Component({
   selector: 'app-login-page',
-  imports: [NzButtonModule, NzInputModule, ReactiveFormsModule, RouterLink],
+  imports: [FontAwesomeModule, NzButtonModule, NzInputModule, ReactiveFormsModule, RouterLink],
   templateUrl: './login-page.html',
   styleUrl: './login-page.css',
 })
 export class LoginPage {
+  protected readonly faRightToBracket = faRightToBracket;
   private readonly activatedRoute = inject(ActivatedRoute);
   private readonly authService = inject(AuthService);
   private readonly formBuilder = inject(NonNullableFormBuilder);

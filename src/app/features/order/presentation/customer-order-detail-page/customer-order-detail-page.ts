@@ -3,6 +3,8 @@ import { Component, DestroyRef, ElementRef, computed, effect, inject, signal, vi
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, RouterLink } from '@angular/router';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { faBan, faRotateRight, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { finalize, Subscription } from 'rxjs';
 
 import { resolveApiErrorMessage } from '@core/http/utils/api-error';
@@ -13,11 +15,14 @@ import { OrderApiService } from '@features/order/services/order-api.service';
 
 @Component({
   selector: 'app-customer-order-detail-page',
-  imports: [CurrencyPipe, DatePipe, NgOptimizedImage, ReactiveFormsModule, RouterLink],
+  imports: [CurrencyPipe, DatePipe, FontAwesomeModule, NgOptimizedImage, ReactiveFormsModule, RouterLink],
   templateUrl: './customer-order-detail-page.html',
   styleUrl: './customer-order-detail-page.css',
 })
 export class CustomerOrderDetailPage {
+  protected readonly faBan = faBan;
+  protected readonly faRotateRight = faRotateRight;
+  protected readonly faXmark = faXmark;
   private readonly route = inject(ActivatedRoute);
   private readonly orderApi = inject(OrderApiService);
   private readonly destroyRef = inject(DestroyRef);

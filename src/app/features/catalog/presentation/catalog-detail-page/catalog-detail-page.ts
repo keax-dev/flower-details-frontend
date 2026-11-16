@@ -3,6 +3,8 @@ import { Component, DestroyRef, computed, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, RouterLink } from '@angular/router';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { faCartPlus, faRotateRight } from '@fortawesome/free-solid-svg-icons';
 import { finalize, Subscription } from 'rxjs';
 
 import { resolveApiErrorMessage } from '@core/http/utils/api-error';
@@ -13,11 +15,13 @@ import { Product } from '@features/product/models/product.model';
 
 @Component({
   selector: 'app-catalog-detail-page',
-  imports: [CurrencyPipe, NgOptimizedImage, ReactiveFormsModule, RouterLink],
+  imports: [CurrencyPipe, FontAwesomeModule, NgOptimizedImage, ReactiveFormsModule, RouterLink],
   templateUrl: './catalog-detail-page.html',
   styleUrl: './catalog-detail-page.css',
 })
 export class CatalogDetailPage {
+  protected readonly faCartPlus = faCartPlus;
+  protected readonly faRotateRight = faRotateRight;
   private readonly route = inject(ActivatedRoute);
   private readonly catalogApi = inject(CatalogApiService);
   private readonly cartApi = inject(CartApiService);

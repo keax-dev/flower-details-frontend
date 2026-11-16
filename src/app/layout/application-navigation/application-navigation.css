@@ -21,9 +21,11 @@
 }
 
 .application-navigation__brand {
-  display: inline-block;
+  display: inline-flex;
+  gap: 0.5rem;
+  align-items: center;
   padding: 1rem 0;
-  font-family: Georgia, 'Times New Roman', serif;
+  font-family: var(--font-family-sans);
   font-size: 1.25rem;
   font-weight: 600;
 }
@@ -48,6 +50,9 @@
 }
 
 .application-navigation__link {
+  display: inline-flex;
+  gap: 0.5rem;
+  align-items: center;
   padding: 0.625rem 0.75rem;
   border-radius: var(--bs-border-radius-pill);
   font-size: 0.9375rem;
@@ -87,6 +92,9 @@
 }
 
 .application-navigation__login {
+  display: inline-flex;
+  gap: 0.5rem;
+  align-items: center;
   border-color: var(--color-secondary);
   background-color: var(--color-secondary);
   color: var(--color-primary);

@@ -10,7 +10,9 @@
           <p>{{ message }}</p>
         }
         @if (canRetry()) {
-          <button (click)="retry()" class="btn btn-outline-dark" type="button">Reintentar</button>
+          <button (click)="retry()" class="btn btn-outline-dark" type="button">
+            <fa-icon [icon]="faRotateRight" aria-hidden="true" /> Reintentar
+          </button>
         }
       </div>
     } @else if (order(); as currentOrder) {
@@ -31,7 +33,9 @@
           @for (message of errorMessages(); track message) {
             <p class="mb-1">{{ message }}</p>
           }
-          <button (click)="retry()" class="btn btn-outline-dark mt-2" type="button">Actualizar pedido</button>
+          <button (click)="retry()" class="btn btn-outline-dark mt-2" type="button">
+            <fa-icon [icon]="faRotateRight" aria-hidden="true" /> Actualizar pedido
+          </button>
         </div>
       }
 
@@ -91,7 +95,9 @@
             } @else if (auditError()) {
               <div role="alert">
                 <p>No fue posible cargar el seguimiento.</p>
-                <button (click)="retryAudit()" class="btn btn-outline-dark" type="button">Reintentar</button>
+                <button (click)="retryAudit()" class="btn btn-outline-dark" type="button">
+                  <fa-icon [icon]="faRotateRight" aria-hidden="true" /> Reintentar
+                </button>
               </div>
             } @else {
               <ol class="customer-order__timeline mb-0">
@@ -132,15 +138,19 @@
                   }
                   <div class="d-flex flex-wrap gap-2 mt-3">
                     <button [disabled]="isCancelling()" class="btn btn-outline-danger" type="submit">
+                      <fa-icon [icon]="faBan" aria-hidden="true" />
                       {{ isCancelling() ? 'Cancelando...' : 'Confirmar cancelación' }}
                     </button>
                     <button (click)="closeCancellation()" [disabled]="isCancelling()" class="btn btn-outline-dark" type="button">
+                      <fa-icon [icon]="faXmark" aria-hidden="true" />
                       Conservar pedido
                     </button>
                   </div>
                 </form>
               } @else {
-                <button (click)="openCancellation()" class="btn btn-outline-danger" type="button">Solicitar cancelación</button>
+                <button (click)="openCancellation()" class="btn btn-outline-danger" type="button">
+                  <fa-icon [icon]="faBan" aria-hidden="true" /> Solicitar cancelación
+                </button>
               }
             </section>
           }

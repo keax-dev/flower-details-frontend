@@ -28,7 +28,7 @@
 .customer-page__title,
 .customer-page__list-title {
   color: #173427;
-  font-family: Georgia, 'Times New Roman', serif;
+  font-family: var(--font-family-sans);
   font-weight: 600;
 }
 

@@ -16,7 +16,9 @@
           @for (message of errorMessages(); track message) {
             <p class="mb-1">{{ message }}</p>
           }
-          <button (click)="retry()" class="btn btn-outline-dark mt-2" type="button">Recargar carrito</button>
+          <button (click)="retry()" class="btn btn-outline-dark mt-2" type="button">
+            <fa-icon [icon]="faRotateRight" aria-hidden="true" /> Recargar carrito
+          </button>
         </div>
       }
 
@@ -24,7 +26,7 @@
         @if (currentCart.items.length === 0) {
           <div class="cart-page__state mt-4">
             <p>Tu carrito está vacío.</p>
-            <a class="btn btn-success" routerLink="/catalog">Explorar productos</a>
+            <a class="btn btn-success" routerLink="/catalog"><fa-icon [icon]="faBagShopping" aria-hidden="true" /> Explorar productos</a>
           </div>
         } @else {
           <div class="row g-4 mt-1">
@@ -64,9 +66,12 @@
                           step="1"
                           type="number"
                         />
-                        <button [disabled]="isMutating()" class="btn btn-outline-dark" type="submit">Actualizar</button>
+                        <button [disabled]="isMutating()" class="btn btn-outline-dark" type="submit">
+                          <fa-icon [icon]="faRotateRight" aria-hidden="true" /> Actualizar
+                        </button>
                       </form>
                       <button (click)="remove(item.id)" [disabled]="isMutating()" class="cart-page__remove" type="button">
+                        <fa-icon [icon]="faTrash" aria-hidden="true" />
                         {{ busyItemId() === item.id ? 'Actualizando...' : 'Quitar producto' }}
                       </button>
                     </div>
@@ -87,11 +92,16 @@
                 @if (hasUnavailable()) {
                   <p class="cart-page__unavailable">Quita los productos no disponibles para continuar.</p>
                 } @else if (isMutating()) {
-                  <button class="btn btn-success w-100 mb-2" disabled type="button">Confirmar pedido</button>
+                  <button class="btn btn-success w-100 mb-2" disabled type="button">
+                    <fa-icon [icon]="faArrowRight" aria-hidden="true" /> Confirmar pedido
+                  </button>
                 } @else {
-                  <a class="btn btn-success w-100 mb-2" routerLink="/cart/checkout">Confirmar pedido</a>
+                  <a class="btn btn-success w-100 mb-2" routerLink="/cart/checkout"
+                    ><fa-icon [icon]="faArrowRight" aria-hidden="true" /> Confirmar pedido</a
+                  >
                 }
                 <button (click)="clear()" [disabled]="isMutating()" class="btn btn-outline-danger w-100" type="button">
+                  <fa-icon [icon]="faTrash" aria-hidden="true" />
                   {{ isMutating() && busyItemId() === null ? 'Vaciando carrito...' : 'Vaciar carrito' }}
                 </button>
               </div>

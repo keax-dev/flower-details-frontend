@@ -29,7 +29,7 @@
 .checkout-page__title,
 .checkout-page__section-title {
   color: #173427;
-  font-family: Georgia, 'Times New Roman', serif;
+  font-family: var(--font-family-sans);
 }
 
 .checkout-page__title {

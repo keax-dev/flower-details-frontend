@@ -85,8 +85,12 @@
         </select>
       </div>
       <div class="col-12 d-flex flex-wrap gap-2">
-        <button [disabled]="isLoading()" class="btn btn-sm btn-success" type="submit">Aplicar filtros</button>
-        <button (click)="clearFilters()" [disabled]="isLoading()" class="btn btn-sm btn-outline-secondary" type="button">Limpiar filtros</button>
+        <button [disabled]="isLoading()" class="btn btn-sm btn-success" type="submit">
+          <fa-icon [icon]="faFilter" aria-hidden="true" /> Aplicar filtros
+        </button>
+        <button (click)="clearFilters()" [disabled]="isLoading()" class="btn btn-sm btn-outline-secondary" type="button">
+          <fa-icon [icon]="faRotateLeft" aria-hidden="true" /> Limpiar filtros
+        </button>
       </div>
     </div>
   </form>

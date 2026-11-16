@@ -34,7 +34,7 @@
 .customer-order__title,
 .customer-order__section-title {
   color: #173427;
-  font-family: Georgia, 'Times New Roman', serif;
+  font-family: var(--font-family-sans);
 }
 
 .customer-order__title {

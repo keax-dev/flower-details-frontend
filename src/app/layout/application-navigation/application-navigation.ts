@@ -2,36 +2,52 @@ import { NavigationEnd, Router, RouterLink, RouterLinkActive } from '@angular/ro
 import { Component, DestroyRef, computed, inject, signal } from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { filter, finalize, map } from 'rxjs';
-import { faBars, faRightFromBracket, faXmark } from '@fortawesome/free-solid-svg-icons';
+import type { IconDefinition } from '@fortawesome/fontawesome-svg-core';
+import {
+  faBars,
+  faBoxOpen,
+  faCartShopping,
+  faClipboardList,
+  faHouse,
+  faLeaf,
+  faRightFromBracket,
+  faRightToBracket,
+  faTags,
+  faUser,
+  faUsers,
+  faUsersGear,
+  faXmark,
+} from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { AuthService } from '@features/auth/application/auth.service';
 import { UserRole } from '@features/auth/domain/model/auth-user.model';
 
 interface NavigationItem {
+  icon: IconDefinition;
   label: string;
   route: string;
 }
 
 const NAVIGATION_BY_ROLE: Readonly<Record<UserRole, readonly NavigationItem[]>> = {
   ADMIN: [
-    { label: 'Inicio', route: '/dashboard' },
-    { label: 'Categorías', route: '/admin/categories' },
-    { label: 'Productos', route: '/admin/products' },
-    { label: 'Personal', route: '/admin/staff' },
-    { label: 'Clientes', route: '/admin/customers' },
-    { label: 'Pedidos', route: '/orders' },
+    { icon: faHouse, label: 'Inicio', route: '/dashboard' },
+    { icon: faTags, label: 'Categorías', route: '/admin/categories' },
+    { icon: faBoxOpen, label: 'Productos', route: '/admin/products' },
+    { icon: faUsersGear, label: 'Personal', route: '/admin/staff' },
+    { icon: faUsers, label: 'Clientes', route: '/admin/customers' },
+    { icon: faClipboardList, label: 'Pedidos', route: '/orders' },
   ],
   OPERATOR: [
-    { label: 'Inicio', route: '/home' },
-    { label: 'Pedidos', route: '/orders' },
+    { icon: faHouse, label: 'Inicio', route: '/home' },
+    { icon: faClipboardList, label: 'Pedidos', route: '/orders' },
   ],
   CUSTOMER: [
-    { label: 'Inicio', route: '/home' },
-    { label: 'Catálogo', route: '/catalog' },
-    { label: 'Carrito', route: '/cart' },
-    { label: 'Mis pedidos', route: '/my-orders' },
-    { label: 'Mi perfil', route: '/profile' },
+    { icon: faHouse, label: 'Inicio', route: '/home' },
+    { icon: faLeaf, label: 'Catálogo', route: '/catalog' },
+    { icon: faCartShopping, label: 'Carrito', route: '/cart' },
+    { icon: faClipboardList, label: 'Mis pedidos', route: '/my-orders' },
+    { icon: faUser, label: 'Mi perfil', route: '/profile' },
   ],
 };
 
@@ -43,7 +59,9 @@ const NAVIGATION_BY_ROLE: Readonly<Record<UserRole, readonly NavigationItem[]>> 
 })
 export class ApplicationNavigation {
   protected readonly faBars = faBars;
+  protected readonly faLeaf = faLeaf;
   protected readonly faRightFromBracket = faRightFromBracket;
+  protected readonly faRightToBracket = faRightToBracket;
   protected readonly faXmark = faXmark;
   private readonly authService = inject(AuthService);
   private readonly destroyRef = inject(DestroyRef);
@@ -66,8 +84,8 @@ export class ApplicationNavigation {
     const user = this.user();
     return user === null
       ? [
-          { label: 'Inicio', route: '/home' },
-          { label: 'Catálogo', route: '/catalog' },
+          { icon: faHouse, label: 'Inicio', route: '/home' },
+          { icon: faLeaf, label: 'Catálogo', route: '/catalog' },
         ]
       : NAVIGATION_BY_ROLE[user.role];
   });

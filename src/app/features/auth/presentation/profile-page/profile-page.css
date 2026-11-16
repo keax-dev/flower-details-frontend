@@ -29,7 +29,7 @@
 .profile-page__title,
 .profile-page__section-title {
   color: #173427;
-  font-family: Georgia, 'Times New Roman', serif;
+  font-family: var(--font-family-sans);
 }
 
 .profile-page__title {
@@ -45,7 +45,6 @@
 }
 
 .profile-page__panel {
-  max-width: 46rem;
   padding: clamp(1.25rem, 3vw, 2rem);
   border: 1px solid #c8d7cc;
   background: #fff;

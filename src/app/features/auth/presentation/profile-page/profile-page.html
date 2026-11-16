@@ -82,6 +82,7 @@
         </div>
 
         <button [disabled]="isSubmitting() || profileForm.pristine" class="mt-4" nz-button nzType="primary" type="submit">
+          <fa-icon [icon]="faFloppyDisk" aria-hidden="true" />
           {{ isSubmitting() ? 'Guardando...' : 'Guardar cambios' }}
         </button>
       </form>

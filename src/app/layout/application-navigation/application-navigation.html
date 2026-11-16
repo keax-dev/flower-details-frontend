@@ -3,7 +3,10 @@
     <div class="container-fluid application-navigation__container">
       <div class="row align-items-center g-0">
         <div class="col">
-          <a (click)="closeMenu()" class="application-navigation__brand" routerLink="/home"> Flower Details </a>
+          <a (click)="closeMenu()" class="application-navigation__brand" routerLink="/home">
+            <fa-icon [icon]="faLeaf" aria-hidden="true" />
+            Flower Details
+          </a>
         </div>
 
         <div class="col-auto d-xl-none">
@@ -31,6 +34,7 @@
                   class="application-navigation__link"
                   routerLinkActive="application-navigation__link--active"
                 >
+                  <fa-icon [icon]="item.icon" aria-hidden="true" />
                   {{ item.label }}
                 </a>
               }
@@ -52,7 +56,10 @@
                   <fa-icon [icon]="faRightFromBracket" aria-hidden="true" />
                 </button>
               } @else {
-                <a (click)="closeMenu()" class="application-navigation__login" nz-button routerLink="/auth/login"> Iniciar sesión </a>
+                <a (click)="closeMenu()" class="application-navigation__login" nz-button routerLink="/auth/login">
+                  <fa-icon [icon]="faRightToBracket" aria-hidden="true" />
+                  Iniciar sesión
+                </a>
               }
             </div>
           </div>

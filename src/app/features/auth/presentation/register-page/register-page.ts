@@ -2,6 +2,8 @@ import { Component, DestroyRef, ElementRef, inject, signal, viewChild } from '@a
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AbstractControl, NonNullableFormBuilder, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { faUserPlus } from '@fortawesome/free-solid-svg-icons';
 import { finalize } from 'rxjs';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzInputModule } from 'ng-zorro-antd/input';
@@ -23,11 +25,12 @@ function passwordsMatch(control: AbstractControl): ValidationErrors | null {
 
 @Component({
   selector: 'app-register-page',
-  imports: [NzButtonModule, NzInputModule, ReactiveFormsModule, RouterLink],
+  imports: [FontAwesomeModule, NzButtonModule, NzInputModule, ReactiveFormsModule, RouterLink],
   templateUrl: './register-page.html',
   styleUrls: ['../login-page/login-page.css', './register-page.css'],
 })
 export class RegisterPage {
+  protected readonly faUserPlus = faUserPlus;
   private readonly authService = inject(AuthService);
   private readonly formBuilder = inject(NonNullableFormBuilder);
   private readonly destroyRef = inject(DestroyRef);

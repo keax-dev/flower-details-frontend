@@ -3,6 +3,8 @@ import { Component, DestroyRef, computed, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { faArrowLeft, faArrowRight, faFilter, faRotateLeft, faRotateRight } from '@fortawesome/free-solid-svg-icons';
 import { finalize, Subscription } from 'rxjs';
 
 import { Category } from '@features/category/models/category.model';
@@ -17,11 +19,16 @@ const PAGE_SIZE = 12;
 
 @Component({
   selector: 'app-catalog-page',
-  imports: [CurrencyPipe, NgOptimizedImage, ReactiveFormsModule, RouterLink],
+  imports: [CurrencyPipe, FontAwesomeModule, NgOptimizedImage, ReactiveFormsModule, RouterLink],
   templateUrl: './catalog-page.html',
   styleUrl: './catalog-page.css',
 })
 export class CatalogPage {
+  protected readonly faArrowLeft = faArrowLeft;
+  protected readonly faArrowRight = faArrowRight;
+  protected readonly faFilter = faFilter;
+  protected readonly faRotateLeft = faRotateLeft;
+  protected readonly faRotateRight = faRotateRight;
   private readonly catalogApi = inject(CatalogApiService);
   private readonly categoryApi = inject(CategoryApiService);
   private readonly formBuilder = inject(NonNullableFormBuilder);

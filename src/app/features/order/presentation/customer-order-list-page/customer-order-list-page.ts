@@ -3,6 +3,8 @@ import { Component, DestroyRef, computed, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { faArrowLeft, faArrowRight, faBagShopping, faFilter, faRotateLeft, faRotateRight } from '@fortawesome/free-solid-svg-icons';
 import { finalize, Subscription } from 'rxjs';
 
 import { CustomerOrderQuery } from '@features/order/models/customer-order-query.model';
@@ -18,11 +20,17 @@ const PAGE_SIZE = 10;
 
 @Component({
   selector: 'app-customer-order-list-page',
-  imports: [CurrencyPipe, DatePipe, ReactiveFormsModule, RouterLink],
+  imports: [CurrencyPipe, DatePipe, FontAwesomeModule, ReactiveFormsModule, RouterLink],
   templateUrl: './customer-order-list-page.html',
   styleUrl: './customer-order-list-page.css',
 })
 export class CustomerOrderListPage {
+  protected readonly faArrowLeft = faArrowLeft;
+  protected readonly faArrowRight = faArrowRight;
+  protected readonly faBagShopping = faBagShopping;
+  protected readonly faFilter = faFilter;
+  protected readonly faRotateLeft = faRotateLeft;
+  protected readonly faRotateRight = faRotateRight;
   private readonly orderApi = inject(OrderApiService);
   private readonly formBuilder = inject(NonNullableFormBuilder);
   private readonly destroyRef = inject(DestroyRef);

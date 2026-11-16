@@ -3,6 +3,8 @@ import { Component, DestroyRef, ElementRef, computed, inject, signal, viewChild 
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { AbstractControl, NonNullableFormBuilder, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { faBagShopping, faCheck, faRotateRight, faShoppingCart } from '@fortawesome/free-solid-svg-icons';
 import { finalize } from 'rxjs';
 
 import { resolveApiErrorMessage } from '@core/http/utils/api-error';
@@ -26,11 +28,15 @@ function deliveryAddressRequired(control: AbstractControl): ValidationErrors | n
 
 @Component({
   selector: 'app-checkout-page',
-  imports: [CurrencyPipe, ReactiveFormsModule, RouterLink],
+  imports: [CurrencyPipe, FontAwesomeModule, ReactiveFormsModule, RouterLink],
   templateUrl: './checkout-page.html',
   styleUrl: './checkout-page.css',
 })
 export class CheckoutPage {
+  protected readonly faBagShopping = faBagShopping;
+  protected readonly faCheck = faCheck;
+  protected readonly faRotateRight = faRotateRight;
+  protected readonly faShoppingCart = faShoppingCart;
   private readonly authService = inject(AuthService);
   private readonly cartApi = inject(CartApiService);
   private readonly orderApi = inject(OrderApiService);

@@ -24,7 +24,7 @@
 .home-page__title,
 .home-page__module-title {
   color: #173427;
-  font-family: Georgia, 'Times New Roman', serif;
+  font-family: var(--font-family-sans);
 }
 
 .home-page__title {

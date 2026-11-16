@@ -16,7 +16,7 @@
         <nz-range-picker [(ngModel)]="period" [nzPlaceHolder]="['Desde', 'Hasta']" class="w-100" name="dashboardPeriod" nzFormat="yyyy-MM-dd" />
       </div>
       <div class="col-12 col-sm-4 col-md-auto">
-        <button class="btn btn-outline-dark w-100" type="submit">Aplicar</button>
+        <button class="btn btn-outline-dark w-100" type="submit"><fa-icon [icon]="faFilter" aria-hidden="true" /> Aplicar</button>
       </div>
     </form>
     @if (isLoading()) {

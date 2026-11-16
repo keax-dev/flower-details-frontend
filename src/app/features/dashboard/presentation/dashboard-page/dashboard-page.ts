@@ -4,7 +4,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faArrowRight, faCalendarDay, faChartLine, faClock, faXmark } from '@fortawesome/free-solid-svg-icons';
+import { faArrowRight, faCalendarDay, faChartLine, faClock, faFilter, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { finalize } from 'rxjs';
 import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 import { resolveApiErrorMessage } from '@core/http/utils/api-error';
@@ -32,6 +32,7 @@ export class DashboardPage {
   protected readonly faCalendarDay = faCalendarDay;
   protected readonly faChartLine = faChartLine;
   protected readonly faClock = faClock;
+  protected readonly faFilter = faFilter;
   protected readonly faXmark = faXmark;
   protected readonly orderStatusLabel = orderStatusLabel;
   protected readonly statuses: readonly OrderStatus[] = [

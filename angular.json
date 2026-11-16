@@ -26,6 +26,8 @@
               }
             ],
             "styles": [
+              "node_modules/@fontsource-variable/geist/wght.css",
+              "node_modules/@fontsource-variable/geist-mono/wght.css",
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "node_modules/ng-zorro-antd/ng-zorro-antd.variable.min.css",
               "node_modules/quill/dist/quill.snow.css",

@@ -2,6 +2,8 @@ import { CurrencyPipe, NgOptimizedImage } from '@angular/common';
 import { Component, DestroyRef, ElementRef, computed, inject, signal, viewChild } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RouterLink } from '@angular/router';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { faArrowRight, faBagShopping, faRotateRight, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { resolveApiErrorMessage } from '@core/http/utils/api-error';
 import { Cart, CartItem } from '@features/cart/models/cart.model';
 import { CartApiService } from '@features/cart/services/cart-api.service';
@@ -9,11 +11,15 @@ import { finalize, Observable, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-cart-page',
-  imports: [CurrencyPipe, NgOptimizedImage, RouterLink],
+  imports: [CurrencyPipe, FontAwesomeModule, NgOptimizedImage, RouterLink],
   templateUrl: './cart-page.html',
   styleUrl: './cart-page.css',
 })
 export class CartPage {
+  protected readonly faArrowRight = faArrowRight;
+  protected readonly faBagShopping = faBagShopping;
+  protected readonly faRotateRight = faRotateRight;
+  protected readonly faTrash = faTrash;
   private readonly cartApi = inject(CartApiService);
   private readonly destroyRef = inject(DestroyRef);
   private readonly heading = viewChild.required<ElementRef<HTMLHeadingElement>>('cartTitle');

@@ -2,6 +2,8 @@ import { Component, DestroyRef, ElementRef, inject, signal, viewChild } from '@a
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AbstractControl, NonNullableFormBuilder, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { finalize } from 'rxjs';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { faFloppyDisk } from '@fortawesome/free-solid-svg-icons';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzInputModule } from 'ng-zorro-antd/input';
 
@@ -11,11 +13,12 @@ import { UpdateProfileRequest } from '@features/auth/domain/model/update-profile
 
 @Component({
   selector: 'app-profile-page',
-  imports: [ReactiveFormsModule, NzButtonModule, NzInputModule],
+  imports: [FontAwesomeModule, ReactiveFormsModule, NzButtonModule, NzInputModule],
   templateUrl: './profile-page.html',
   styleUrl: './profile-page.css',
 })
 export class ProfilePage {
+  protected readonly faFloppyDisk = faFloppyDisk;
   private readonly authService = inject(AuthService);
   private readonly formBuilder = inject(NonNullableFormBuilder);
   private readonly destroyRef = inject(DestroyRef);

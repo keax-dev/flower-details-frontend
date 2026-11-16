@@ -85,7 +85,7 @@
 .login-page__brand-title,
 .login-page__form-title {
   color: #173427;
-  font-family: Georgia, 'Times New Roman', serif;
+  font-family: var(--font-family-sans);
   font-weight: 600;
 }
 

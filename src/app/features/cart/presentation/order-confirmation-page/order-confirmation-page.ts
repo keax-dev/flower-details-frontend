@@ -2,6 +2,8 @@ import { CurrencyPipe } from '@angular/common';
 import { Component, DestroyRef, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, RouterLink } from '@angular/router';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { faArrowLeft, faEye, faRotateRight } from '@fortawesome/free-solid-svg-icons';
 import { finalize, Subscription } from 'rxjs';
 
 import { Order } from '@features/order/models/order.model';
@@ -9,11 +11,14 @@ import { OrderApiService } from '@features/order/services/order-api.service';
 
 @Component({
   selector: 'app-order-confirmation-page',
-  imports: [CurrencyPipe, RouterLink],
+  imports: [CurrencyPipe, FontAwesomeModule, RouterLink],
   templateUrl: './order-confirmation-page.html',
   styleUrl: './order-confirmation-page.css',
 })
 export class OrderConfirmationPage {
+  protected readonly faArrowLeft = faArrowLeft;
+  protected readonly faEye = faEye;
+  protected readonly faRotateRight = faRotateRight;
   private readonly route = inject(ActivatedRoute);
   private readonly orderApi = inject(OrderApiService);
   private readonly destroyRef = inject(DestroyRef);

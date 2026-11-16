@@ -7,13 +7,23 @@
         <p class="home-page__description mb-0">Descubre arreglos florales para cada ocasión y encuentra el detalle perfecto.</p>
         <div class="d-flex flex-wrap gap-2 mt-4">
           @if (!user()) {
-            <a class="btn btn-success rounded-pill px-4 py-2" routerLink="/catalog">Explorar catálogo</a>
-            <a class="btn btn-outline-success rounded-pill px-4 py-2" routerLink="/auth/register">Crear cuenta</a>
-            <a class="btn btn-outline-dark rounded-pill px-4 py-2" routerLink="/auth/login">Acceder al sistema</a>
+            <a class="btn btn-success rounded-pill px-4 py-2" routerLink="/catalog"
+              ><fa-icon [icon]="faBagShopping" aria-hidden="true" /> Explorar catálogo</a
+            >
+            <a class="btn btn-outline-success rounded-pill px-4 py-2" routerLink="/auth/register"
+              ><fa-icon [icon]="faUserPlus" aria-hidden="true" /> Crear cuenta</a
+            >
+            <a class="btn btn-outline-dark rounded-pill px-4 py-2" routerLink="/auth/login"
+              ><fa-icon [icon]="faRightToBracket" aria-hidden="true" /> Acceder al sistema</a
+            >
           } @else if (user()?.role === 'ADMIN') {
-            <a class="btn btn-success rounded-pill px-4 py-2" routerLink="/admin/categories">Administrar catálogo</a>
+            <a class="btn btn-success rounded-pill px-4 py-2" routerLink="/admin/categories"
+              ><fa-icon [icon]="faWandMagicSparkles" aria-hidden="true" /> Administrar catálogo</a
+            >
           } @else if (user()?.role === 'CUSTOMER') {
-            <a class="btn btn-success rounded-pill px-4 py-2" routerLink="/catalog">Explorar catálogo</a>
+            <a class="btn btn-success rounded-pill px-4 py-2" routerLink="/catalog"
+              ><fa-icon [icon]="faBagShopping" aria-hidden="true" /> Explorar catálogo</a
+            >
           }
         </div>
       </div>
