@@ -79,6 +79,8 @@
 }
 
 .catalog-page__card {
+  display: flex;
+  flex-direction: column;
   overflow: hidden;
   border: 1px solid #d4e1d7;
   background: #fff;
@@ -107,6 +109,9 @@
 }
 
 .catalog-page__card-body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
   padding: 1.5rem;
 }
 
@@ -128,4 +133,41 @@
 .catalog-page__detail-link:hover,
 .catalog-page__detail-link:focus-visible {
   color: #0f5132;
+}
+
+.catalog-page__actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  align-items: stretch;
+  margin-top: auto;
+}
+
+.catalog-page__detail-link {
+  align-self: flex-start;
+}
+
+.catalog-page__purchase {
+  display: grid;
+  grid-template-columns: minmax(5.5rem, 0.7fr) minmax(0, 1.3fr);
+  gap: 0.75rem;
+  align-items: end;
+}
+
+.catalog-page__purchase .form-label {
+  margin-bottom: 0.35rem;
+}
+
+.catalog-page__purchase .invalid-feedback {
+  grid-column: 1 / -1;
+}
+
+@media (max-width: 360px) {
+  .catalog-page__purchase {
+    grid-template-columns: 1fr;
+  }
+
+  .catalog-page__purchase .invalid-feedback {
+    grid-column: auto;
+  }
 }

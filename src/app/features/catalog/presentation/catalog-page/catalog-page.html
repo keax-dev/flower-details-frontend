@@ -95,10 +95,10 @@
           </div>
           <div class="col-12 col-xl-auto d-flex flex-wrap gap-2">
             <button [disabled]="isLoading()" class="btn btn-success" type="submit">
-              <fa-icon [icon]="faFilter" aria-hidden="true" /> Aplicar filtros
+              <fa-icon [icon]="faFilter" aria-hidden="true" /> Aplicar
             </button>
             <button (click)="clearFilters()" [disabled]="isLoading()" class="btn btn-outline-dark" type="button">
-              <fa-icon [icon]="faRotateLeft" aria-hidden="true" /> Limpiar filtros
+              <fa-icon [icon]="faRotateLeft" aria-hidden="true" /> Limpiar
             </button>
           </div>
         </div>
@@ -138,7 +138,46 @@
                   <p class="catalog-page__category mb-2">{{ product.category.title }}</p>
                   <h3 class="catalog-page__product-title mb-2">{{ product.title }}</h3>
                   <p class="catalog-page__price mb-3">{{ product.price | currency: 'USD' }}</p>
-                  <a [routerLink]="['/catalog', product.id]" class="catalog-page__detail-link">Ver detalle de {{ product.title }}</a>
+                  <div class="catalog-page__actions">
+                    <a [routerLink]="['/catalog', product.id]" class="catalog-page__detail-link">Ver detalle de {{ product.title }}</a>
+                    @if (user()?.role === 'CUSTOMER') {
+                      <form (submit)="$event.preventDefault(); addToCart(product, quantityInput)" class="catalog-page__purchase" novalidate>
+                        <div>
+                          <label [for]="'catalog-quantity-' + product.id" class="form-label">Cantidad</label>
+                          <input
+                            #quantityInput
+                            (input)="clearQuantityError(product.id)"
+                            [attr.aria-describedby]="invalidQuantityProductIds().has(product.id) ? 'catalog-quantity-error-' + product.id : null"
+                            [attr.aria-invalid]="invalidQuantityProductIds().has(product.id)"
+                            [attr.aria-label]="'Cantidad para ' + product.title"
+                            [id]="'catalog-quantity-' + product.id"
+                            [readOnly]="addingProductIds().has(product.id)"
+                            class="form-control"
+                            max="100"
+                            min="1"
+                            required
+                            step="1"
+                            type="number"
+                            value="1"
+                          />
+                        </div>
+                        <button
+                          [attr.aria-label]="'Agregar ' + product.title + ' al carrito'"
+                          [disabled]="addingProductIds().has(product.id)"
+                          class="btn btn-success"
+                          type="submit"
+                        >
+                          <fa-icon [icon]="faCartPlus" aria-hidden="true" />
+                          {{ addingProductIds().has(product.id) ? 'Agregando...' : 'Agregar' }}
+                        </button>
+                        @if (invalidQuantityProductIds().has(product.id)) {
+                          <p [id]="'catalog-quantity-error-' + product.id" class="invalid-feedback d-block mb-0">
+                            Ingresa una cantidad entera entre 1 y 100.
+                          </p>
+                        }
+                      </form>
+                    }
+                  </div>
                 </div>
               </article>
             </div>

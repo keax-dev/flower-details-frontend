@@ -78,6 +78,47 @@ test('a visitor can filter the public catalog and view a product', async ({ page
   await expect(page.getByRole('link', { name: 'Volver al catálogo' })).toBeVisible();
 });
 
+test('a customer can add a product to the cart directly from the catalog', async ({ page }) => {
+  await page.route('**/api/auth/csrf', (route) => route.fulfill({ json: { headerName: 'X-XSRF-TOKEN', token: 'test-token' } }));
+  await page.route('**/api/me', (route) =>
+    route.fulfill({ json: { id: 3, personId: 4, names: 'Ana', lastNames: 'Pérez', email: 'ana@example.com', role: 'CUSTOMER' } }),
+  );
+  await page.route('**/api/categories?**', (route) => route.fulfill({ json: { items: [], page: 0, size: 100, totalElements: 0, totalPages: 0 } }));
+  await page.route('**/api/products?**', (route) =>
+    route.fulfill({ json: { items: [PRODUCT], page: 0, size: 12, totalElements: 1, totalPages: 1 } }),
+  );
+  await page.route('**/api/cart/items', (route) =>
+    route.fulfill({
+      status: 201,
+      json: {
+        id: 1,
+        items: [
+          {
+            id: 10,
+            product: { id: PRODUCT.id, title: PRODUCT.title, imageUrl: null, available: true },
+            quantity: 1,
+            unitPrice: PRODUCT.price,
+            subtotal: PRODUCT.price,
+          },
+        ],
+        total: PRODUCT.price,
+      },
+    }),
+  );
+
+  await page.goto('/catalog');
+  await page.getByLabel(`Cantidad para ${PRODUCT.title}`).fill('0');
+  await page.getByRole('button', { name: `Agregar ${PRODUCT.title} al carrito` }).click();
+  await expect(page.getByText('Ingresa una cantidad entera entre 1 y 100.')).toBeVisible();
+  await page.getByLabel(`Cantidad para ${PRODUCT.title}`).fill('3');
+  const addRequest = page.waitForRequest((request) => new URL(request.url()).pathname === '/api/cart/items' && request.method() === 'POST');
+  await page.getByRole('button', { name: `Agregar ${PRODUCT.title} al carrito` }).click();
+
+  expect((await addRequest).postDataJSON()).toEqual({ productId: PRODUCT.id, quantity: 3 });
+  await expect(page.getByText(`${PRODUCT.title} se agregó al carrito.`)).toBeVisible();
+  await expect(page).toHaveURL(/\/catalog$/);
+});
+
 test('displays product photos with varied aspect ratios without image warnings', async ({ page }) => {
   const imageWarnings: string[] = [];
   page.on('console', (message) => {
