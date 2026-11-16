@@ -79,11 +79,19 @@
   border-bottom: 1px solid #d4e1d7;
 }
 
-.customer-order__image,
+.customer-order__image-frame,
 .customer-order__placeholder {
   flex: 0 0 6rem;
   width: 6rem;
   height: 4.5rem;
+}
+
+.customer-order__image-frame {
+  position: relative;
+  overflow: hidden;
+}
+
+.customer-order__image {
   object-fit: cover;
 }
 

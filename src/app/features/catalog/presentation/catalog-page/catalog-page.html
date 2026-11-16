@@ -121,7 +121,7 @@
               <article class="catalog-page__card h-100 rounded-4 shadow-sm">
                 <div class="catalog-page__media">
                   @if (product.images[0]; as image) {
-                    <img [alt]="product.title" [ngSrc]="image.url" class="catalog-page__image" height="360" width="480" />
+                    <img [alt]="product.title" [ngSrc]="image.url" class="catalog-page__image" fill />
                   } @else {
                     <div aria-hidden="true" class="catalog-page__placeholder">Flower Details</div>
                   }

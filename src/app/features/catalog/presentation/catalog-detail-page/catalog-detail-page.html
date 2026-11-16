@@ -16,14 +16,7 @@
         <div class="col-12 col-lg-7">
           <div class="catalog-detail__media">
             @if (selectedImage(); as image) {
-              <img
-                [alt]="item.title + ', imagen ' + (selectedImageIndex() + 1)"
-                [ngSrc]="image.url"
-                class="catalog-detail__image"
-                height="720"
-                priority
-                width="960"
-              />
+              <img [alt]="item.title + ', imagen ' + (selectedImageIndex() + 1)" [ngSrc]="image.url" class="catalog-detail__image" fill priority />
             } @else {
               <div aria-hidden="true" class="catalog-detail__placeholder">Flower Details</div>
             }
@@ -38,7 +31,7 @@
                   class="catalog-detail__thumbnail"
                   type="button"
                 >
-                  <img [alt]="''" [ngSrc]="image.url" height="90" width="120" />
+                  <img [alt]="''" [ngSrc]="image.url" fill />
                 </button>
               }
             </div>

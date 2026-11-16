@@ -29,10 +29,15 @@
   padding: 0.75rem 0;
 }
 
-.order-detail-dialog__item-image,
+.order-detail-dialog__item-image-frame,
 .order-detail-dialog__item-image-placeholder {
   height: 4rem;
   width: 4rem;
+}
+
+.order-detail-dialog__item-image-frame {
+  position: relative;
+  overflow: hidden;
 }
 
 .order-detail-dialog__item-image {

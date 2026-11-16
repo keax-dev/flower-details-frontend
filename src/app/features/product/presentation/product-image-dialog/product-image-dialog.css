@@ -15,9 +15,12 @@
   font-weight: 600;
 }
 
-.product-image-dialog__image {
-  width: 100%;
+.product-image-dialog__media {
+  position: relative;
   aspect-ratio: 1;
+}
+
+.product-image-dialog__image {
   object-fit: cover;
 }
 

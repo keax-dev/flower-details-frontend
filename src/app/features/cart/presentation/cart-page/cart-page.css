@@ -85,6 +85,7 @@
 }
 
 .cart-page__media {
+  position: relative;
   width: 9rem;
   height: 7rem;
   overflow: hidden;

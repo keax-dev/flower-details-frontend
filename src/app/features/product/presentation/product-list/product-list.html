@@ -117,7 +117,9 @@
               <td>
                 <div class="d-flex align-items-center gap-3 product-list__product">
                   @if (product.images[0]; as image) {
-                    <img [alt]="product.title" [ngSrc]="image.url" class="product-list__image" height="48" width="48" />
+                    <span class="product-list__image-frame">
+                      <img [alt]="product.title" [ngSrc]="image.url" class="product-list__image" fill />
+                    </span>
                   } @else {
                     <div aria-hidden="true" class="product-list__image-placeholder">Sin foto</div>
                   }

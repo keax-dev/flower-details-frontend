@@ -42,7 +42,9 @@
             @for (item of currentOrder.items; track item.id) {
               <div class="customer-order__item">
                 @if (item.productImageUrl; as imageUrl) {
-                  <img [alt]="item.productTitle" [ngSrc]="imageUrl" class="customer-order__image" height="90" width="120" />
+                  <div class="customer-order__image-frame">
+                    <img [alt]="item.productTitle" [ngSrc]="imageUrl" class="customer-order__image" fill />
+                  </div>
                 } @else {
                   <div aria-hidden="true" class="customer-order__placeholder">Flower Details</div>
                 }

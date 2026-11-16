@@ -85,6 +85,7 @@
 }
 
 .catalog-page__media {
+  position: relative;
   aspect-ratio: 4 / 3;
   background: #e8f1e9;
 }

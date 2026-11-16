@@ -77,3 +77,31 @@ test('a visitor can filter the public catalog and view a product', async ({ page
   await expect(page.getByText('Doce rosas rojas')).toBeVisible();
   await expect(page.getByRole('link', { name: 'Volver al catálogo' })).toBeVisible();
 });
+
+test('displays product photos with varied aspect ratios without image warnings', async ({ page }) => {
+  const imageWarnings: string[] = [];
+  page.on('console', (message) => {
+    if (message.text().includes('NG02952')) imageWarnings.push(message.text());
+  });
+  const productWithImage = { ...PRODUCT, images: [{ id: 1, url: '/api/product-images/portrait.svg' }] };
+  await page.route('**/api/me', (route) => route.fulfill({ status: 401, json: {} }));
+  await page.route('**/api/categories?**', (route) => route.fulfill({ json: { items: [], page: 0, size: 100, totalElements: 0, totalPages: 0 } }));
+  await page.route('**/api/products?**', (route) =>
+    route.fulfill({ json: { items: [productWithImage], page: 0, size: 12, totalElements: 1, totalPages: 1 } }),
+  );
+  await page.route('**/api/products/1', (route) => route.fulfill({ json: productWithImage }));
+  await page.route('**/api/product-images/portrait.svg', (route) =>
+    route.fulfill({
+      contentType: 'image/svg+xml',
+      body: '<svg xmlns="http://www.w3.org/2000/svg" width="626" height="543"><rect width="626" height="543" fill="green"/></svg>',
+    }),
+  );
+
+  await page.goto('/catalog');
+  const cardImage = page.getByRole('img', { name: PRODUCT.title });
+  await expect.poll(() => cardImage.evaluate((image: HTMLImageElement) => image.naturalWidth)).toBe(626);
+  await page.getByRole('link', { name: `Ver detalle de ${PRODUCT.title}` }).click();
+  const detailImage = page.getByRole('img', { name: `${PRODUCT.title}, imagen 1` });
+  await expect.poll(() => detailImage.evaluate((image: HTMLImageElement) => image.naturalHeight)).toBe(543);
+  expect(imageWarnings).toEqual([]);
+});
