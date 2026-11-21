@@ -51,6 +51,8 @@ Install Playwright Chromium with `npx playwright install chromium` before runnin
 
 Mocked E2E tests start an isolated Angular server on port 14201 with an empty proxy configuration. They never reuse the development server. Set `FLOWER_DETAILS_BACKEND_DIR` to use a separate backend checkout for full-stack tests.
 
+CSRF uses the current server-issued `XSRF-TOKEN` cookie for each mutation. Only in-flight token requests are shared; completed token responses are not cached and the frontend does not rewrite the cookie. The backend preserves this cookie during normal JWT-authenticated requests and clears it at successful registration, login and logout. The catalog browser test checks three consecutive additions with cookie rotation. The full-stack test checks that consecutive saves preserve the cookie without additional CSRF requests, and that real server cookie replacement works while the same page stays open. A CSRF rejection allows one refresh/retry; authorization denials are never retried.
+
 ## Production security
 
 Publish only `dist/flower-details-frontend/browser`, using `npm run build`. Production disables source maps and Angular debugging and generates a hash-based CSP through `security.autoCsp`. TypeScript and template checks are strict. Do not publish the repository or use `ng serve` for production.

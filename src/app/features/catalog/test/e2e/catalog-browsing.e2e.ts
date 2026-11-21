@@ -79,7 +79,16 @@ test('a visitor can filter the public catalog and view a product', async ({ page
 });
 
 test('a customer can add a product to the cart directly from the catalog', async ({ page }) => {
-  await page.route('**/api/auth/csrf', (route) => route.fulfill({ json: { headerName: 'X-XSRF-TOKEN', token: 'test-token' } }));
+  let csrfToken = 'initial-cart-token';
+  let csrfRequests = 0;
+  const postStatuses: number[] = [];
+  await page.route('**/api/auth/csrf', (route) => {
+    csrfRequests++;
+    return route.fulfill({
+      headers: { 'Set-Cookie': `XSRF-TOKEN=${csrfToken}; Path=/; SameSite=Lax` },
+      json: { headerName: 'X-XSRF-TOKEN', token: csrfToken },
+    });
+  });
   await page.route('**/api/me', (route) =>
     route.fulfill({ json: { id: 3, personId: 4, names: 'Ana', lastNames: 'Pérez', email: 'ana@example.com', role: 'CUSTOMER' } }),
   );
@@ -87,9 +96,17 @@ test('a customer can add a product to the cart directly from the catalog', async
   await page.route('**/api/products?**', (route) =>
     route.fulfill({ json: { items: [PRODUCT], page: 0, size: 12, totalElements: 1, totalPages: 1 } }),
   );
-  await page.route('**/api/cart/items', (route) =>
-    route.fulfill({
+  await page.route('**/api/cart/items', (route) => {
+    if (route.request().headers()['x-xsrf-token'] !== csrfToken) {
+      postStatuses.push(403);
+      return route.fulfill({ status: 403, json: { code: 'CSRF_TOKEN_INVALID' } });
+    }
+    postStatuses.push(201);
+    // Model a server/another tab replacing the cookie between additions.
+    csrfToken = `rotated-cart-token-${postStatuses.length}`;
+    return route.fulfill({
       status: 201,
+      headers: { 'Set-Cookie': `XSRF-TOKEN=${csrfToken}; Path=/; SameSite=Lax` },
       json: {
         id: 1,
         items: [
@@ -103,8 +120,8 @@ test('a customer can add a product to the cart directly from the catalog', async
         ],
         total: PRODUCT.price,
       },
-    }),
-  );
+    });
+  });
 
   await page.goto('/catalog');
   await page.getByLabel(`Cantidad para ${PRODUCT.title}`).fill('0');
@@ -117,6 +134,15 @@ test('a customer can add a product to the cart directly from the catalog', async
   expect((await addRequest).postDataJSON()).toEqual({ productId: PRODUCT.id, quantity: 3 });
   await expect(page.getByText(`${PRODUCT.title} se agregó al carrito.`)).toBeVisible();
   await expect(page).toHaveURL(/\/catalog$/);
+
+  for (let attempt = 0; attempt < 2; attempt++) {
+    const response = page.waitForResponse((response) => new URL(response.url()).pathname === '/api/cart/items');
+    await page.getByRole('button', { name: `Agregar ${PRODUCT.title} al carrito` }).click();
+    expect((await response).status()).toBe(201);
+    await expect(page.getByRole('button', { name: `Agregar ${PRODUCT.title} al carrito` })).toBeEnabled();
+  }
+  expect(postStatuses).toEqual([201, 201, 201]);
+  expect(csrfRequests).toBe(1);
 });
 
 test('displays product photos with varied aspect ratios without image warnings', async ({ page }) => {

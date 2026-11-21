@@ -1,7 +1,7 @@
-import { catchError, map, Observable, shareReplay, tap, throwError } from 'rxjs';
+import { finalize, map, Observable, of, shareReplay } from 'rxjs';
 import { inject, Service } from '@angular/core';
 import { API_BASE_URL } from '@core/http/config/api.config';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpXsrfTokenExtractor } from '@angular/common/http';
 
 interface CsrfTokenResponse {
   headerName: string;
@@ -12,10 +12,23 @@ interface CsrfTokenResponse {
 export class CsrfService {
   private readonly apiBaseUrl = inject(API_BASE_URL);
   private readonly httpClient = inject(HttpClient);
+  private readonly tokenExtractor = inject(HttpXsrfTokenExtractor);
 
+  // Share only in-flight requests; completed responses can outlive the server cookie.
   private tokenRequest$?: Observable<CsrfTokenResponse>;
 
   token(): Observable<CsrfTokenResponse> {
+    if (this.tokenRequest$) return this.tokenRequest$;
+
+    const token = this.tokenExtractor.getToken();
+    return token !== null && isValidToken(token) ? of({ headerName: 'X-XSRF-TOKEN', token }) : this.fetchToken();
+  }
+
+  refreshToken(): Observable<CsrfTokenResponse> {
+    return this.fetchToken();
+  }
+
+  private fetchToken(): Observable<CsrfTokenResponse> {
     this.tokenRequest$ ??= this.httpClient.get<unknown>(`${this.apiBaseUrl}/auth/csrf`).pipe(
       map((response) => {
         if (
@@ -25,33 +38,19 @@ export class CsrfService {
           response.headerName !== 'X-XSRF-TOKEN' ||
           !('token' in response) ||
           typeof response.token !== 'string' ||
-          !/^[A-Za-z0-9_+=/-]{1,256}$/.test(response.token)
+          !isValidToken(response.token)
         )
           throw new Error('Respuesta CSRF invalida');
         return { headerName: response.headerName, token: response.token };
       }),
-      catchError((error: unknown) => {
-        this.tokenRequest$ = undefined;
-        return throwError(() => error);
-      }),
-      tap(({ token }) => this.storeCsrfCookie(token)),
+      finalize(() => (this.tokenRequest$ = undefined)),
       shareReplay({ bufferSize: 1, refCount: false }),
     );
 
     return this.tokenRequest$;
   }
+}
 
-  refreshToken(): Observable<CsrfTokenResponse> {
-    this.tokenRequest$ = undefined;
-    return this.token();
-  }
-
-  storeCsrfCookie(token: string): void {
-    if (typeof document === 'undefined') {
-      return;
-    }
-
-    const secure = globalThis.location?.protocol === 'https:' ? '; Secure' : '';
-    document.cookie = `XSRF-TOKEN=${encodeURIComponent(token)}; Path=/; SameSite=Lax${secure}`;
-  }
+function isValidToken(token: string): boolean {
+  return /^[A-Za-z0-9_+=/-]{1,256}$/.test(token);
 }

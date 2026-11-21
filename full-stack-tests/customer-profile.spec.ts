@@ -31,6 +31,40 @@ test('registers and updates a customer through the real API', async ({ page }) =
   expect((await updateResponse).status()).toBe(200);
   await expect(page.getByRole('status')).toHaveText('Tus datos se guardaron correctamente.');
 
+  const csrfBeforeConsecutiveUpdates = (await page.context().cookies()).find((cookie) => cookie.name === 'XSRF-TOKEN');
+  expect(csrfBeforeConsecutiveUpdates).toBeDefined();
+  const automaticCsrfRequests: string[] = [];
+  page.on('request', (request) => {
+    if (request.url().endsWith('/api/auth/csrf')) automaticCsrfRequests.push(request.url());
+  });
+  for (const names of ['Estela', 'Lucía']) {
+    await page.getByLabel('Nombres *').fill(names);
+    const response = page.waitForResponse((response) => response.url().endsWith('/api/me') && response.request().method() === 'PUT');
+    await page.getByRole('button', { name: 'Guardar cambios' }).click();
+    expect((await response).status()).toBe(200);
+    await expect(page.locator('.application-navigation__user')).toHaveText(names);
+  }
+  expect(automaticCsrfRequests).toEqual([]);
+  expect((await page.context().cookies()).find((cookie) => cookie.name === 'XSRF-TOKEN')?.value).toBe(csrfBeforeConsecutiveUpdates?.value);
+
+  const consecutiveUpdateStatuses: number[] = [];
+  page.on('response', (response) => {
+    if (response.url().endsWith('/api/me') && response.request().method() === 'PUT') {
+      consecutiveUpdateStatuses.push(response.status());
+    }
+  });
+  for (const names of ['Rosa', 'Lucía']) {
+    // A different tab/session transition can replace the server cookie while this SPA stays open.
+    await page.context().clearCookies({ name: 'XSRF-TOKEN' });
+    expect((await page.request.get('/api/auth/csrf')).status()).toBe(200);
+    await page.getByLabel('Nombres *').fill(names);
+    const response = page.waitForResponse((response) => response.url().endsWith('/api/me') && response.request().method() === 'PUT');
+    await page.getByRole('button', { name: 'Guardar cambios' }).click();
+    expect((await response).status()).toBe(200);
+    await expect(page.locator('.application-navigation__user')).toHaveText(names);
+  }
+  expect(consecutiveUpdateStatuses).toEqual([200, 200]);
+
   await page.reload();
   await expect(page.getByLabel('Nombres *')).toHaveValue('Lucía');
   await expect(page.getByLabel('Correo electrónico *')).toHaveValue(updatedEmail);
