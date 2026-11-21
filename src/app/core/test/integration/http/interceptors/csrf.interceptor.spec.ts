@@ -26,12 +26,26 @@ describe('csrfInterceptor', () => {
     request.flush({});
   });
 
-  it('does not require a token to authenticate', () => {
+  it('requires a CSRF token to authenticate', () => {
     httpClient.post('/api/auth/login', {}).subscribe();
 
-    const request = httpTestingController.expectOne('/api/auth/login');
-    expect(request.request.headers.has('X-XSRF-TOKEN')).toBe(false);
-    request.flush({});
+    const csrfRequest = httpTestingController.expectOne('/api/auth/csrf');
+    csrfRequest.flush({ headerName: 'X-XSRF-TOKEN', token: 'login-token' });
+
+    const loginRequest = httpTestingController.expectOne('/api/auth/login');
+    expect(loginRequest.request.headers.get('X-XSRF-TOKEN')).toBe('login-token');
+    loginRequest.flush({});
+  });
+
+  it('requires a CSRF token to register an account', () => {
+    httpClient.post('/api/auth/register', {}).subscribe();
+
+    const csrfRequest = httpTestingController.expectOne('/api/auth/csrf');
+    csrfRequest.flush({ headerName: 'X-XSRF-TOKEN', token: 'registration-token' });
+
+    const registrationRequest = httpTestingController.expectOne('/api/auth/register');
+    expect(registrationRequest.request.headers.get('X-XSRF-TOKEN')).toBe('registration-token');
+    registrationRequest.flush({});
   });
 
   it('reuses the cached token for subsequent mutating requests', () => {

@@ -10,12 +10,7 @@ const MUTATING_METHODS = new Set(['POST', 'PUT', 'PATCH', 'DELETE']);
 export const csrfInterceptor: HttpInterceptorFn = (request, next) => {
   const apiBaseUrl = inject(API_BASE_URL);
 
-  if (
-    !isApiRequest(request.url, apiBaseUrl) ||
-    !MUTATING_METHODS.has(request.method.toUpperCase()) ||
-    isCsrfEndpoint(request.url, apiBaseUrl) ||
-    isSessionEndpoint(request.url, apiBaseUrl)
-  ) {
+  if (!isApiRequest(request.url, apiBaseUrl) || !MUTATING_METHODS.has(request.method.toUpperCase()) || isCsrfEndpoint(request.url, apiBaseUrl)) {
     return next(request);
   }
 
@@ -49,10 +44,6 @@ function withCsrfToken(
 
 function isCsrfEndpoint(url: string, apiBaseUrl: string): boolean {
   return isApiEndpoint(url, apiBaseUrl, '/auth/csrf');
-}
-
-function isSessionEndpoint(url: string, apiBaseUrl: string): boolean {
-  return isApiEndpoint(url, apiBaseUrl, '/auth/login') || isApiEndpoint(url, apiBaseUrl, '/auth/register');
 }
 
 function isInvalidCsrfError(error: unknown): boolean {
