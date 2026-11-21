@@ -50,14 +50,14 @@ test('a visitor can filter the public catalog and view a product', async ({ page
   await page.getByLabel('Precio máximo').fill('50');
   await page.getByLabel('Ordenar por').selectOption('price');
   await page.getByLabel('Dirección').selectOption('asc');
-  await page.getByRole('button', { name: 'Aplicar filtros' }).click();
+  await page.getByRole('button', { name: 'Aplicar' }).click();
   await expect(page.getByText('El máximo debe ser mayor o igual al mínimo.')).toBeVisible();
   await page.getByLabel('Precio mínimo').fill('0');
 
   const filteredRequest = page.waitForRequest(
     (request) => new URL(request.url()).pathname === '/api/products' && new URL(request.url()).searchParams.has('q'),
   );
-  await page.getByRole('button', { name: 'Aplicar filtros' }).click();
+  await page.getByRole('button', { name: 'Aplicar' }).click();
   const params = new URL((await filteredRequest).url()).searchParams;
   expect(Object.fromEntries(params)).toMatchObject({
     page: '0',

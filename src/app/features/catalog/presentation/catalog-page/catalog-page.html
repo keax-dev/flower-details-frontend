@@ -94,9 +94,7 @@
             </select>
           </div>
           <div class="col-12 col-xl-auto d-flex flex-wrap gap-2">
-            <button [disabled]="isLoading()" class="btn btn-success" type="submit">
-              <fa-icon [icon]="faFilter" aria-hidden="true" /> Aplicar
-            </button>
+            <button [disabled]="isLoading()" class="btn btn-success" type="submit"><fa-icon [icon]="faFilter" aria-hidden="true" /> Aplicar</button>
             <button (click)="clearFilters()" [disabled]="isLoading()" class="btn btn-outline-dark" type="button">
               <fa-icon [icon]="faRotateLeft" aria-hidden="true" /> Limpiar
             </button>
