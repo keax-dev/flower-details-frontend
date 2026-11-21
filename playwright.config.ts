@@ -8,14 +8,14 @@ export default defineConfig({
   retries: process.env['CI'] ? 2 : 0,
   reporter: process.env['CI'] ? 'github' : 'list',
   use: {
-    baseURL: 'http://127.0.0.1:4200',
+    baseURL: 'http://127.0.0.1:14201',
     trace: 'on-first-retry',
   },
   projects: [{ name: 'chromium', use: { ...devices['Desktop Chrome'] } }],
   webServer: {
-    command: 'npm run start -- --host 127.0.0.1 --port 4200',
-    url: 'http://127.0.0.1:4200',
-    reuseExistingServer: !process.env['CI'],
+    command: 'npm run start -- --host 127.0.0.1 --port 14201 --proxy-config proxy.e2e.conf.json',
+    url: 'http://127.0.0.1:14201',
+    reuseExistingServer: false,
     timeout: 120_000,
   },
 });

@@ -51,6 +51,27 @@ function selectedImage(): NzUploadFile {
 }
 
 describe('ProductImageDialog', () => {
+  it('rejects unsupported, empty and oversized files before queuing them', async () => {
+    const { fixture, notificationService, productApiService } = await createComponent();
+    for (const file of [
+      { uid: 'svg', name: 'x.svg', size: 100, type: 'image/svg+xml' },
+      { uid: 'empty', name: 'x.png', size: 0, type: 'image/png' },
+      { uid: 'big', name: 'x.png', size: 5 * 1024 * 1024 + 1, type: 'image/png' },
+    ])
+      fixture.componentInstance['queueImage'](file);
+    expect(fixture.componentInstance['fileList']).toEqual([]);
+    expect(notificationService.warning).toHaveBeenCalledTimes(3);
+    expect(productApiService.uploadImages).not.toHaveBeenCalled();
+  });
+
+  it('limits the total bytes of an upload', async () => {
+    const { fixture, notificationService } = await createComponent();
+    for (let index = 0; index < 5; index++) {
+      fixture.componentInstance['queueImage']({ uid: String(index), name: 'x.png', size: 5 * 1024 * 1024, type: 'image/png' });
+    }
+    expect(fixture.componentInstance['fileList']).toHaveLength(4);
+    expect(notificationService.warning).toHaveBeenCalledOnce();
+  });
   it('queues a selected image without sending it to the API', async () => {
     const { fixture, productApiService } = await createComponent();
 

@@ -1,7 +1,7 @@
 import { defineConfig, devices } from '@playwright/test';
 import { resolve } from 'node:path';
 
-const backendDirectory = resolve(__dirname, '../flower-details-backend');
+const backendDirectory = resolve(__dirname, process.env['FLOWER_DETAILS_BACKEND_DIR'] ?? '../flower-details-backend');
 const frontendDirectory = __dirname;
 const backendWrapper =
   process.platform === 'win32' ? `"${process.env['FLOWER_DETAILS_BASH'] ?? 'C:\\Program Files\\Git\\bin\\bash.exe'}" ./mvnw` : './mvnw';

@@ -18,6 +18,14 @@ describe('csrfInterceptor', () => {
 
   afterEach(() => httpTestingController.verify());
 
+  it('rejects malformed CSRF responses without sending the mutation', () => {
+    const errors: unknown[] = [];
+    httpClient.post('/api/auth/login', {}).subscribe({ error: (error: unknown) => errors.push(error) });
+    httpTestingController.expectOne('/api/auth/csrf').flush({ headerName: 'Authorization', token: 'untrusted' });
+    httpTestingController.expectNone('/api/auth/login');
+    expect(errors).toHaveLength(1);
+  });
+
   it('does not request a token for safe requests', () => {
     httpClient.get('/api/categories').subscribe();
 

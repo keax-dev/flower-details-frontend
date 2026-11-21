@@ -30,6 +30,15 @@ describe('AuthService', () => {
 
   afterEach(() => httpTestingController.verify());
 
+  it('a late logout response cannot clear a newer login', () => {
+    authService.logout().subscribe();
+    const logout = httpTestingController.expectOne('/api/auth/logout');
+    authService.login({ email: USER.email, password: 'Password123' }).subscribe();
+    httpTestingController.expectOne('/api/auth/login').flush({ user: USER });
+    logout.flush(null);
+    expect(authService.user()).toEqual(USER);
+  });
+
   it('stores the authenticated user after login', () => {
     authService.login({ email: USER.email, password: 'correct-password' }).subscribe();
 

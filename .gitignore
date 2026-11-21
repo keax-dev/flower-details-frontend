@@ -37,6 +37,16 @@ yarn-error.log
 /coverage
 /playwright-report
 /test-results
+/.security-audit/
+*.log
+*.tgz
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
 /libpeerconnection.log
 testem.log
 /typings

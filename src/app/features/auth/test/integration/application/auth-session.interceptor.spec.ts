@@ -8,11 +8,11 @@ import { Router } from '@angular/router';
 describe('authSessionInterceptor', () => {
   let httpClient: HttpClient;
   let httpTestingController: HttpTestingController;
-  let sessionStore: { clear: ReturnType<typeof vi.fn> };
+  let sessionStore: { clear: ReturnType<typeof vi.fn>; version: ReturnType<typeof vi.fn> };
   let router: { navigate: ReturnType<typeof vi.fn>; url: string };
 
   beforeEach(() => {
-    sessionStore = { clear: vi.fn() };
+    sessionStore = { clear: vi.fn(), version: vi.fn().mockReturnValue(0) };
     router = { navigate: vi.fn().mockResolvedValue(true), url: '/admin/categories' };
 
     TestBed.configureTestingModule({
@@ -29,6 +29,14 @@ describe('authSessionInterceptor', () => {
   });
 
   afterEach(() => httpTestingController.verify());
+
+  it('ignores an old unauthorized response after the session changes', () => {
+    httpClient.get('/api/orders').subscribe({ error: () => undefined });
+    sessionStore.version.mockReturnValue(1);
+    httpTestingController.expectOne('/api/orders').flush({}, { status: 401, statusText: 'Unauthorized' });
+    expect(sessionStore.clear).not.toHaveBeenCalled();
+    expect(router.navigate).not.toHaveBeenCalled();
+  });
 
   it('clears the session and redirects when a protected API request receives 401', () => {
     httpClient.get('/api/categories').subscribe({ error: () => undefined });

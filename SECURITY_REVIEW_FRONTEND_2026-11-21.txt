@@ -1,0 +1,240 @@
+REVISIÓN DE SEGURIDAD DEL FRONTEND — 21 DE NOVIEMBRE DE 2026
+
+Proyecto: flower-details-frontend
+Ruta: C:\Users\jimen\Documents\Proyectos\flower-details-frontend
+Rama revisada: main.
+
+RESULTADO
+
+Se revisaron código, configuración, dependencias, historial Git, compilación
+de producción y comportamiento en Chromium. Se corrigieron problemas de
+inyección de contenido en notificaciones, carreras de sesión y límites de
+archivos; además se reforzaron CSRF, clasificación de URLs y controles de
+compilación. No se demostró ejecución arbitraria de JavaScript ni acceso
+administrativo no autorizado en los escenarios probados.
+
+No equivale a una certificación de ausencia de vulnerabilidades. Los resultados
+de dependencias y secretos se limitan a las bases de avisos y reglas usadas.
+El dominio de producción, su TLS y su infraestructura no se inspeccionaron.
+
+HALLAZGOS Y CORRECCIONES
+
+F01. Inyección de HTML en mensajes de error — Media — Corregido.
+NzMessageService interpreta sus mensajes de tipo string como HTML. Los errores
+de la API llegaban directamente a ese componente, permitiendo insertar enlaces
+o contenido engañoso si su texto contenía HTML. Angular ya sanitizaba elementos
+peligrosos: no se acreditó ejecución de scripts por este camino.
+NotificationService ahora escapa los caracteres HTML en todos sus métodos.
+api-error.ts valida el tipo real de mensajes recibidos y limita los errores de
+validación a diez entradas de 500 caracteres cada una.
+Prueba: un error con un enlace a un dominio atacante aparece literalmente y
+no crea un enlace navegable. También se prueban estructuras de error inválidas.
+
+F02. Respuestas antiguas alteraban una sesión nueva — Media — Corregido.
+Un 401 pendiente podía limpiar el estado de un inicio de sesión posterior;
+la finalización tardía de logout también podía limpiar una nueva sesión local.
+AuthSessionStore mantiene una versión que cambia al establecer/limpiar usuario.
+El interceptor y las operaciones de restauración/perfil comprueban esa versión.
+Logout limpia el estado local al iniciarse y no lo vuelve a limpiar al terminar.
+Se añadieron regresiones para 401 y logout tardíos. Esto protege el estado del
+cliente; el orden de las respuestas Set-Cookie y la revocación pertenecen al
+servidor. Un fallo de red al cerrar sesión no garantiza revocación remota.
+
+F03. Selección de imágenes sin límites suficientes — Baja — Corregido en UI.
+La cola ahora admite JPEG, PNG y WebP, rechaza archivos vacíos y limita cada
+archivo a 5 MiB, cada envío a 20 MiB y la cola a diez archivos. También se vacía
+al cambiar de producto/abrir el diálogo y se evita un envío duplicado en curso.
+Pruebas unitarias cubren MIME, tamaño, vacío y límites acumulados.
+El tipo declarado por el navegador se puede falsificar: la inspección de firma,
+contenido, dimensiones y límites efectivos sigue siendo obligación del backend.
+
+F04. Clasificación de URLs por prefijo — Refuerzo preventivo — Corregido.
+Los interceptores ahora usan URL normalizada, origen y límites de ruta para
+decidir si una petición pertenece a la API. Se rechazan credenciales en URL,
+URLs con barras invertidas/control/espacios y rutas con separadores o puntos
+codificados. Con base relativa /api no se adjunta el tratamiento de la API a
+URLs absolutas o protocol-relative. Se prueban rutas parecidas y casos de
+normalización. No se demostró una fuga de token entre orígenes en el código
+anterior; este cambio evita depender de comparaciones de cadenas ambiguas.
+
+F05. Respuesta CSRF asumida sin validación — Refuerzo preventivo — Corregido.
+CsrfService recibe unknown y exige headerName X-XSRF-TOKEN y un token con
+formato/longitud permitidos antes de escribir cookie/cabecera. Respuestas
+inválidas producen error y se pueden reintentar; no se acepta elegir una
+cabecera arbitraria desde el cuerpo de la API. La prueba rechaza Authorization.
+
+F06. Archivos de desarrollo versionados — Baja — Corregido en índice Git.
+frontend-dev.log y ng-zorro-antd-22.0.0.tgz se retiraron del seguimiento, pero se
+conservaron las copias locales. El tarball no era una dependencia activa.
+.gitignore excluye logs, archivos tgz, evidencias de auditoría, .env y claves.
+No se reescribió historial: esos archivos siguen en commits antiguos. El
+escaneo del historial no detectó secretos; retirarlos ahora no elimina su pasado.
+
+F07. Configuración de entrega incompleta — Media si se despliega sin controles.
+Se añadió deployment/nginx.conf como ejemplo reproducible: nosniff, DENY,
+no-referrer, Permissions-Policy, CSP complementaria y bloqueo de archivos
+ocultos, mapas, fuentes TypeScript y configuraciones de proyecto. El HTML
+recibe no-cache para permitir renovar el punto de entrada.
+La CSP de scripts con hashes/strict-dynamic ya estaba activada por autoCsp;
+se conservó y probó. Se hizo explícito sourceMap:false en producción y se
+activaron strict y strictTemplates. La build no expone Angular debug tools.
+Nginx valida su configuración y las pruebas del artefacto servido confirman
+cabeceras, rutas sensibles 404 y bloqueo de un script inyectado en el HTML
+después de la política CSP. Las APIs se simulan en esta prueba de producción.
+Estado: ejemplo local validado, pendiente adaptar/aplicar al hosting real.
+No incluye TLS. Deben configurarse HTTPS/HSTS en el borde TLS y Secure en las
+cookies de producción del backend. En Docker, 127.0.0.1 es el mismo contenedor;
+el upstream debe ajustarse si el backend vive en otro servicio.
+
+F08. Node local por debajo de parches de seguridad — Prioridad alta — Pendiente.
+El equipo ejecuta Node 24.18.0. Los parches oficiales del 11/11/2026 incluyen
+problemas de severidad alta en Node y fijan 22.23.5, 24.22.3 y 26.13.1.
+Se declararon esos mínimos por rama soportada en engines y .nvmrc selecciona
+24.22.3. No se reemplazó la instalación global del usuario; debe actualizarse
+antes de continuar usando servidores/herramientas Node expuestos.
+No se probó explotación en este proyecto. El artefacto Angular estático servido
+con Nginx no ejecuta Node. engines por sí solo puede ser una advertencia en npm.
+
+F09. Las pruebas podían reutilizar el servidor de desarrollo — Baja — Corregido.
+Playwright simulado usa puerto 14201, no reutiliza servidores y carga un proxy
+vacío para que una petición sin mock no llegue a la base de desarrollo.
+La prueba real permite FLOWER_DETAILS_BACKEND_DIR y se ejecutó sobre una copia
+aislada del backend con perfil de test/H2 y puertos 18080/14200. El servidor de
+desarrollo existente en 4200 y la base de desarrollo no se usaron para pruebas.
+
+F10. Formularios — Refuerzo preventivo — Corregido.
+Se alineó el máximo de correo del login a 160 caracteres y se evitaron envíos
+duplicados en login, registro y perfil. Se mantienen formularios reactivos,
+contraseña con límite de 72 bytes y reglas de registro. Las validaciones de
+Angular mejoran la experiencia, no sustituyen las del servidor.
+
+COMPROBACIÓN DE LA LISTA SOLICITADA
+
+Autenticación: sesión mediante cookie HttpOnly y restauración /api/me; usuario
+en memoria mediante signals. No se almacena JWT en localStorage/sessionStorage.
+La prueba real registra, modifica perfil, recarga, cierra sesión y vuelve a
+iniciar sesión. La cookie no aparece en document.cookie. Reutilizar el token
+capturado antes de logout devuelve 401 en /api/me.
+
+Claves API / variables de entorno: API_BASE_URL usa /api. No se encontraron
+credenciales de proveedor en código/build ni archivos de claves rastreados.
+Toda variable que se empaquete en Angular es pública; .env no es una caja de
+secretos en el navegador. Los secretos deben permanecer en servicios de servidor.
+
+Base de datos / consultas parametrizadas: el frontend consume HTTP y no posee
+conexión ni credenciales de base de datos. Estos controles pertenecen al backend;
+esta auditoría no repite una revisión exhaustiva del motor de base de datos.
+
+Hash de contraseñas: responsabilidad del backend. No se añade un hash del lado
+cliente como sustituto del almacenamiento seguro en servidor. El transporte
+de credenciales requiere HTTPS en el despliegue real.
+
+Validación en servidor: la prueba con API real envía un perfil inválido con
+CSRF válido y obtiene 400. No se afirma haber probado todas las reglas de todos
+los endpoints desde esta suite frontend.
+
+XSS: [innerHTML] usa sanitización Angular, sin bypassSecurityTrustHtml, y el
+editor tiene sanitización. Se probaron script, eventos inline, javascript: e
+iframe en una descripción almacenada simulada. Las notificaciones ahora son
+texto escapado. CSP se probó sobre la compilación real servida por Nginx.
+
+Administración: existen guards por rol y carga de rutas. CUSTOMER y OPERATOR
+no pueden abrir la gestión de productos en navegador ni disparan su consulta
+de gestión. Con sesión CUSTOMER real, GET /api/users devuelve 403.
+El JavaScript administrativo sigue siendo descargable como cualquier recurso
+frontend; nunca debe contener secretos. La autorización efectiva es del servidor.
+
+Límite de peticiones: bloquear doble envío en UI no es rate limiting. Los
+límites de fuerza bruta, API y tráfico deben aplicarse en backend/proxy. No se
+ejecutaron ataques de volumen ni pruebas de agotamiento de infraestructura.
+
+CORS: la integración usa /api en el mismo origen. El ejemplo Nginx no publica
+Access-Control-Allow-Origin *. La política del backend real y los dominios
+permitidos son controles del servidor; no pueden imponerse desde Angular.
+
+Cabeceras: comprobadas en el Nginx local del ejemplo. No se comprobó un dominio
+de producción. frame-ancestors se entrega en cabecera, no sólo en una meta CSP.
+
+Cookies: HttpOnly probado para autenticación real en entorno de test HTTP.
+La cookie XSRF-TOKEN es legible por JavaScript por diseño; usa SameSite=Lax y
+añade Secure en HTTPS. No contiene el JWT. Secure/HSTS del entorno productivo
+quedan pendientes de comprobación sobre HTTPS real.
+
+CSRF: una modificación real sin X-XSRF-TOKEN recibe 403. El interceptor obtiene
+el token y admite renovación ante 403. Se valida el esquema de la respuesta.
+
+Enlaces que caducan: no se identificó un flujo de recuperación de contraseña,
+invitaciones ni enlaces privados firmados en este frontend. Las imágenes de
+catálogo son públicas. No se inventó una caducidad en cliente; los enlaces
+privados futuros necesitan firma/expiración verificadas en servidor.
+
+Archivos subidos: límites de cola implementados y probados. No constituyen
+defensa frente a una petición multipart construida fuera del navegador.
+
+Depuración: build de producción optimizada, sin mapas .map ni global ng. No
+usar ng serve para publicar. strict/strictTemplates pasan compilación.
+
+Dependencias vulnerables: npm audit final informa 0 conocidas en 706
+dependencias (38 prod, 668 dev; categorías opcionales pueden solaparse).
+npm ls no reporta dependencias inválidas/extraneous. Angular instalado 22.3.0,
+TypeScript instalado 6.0.3. Se consultaron avisos primarios Angular, Quill,
+Bootstrap, ng-zorro y Node. El aviso Angular GHSA-jfgx-762w-99vr declara 22.x
+no afectado. No se cambiaron resoluciones de paquetes sin un motivo confirmado.
+Esto no es un escaneo Mend ni prueba de que no existan vulnerabilidades nuevas.
+El runtime Node es un hallazgo independiente del resultado npm audit.
+
+Paquetes sin uso: se inspeccionaron imports, estilos y herramientas de
+build/test. Bootstrap, fuentes y CSS de Quill se usan desde angular.json;
+@angular/cdk es requerido por la interfaz/peers. No se confirmó otro paquete
+instalado que fuera seguro retirar. Se retiró del índice el tarball obsoleto.
+
+Archivos expuestos: la distribución contiene el sitio compilado, sin mapas.
+Se comprueba 404 para .env, .git/config, src/main.ts, package.json,
+package-lock.json, angular.json, frontend-dev.log y main.js.map con el ejemplo.
+Publicar sólo dist/flower-details-frontend/browser es una condición de entrega.
+
+Secretos de Git / claves comprometidas: Gitleaks no detectó hallazgos en los
+66 commits del historial disponible, src ni dist. No se verificaron repositorios
+remotos ajenos, ramas no presentes ni credenciales en proveedores externos.
+Sin una clave real identificada no corresponde declarar ni ejecutar rotación.
+Las contraseñas ficticias de los tests no son credenciales del entorno real.
+
+VALIDACIÓN Y EVIDENCIAS
+
+- npm run quality: formato, ESLint y reglas de dependencias.
+- npm run test:coverage: 142 pruebas / 35 archivos; mínimos exigidos aprobados.
+  Cobertura final: sentencias 59.97%, ramas 64.59%, funciones 62.93%,
+  líneas 64.37%. Cumple los mínimos del proyecto (55/60/60/60).
+- npm run test:e2e -- --workers=2: 40 pruebas aprobadas.
+- playwright.production.config.ts: 12 pruebas aprobadas sobre build con Nginx.
+- npm run test:full-stack: 1 flujo aprobado con múltiples aserciones de seguridad.
+- npm run build: aprobado con strict y strictTemplates.
+- nginx -t: configuración válida; sin .map en la distribución.
+- npm audit: cero vulnerabilidades conocidas al momento de la consulta.
+- Gitleaks: cero hallazgos en historial, fuentes y distribución.
+- AXE: seis escenarios de accesibilidad aprobados tanto en desarrollo como en
+  producción. Son controles automatizados; no certifican todo WCAG manualmente.
+
+Los logs y JSON locales están en .security-audit/ (excluido de Git). Los tests,
+configuraciones y README quedan como evidencia reproducible versionable.
+No se modificaron fuentes del backend durante esta revisión; se copió su
+configuración de test al espacio ignorado para ejecutar la prueba aislada.
+
+PENDIENTES CONCRETOS
+
+1. Actualizar Node del equipo/CI a 24.22.3 o parche posterior soportado.
+2. Adaptar/aplicar el ejemplo de hosting y verificar el dominio real con HTTPS,
+   HSTS, cookies Secure y upstream correcto. No desplegar la carpeta del repo.
+3. Mantener verificaciones de dependencias y secretos en CI; los resultados son
+   una fotografía de hoy. Mantener límites y autorización en el backend.
+
+FUENTES PRIMARIAS CONSULTADAS
+
+Angular: https://angular.dev/best-practices/security
+Configuración: https://angular.dev/reference/configs/workspace-config
+Avisos Angular: https://github.com/angular/angular/security/advisories
+Aviso XSRF: https://github.com/angular/angular/security/advisories/GHSA-jfgx-762w-99vr
+Quill: https://github.com/slab/quill/security/advisories
+Bootstrap: https://github.com/twbs/bootstrap/security/advisories
+ng-zorro: https://github.com/ng-zorro/ng-zorro-antd/security/advisories
+Node: https://nodejs.org/en/blog/vulnerability/november-2026-security-releases

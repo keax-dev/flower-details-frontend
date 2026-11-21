@@ -7,27 +7,31 @@ export class NotificationService {
   private readonly messageService = inject(NzMessageService);
 
   success(message: string): void {
-    this.messageService.success(message);
+    this.messageService.success(escapeMessage(message));
   }
 
   error(message: string): void {
-    this.messageService.error(message);
+    this.messageService.error(escapeMessage(message));
   }
 
   warning(message: string): void {
-    this.messageService.warning(message);
+    this.messageService.warning(escapeMessage(message));
   }
 
   info(message: string): void {
-    this.messageService.info(message);
+    this.messageService.info(escapeMessage(message));
   }
 
   errorApi(messages: string | string[]): void {
     if (Array.isArray(messages)) {
-      messages.forEach((message) => this.messageService.error(message));
+      messages.forEach((message) => this.error(message));
       return;
     }
 
     this.error(messages);
   }
+}
+
+function escapeMessage(message: string): string {
+  return message.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&#39;');
 }

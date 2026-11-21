@@ -14,7 +14,6 @@ export class AuthService {
   private readonly httpClient = inject(HttpClient);
   private readonly apiBaseUrl = inject(API_BASE_URL);
   private restoreSessionRequest$?: Observable<AuthUser | null>;
-  private sessionVersion = 0;
 
   readonly isAuthenticated = this.sessionStore.isAuthenticated;
   readonly user = this.sessionStore.user;
@@ -34,10 +33,10 @@ export class AuthService {
   }
 
   updateProfile(request: UpdateProfileRequest): Observable<AuthUser> {
-    const requestVersion = this.sessionVersion;
+    const requestVersion = this.sessionStore.version();
     return this.httpClient.put<AuthUser>(`${this.apiBaseUrl}/me`, request).pipe(
       tap((user) => {
-        if (this.sessionVersion === requestVersion) {
+        if (this.sessionStore.version() === requestVersion) {
           this.setUser(user);
         }
       }),
@@ -48,17 +47,17 @@ export class AuthService {
     if (this.sessionStore.user() !== null) {
       return of(this.sessionStore.user());
     }
-    const requestVersion = this.sessionVersion;
+    const requestVersion = this.sessionStore.version();
     this.restoreSessionRequest$ ??= this.httpClient.get<AuthUser>(`${this.apiBaseUrl}/me`).pipe(
       tap((user) => {
-        if (this.sessionVersion === requestVersion) {
+        if (this.sessionStore.version() === requestVersion) {
           this.sessionStore.setUser(user);
         }
       }),
-      map((user) => (this.sessionVersion === requestVersion ? user : this.sessionStore.user())),
+      map(() => this.sessionStore.user()),
       catchError((error: unknown) => {
         if (error instanceof HttpErrorResponse && (error.status === 401 || error.status === 403)) {
-          if (this.sessionVersion === requestVersion) {
+          if (this.sessionStore.version() === requestVersion) {
             this.sessionStore.clear();
           }
           return of(this.sessionStore.user());
@@ -74,12 +73,13 @@ export class AuthService {
   }
 
   logout(): Observable<void> {
-    this.sessionVersion += 1;
-    return this.httpClient.post<void>(`${this.apiBaseUrl}/auth/logout`, {}).pipe(finalize(() => this.sessionStore.clear()));
+    this.sessionStore.clear();
+    this.restoreSessionRequest$ = undefined;
+    return this.httpClient.post<void>(`${this.apiBaseUrl}/auth/logout`, {});
   }
 
   private setUser(user: AuthUser): void {
-    this.sessionVersion += 1;
+    this.restoreSessionRequest$ = undefined;
     this.sessionStore.setUser(user);
   }
 }

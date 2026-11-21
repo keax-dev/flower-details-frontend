@@ -54,6 +54,7 @@ export class RegisterPage {
   );
 
   protected submit(): void {
+    if (this.isSubmitting()) return;
     if (this.registerForm.invalid) {
       this.registerForm.markAllAsTouched();
       const invalidField = this.formElement()?.nativeElement.querySelector<HTMLElement>('[formControlName].ng-invalid');

@@ -2,6 +2,15 @@ import { isApiEndpoint, isApiRequest } from '@core/http/utils/api-request';
 
 describe('API request utilities', () => {
   describe('isApiRequest', () => {
+    it('resolves paths before attaching credentials or CSRF headers', () => {
+      for (const url of ['/api/../other', '/api/%2e%2e/other', '/api\\..\\other', '//attacker.example/api', '/api/%2fother']) {
+        expect(isApiRequest(url, '/api')).toBe(false);
+      }
+      expect(isApiRequest('/api?size=10', '/api')).toBe(true);
+      expect(isApiRequest('https://api.example/api/products', 'https://api.example/api')).toBe(true);
+      expect(isApiRequest('https://api.example.attacker.test/api/products', 'https://api.example/api')).toBe(false);
+      expect(isApiRequest('https://api.example@attacker.test/api/products', 'https://api.example/api')).toBe(false);
+    });
     it('accepts the API base URL and its nested resources', () => {
       expect(isApiRequest('/api', '/api')).toBe(true);
       expect(isApiRequest('/api/categories', '/api')).toBe(true);

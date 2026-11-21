@@ -41,6 +41,7 @@ export class ProfilePage {
   }
 
   protected submit(): void {
+    if (this.isSubmitting()) return;
     this.saved.set(false);
     this.errorMessage.set(null);
     if (this.profileForm.invalid) {

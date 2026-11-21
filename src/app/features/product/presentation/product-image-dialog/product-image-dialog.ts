@@ -24,6 +24,9 @@ import { resolveApiErrorMessage } from '@core/http/utils/api-error';
 import { NotificationService } from '@core/notification/notification.service';
 
 const ACCEPTED_IMAGE_TYPES = 'image/jpeg,image/png,image/webp';
+const MAX_IMAGE_BYTES = 5 * 1024 * 1024;
+const MAX_UPLOAD_BYTES = 20 * 1024 * 1024;
+const MAX_QUEUED_IMAGES = 10;
 
 @Component({
   selector: 'app-product-image-dialog',
@@ -61,6 +64,7 @@ export class ProductImageDialog {
 
   constructor() {
     effect(() => {
+      this.fileList = [];
       if (this.isOpen()) {
         this.resetManagedImages(this.product().images);
       }
@@ -68,6 +72,15 @@ export class ProductImageDialog {
   }
 
   protected readonly queueImage = (file: NzUploadFile): NzBeforeUploadFileType => {
+    if (!ACCEPTED_IMAGE_TYPES.split(',').includes(file.type ?? '') || !file.size || file.size > MAX_IMAGE_BYTES) {
+      this.notificationService.warning('Selecciona una imagen JPEG, PNG o WebP de hasta 5 MiB.');
+      return false;
+    }
+    const queuedBytes = this.fileList.reduce((total, image) => total + (image.size ?? 0), 0);
+    if (this.fileList.length >= MAX_QUEUED_IMAGES || queuedBytes + file.size > MAX_UPLOAD_BYTES) {
+      this.notificationService.warning('Puedes enviar hasta 10 imagenes y 20 MiB en una carga.');
+      return false;
+    }
     this.fileList = [...this.fileList, this.toQueuedFile(file)];
     return false;
   };
@@ -92,6 +105,7 @@ export class ProductImageDialog {
   };
 
   protected saveImages(): void {
+    if (this.isUploading()) return;
     const images = this.fileList.map((file) => file.originFileObj).filter((file): file is File => file instanceof File);
 
     if (images.length === 0) {

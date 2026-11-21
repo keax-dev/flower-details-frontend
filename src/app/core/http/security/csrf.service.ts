@@ -1,4 +1,4 @@
-import { catchError, Observable, shareReplay, tap, throwError } from 'rxjs';
+import { catchError, map, Observable, shareReplay, tap, throwError } from 'rxjs';
 import { inject, Service } from '@angular/core';
 import { API_BASE_URL } from '@core/http/config/api.config';
 import { HttpClient } from '@angular/common/http';
@@ -16,7 +16,20 @@ export class CsrfService {
   private tokenRequest$?: Observable<CsrfTokenResponse>;
 
   token(): Observable<CsrfTokenResponse> {
-    this.tokenRequest$ ??= this.httpClient.get<CsrfTokenResponse>(`${this.apiBaseUrl}/auth/csrf`).pipe(
+    this.tokenRequest$ ??= this.httpClient.get<unknown>(`${this.apiBaseUrl}/auth/csrf`).pipe(
+      map((response) => {
+        if (
+          typeof response !== 'object' ||
+          response === null ||
+          !('headerName' in response) ||
+          response.headerName !== 'X-XSRF-TOKEN' ||
+          !('token' in response) ||
+          typeof response.token !== 'string' ||
+          !/^[A-Za-z0-9_+=/-]{1,256}$/.test(response.token)
+        )
+          throw new Error('Respuesta CSRF invalida');
+        return { headerName: response.headerName, token: response.token };
+      }),
       catchError((error: unknown) => {
         this.tokenRequest$ = undefined;
         return throwError(() => error);

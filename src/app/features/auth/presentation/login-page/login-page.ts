@@ -29,11 +29,12 @@ export class LoginPage {
   protected readonly isSubmitting = signal(false);
 
   protected readonly loginForm = this.formBuilder.group({
-    email: ['', [Validators.required, Validators.email]],
+    email: ['', [Validators.required, Validators.email, Validators.maxLength(160)]],
     password: ['', [Validators.required, maxUtf8Bytes(72)]],
   });
 
   protected submit(): void {
+    if (this.isSubmitting()) return;
     if (this.loginForm.invalid) {
       this.loginForm.markAllAsTouched();
       return;

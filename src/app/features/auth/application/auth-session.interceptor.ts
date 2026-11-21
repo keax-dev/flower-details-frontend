@@ -15,10 +15,11 @@ export const authSessionInterceptor: HttpInterceptorFn = (request, next) => {
 
   const sessionStore = inject(AuthSessionStore);
   const router = inject(Router);
+  const requestVersion = sessionStore.version();
 
   return next(request).pipe(
     catchError((error: unknown) => {
-      if (error instanceof HttpErrorResponse && error.status === 401) {
+      if (error instanceof HttpErrorResponse && error.status === 401 && sessionStore.version() === requestVersion) {
         if (!isApiEndpoint(request.url, apiBaseUrl, '/me')) {
           sessionStore.clear();
         }
