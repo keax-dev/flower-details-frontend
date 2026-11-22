@@ -15,9 +15,14 @@ test('registers and updates a customer through the real API', async ({ page }) =
   const registerResponse = page.waitForResponse((response) => response.url().endsWith('/api/auth/register'));
   await page.getByRole('button', { name: 'Crear cuenta' }).click();
   expect((await registerResponse).status()).toBe(201);
-  const accessCookie = (await page.context().cookies()).find((cookie) => cookie.name === 'flower_details_test_access_token');
+  const accessCookieName = process.env['TEST_ACCESS_COOKIE_NAME'] ?? 'flower_details_test_access_token';
+  const accessCookie = (await page.context().cookies()).find((cookie) => cookie.name === accessCookieName);
   expect(accessCookie?.httpOnly).toBe(true);
-  expect(await page.evaluate(() => document.cookie)).not.toContain('flower_details_test_access_token');
+  expect(await page.evaluate(() => document.cookie)).not.toContain(accessCookieName);
+  if (new URL(page.url()).protocol === 'https:') {
+    expect(accessCookie?.secure).toBe(true);
+    expect(accessCookie?.sameSite).toBe('Lax');
+  }
   expect(await page.evaluate(() => Object.keys(localStorage).concat(Object.keys(sessionStorage)))).toEqual([]);
 
   await page.goto('/profile');

@@ -10,6 +10,7 @@
     "test:coverage": "ng test --watch=false --coverage --coverage-reporters=json-summary --coverage-reporters=text-summary && node scripts/check-coverage.mjs",
     "test:e2e": "playwright test",
     "test:full-stack": "playwright test --config=playwright.full-stack.config.ts",
+    "test:testing": "playwright test --config=playwright.testing.config.ts",
     "test:e2e:ui": "playwright test --ui",
     "lint": "ng lint",
     "format": "prettier --write \"src/**/*.{ts,html,css}\" \"*.{ts,js,cjs,json}\" \"full-stack-tests/**/*.ts\" \"scripts/**/*.mjs\" .postcssrc.json",

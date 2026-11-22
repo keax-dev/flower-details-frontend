@@ -55,6 +55,8 @@ CSRF uses the current server-issued `XSRF-TOKEN` cookie for each mutation. Only 
 
 ## Production security
 
+For a Docker-based QA VPS, use this repository's multi-stage `Dockerfile` together with `../flower-details-backend/compose.testing.yaml`. The [testing deployment guide](../flower-details-backend/deployment/testing/README.md) describes HTTPS, environment variables, resource limits, logs and performance checks. Domain/URLs remain pending. The container uses the same optimized build as production and `/api` on the same origin; no environment-specific API URL or secret is bundled into Angular.
+
 Publish only `dist/flower-details-frontend/browser`, using `npm run build`. Production disables source maps and Angular debugging and generates a hash-based CSP through `security.autoCsp`. TypeScript and template checks are strict. Do not publish the repository or use `ng serve` for production.
 
 `deployment/nginx.conf` is a tested example serving the build on port 8081, adding security headers, denying source/configuration files, and proxying `/api/` to a backend at `127.0.0.1:8080`. Adapt the upstream to the real deployment; in Docker, loopback refers to the same container. Configure HTTPS and HSTS at the TLS edge, and enable the backend's secure production cookies. This example does not configure TLS or deploy itself.
